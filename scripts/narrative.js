@@ -1,9 +1,9 @@
-// Renders index.html: the narrative front door.
+// Renders research.html: the research overview. The story scenes first, then
+// the A-G finding cards from content/intro.md.
 //
 // THE BUILD MUST NEVER READ THE CLOCK. No Date.now(), no bare new Date().
 // CI runs `node scripts/build.js` then `git diff --exit-code`; a clock read
-// makes the output differ on every run and fails every push forever. The
-// Devcon countdown is computed client-side in assets/narrative.js. Any date
+// makes the output differ on every run and fails every push forever. Any date
 // arithmetic the build needs derives from figures.json meta.generated or a
 // literal in narrative.json, the same rule stalenessCutoff() already follows.
 //
@@ -15,7 +15,8 @@ import { renderMarkdown } from '../vendor/minimark.js';
 import { stalenessCutoff } from '../assets/ledger-core.js';
 import { buildFigureIndex, citeTokens, warnOnWeakCitations } from './citations.js';
 import { renderLandingPromptCta } from './llm-prompt.js';
-import { escapeHtmlText, escapeAttr, renderHeadMeta, websiteLd } from './meta.js';
+import { renderFindings } from './findings.js';
+import { escapeHtmlText, escapeAttr, renderHeadMeta, articleLd } from './meta.js';
 
 
 /** Markdown -> HTML -> citation chips. Order matters: minimark leaves [[fig:N]] alone. */
@@ -64,19 +65,18 @@ function deeperLink(scene) {
 
 function renderHero(scene, ctx) {
   const where = `scene "${scene.id}"`;
-  const d = ctx.narrative.meta.devcon;
   return `<header class="hero" id="${escapeAttr(scene.id)}">
       <div class="hero-inner">
+        <a class="hero-home" href="index.html"><span aria-hidden="true">← </span>ETHIndia Institutions</a>
         <p class="hero-eyebrow">${escapeHtmlText(scene.eyebrow)}</p>
         <h1 class="hero-headline">${inline(scene.headline, ctx, where)}</h1>
         <p class="hero-sub">${inline(scene.sub, ctx, where)}</p>
         <div class="hero-lede">${prose(scene.lede, ctx, where)}</div>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#${escapeAttr(ctx.narrative.scenes[1].id)}">Start reading</a>
-          <a class="btn btn-ghost" href="evidence.html">Skip to the evidence base</a>
+          <a class="btn btn-ghost" href="#modules">Jump to the modules</a>
         </div>
         ${renderLandingPromptCta({ id: 'llm-top' })}
-        <p class="hero-devcon">Built ahead of <a href="${escapeAttr(d.url)}">${escapeHtmlText(d.name)}</a> — ${escapeHtmlText(d.city)}, ${escapeHtmlText(d.date_label)}</p>
       </div>
     </header>`;
 }
@@ -129,47 +129,26 @@ function renderSplitSort(scene, ctx) {
     </section>`;
 }
 
-function renderCta(scene, ctx) {
-  const where = `scene "${scene.id}"`;
-  const d = ctx.narrative.meta.devcon;
-  const tiers = d.tiers.map(t => `<li class="tier">
-              <span class="tier-price">${escapeHtmlText(t.price)}</span>
-              <span class="tier-label">${escapeHtmlText(t.label)}</span>
-              <span class="tier-note">${escapeHtmlText(t.note)}</span>
-            </li>`).join('\n            ');
-
-  const secondary = scene.asks.filter(a => a.kind === 'secondary').map(a =>
-    `<li><a href="${escapeAttr(a.href)}">${escapeHtmlText(a.label)}</a> <span>${escapeHtmlText(a.note)}</span></li>`
+/**
+ * The router into the seven modules. The cards come from content/intro.md so
+ * the overview's findings have one source; the reference tables and the LLM
+ * prompt close the page.
+ */
+function renderModules(scene, ctx) {
+  const moduleTabs = ctx.tabs.filter(t => t.module);
+  const { summaryHtml, cardsHtml } = renderFindings(ctx.introRaw, moduleTabs);
+  const refs = ctx.tabs.filter(t => t.group === 'reference').map(t =>
+    `<li><a href="${escapeAttr(t.page)}">${escapeHtmlText(t.label)}</a> <span>${escapeHtmlText(t.description)}</span></li>`
   ).join('\n            ');
-
-  // Static: the absolute dates, which are the durable fact. The day count is
-  // filled in client-side; see the clock rule at the top of this file.
-  return `<section class="scene scene-cta" id="${escapeAttr(scene.id)}">
+  return `<section class="scene scene-modules" id="${escapeAttr(scene.id)}">
       <div class="scene-inner">
         ${sceneHeader(scene, ctx)}
-        <div class="scene-body">${prose(scene.body, ctx, where)}</div>
-        <aside class="scene-limit scene-limit-strong">
-          <span class="scene-limit-label">The concession that comes first</span>
-          <p>${inline(scene.concession, ctx, `${where} concession`)}</p>
-        </aside>
-        <div class="cta-card">
-          <p class="cta-kicker">${escapeHtmlText(d.name)}</p>
-          <p class="cta-when"><time datetime="${escapeAttr(d.start)}">${escapeHtmlText(d.date_label)}</time><span class="countdown" data-countdown-to="${escapeAttr(d.start)}"></span></p>
-          <p class="cta-where">${escapeHtmlText(d.venue)}, ${escapeHtmlText(d.city)}</p>
-          <ul class="tier-list">
-            ${tiers}
-          </ul>
-          <!-- Arrow is UI chrome; see the note above renderDeeperLink. -->
-          <a class="btn btn-primary btn-lg" href="${escapeAttr(d.tickets_url)}">Get a ticket<span aria-hidden="true"> →</span></a>
-          <p class="cta-fineprint">Ticket tiers and prices are Devcon's and change in waves — check the store for what is open now.</p>
-        </div>
-        <div class="cta-secondary">
-          <p class="cta-secondary-label">Whether or not you come</p>
-          <ul>
-            ${secondary}
-          </ul>
-          ${renderLandingPromptCta()}
-        </div>
+        <div class="scene-body">${summaryHtml}</div>
+        ${cardsHtml}
+        <ul class="ref-list">
+            ${refs}
+        </ul>
+        ${renderLandingPromptCta()}
       </div>
     </section>`;
 }
@@ -178,7 +157,7 @@ const RENDERERS = {
   hero: renderHero,
   prose: renderProse,
   'split-sort': renderSplitSort,
-  cta: renderCta,
+  modules: renderModules,
 };
 
 // --- Page shell ------------------------------------------------------------
@@ -190,7 +169,7 @@ const RENDERERS = {
  * the two are one click from any portal page's sidebar and listed in llms.txt.
  */
 function renderFooterNav(tabs) {
-  const items = tabs.filter(t => !t.isNarrative && t.group !== 'reference').map(t => {
+  const items = tabs.filter(t => !t.isNarrative && !t.isLanding && t.group !== 'reference').map(t => {
     const letter = t.module ? `<span class="foot-letter" aria-hidden="true">${t.module}</span>` : '';
     return `        <li><a href="${escapeAttr(t.page)}">${letter}${escapeHtmlText(t.label)}</a></li>`;
   }).join('\n');
@@ -202,8 +181,9 @@ ${items}
     </nav>`;
 }
 
-function narrativeShell({ meta, bodyHtml, tabs, assets }) {
-  const base = meta.site_base;
+function narrativeShell({ meta, bodyHtml, tabs, assets, site, page }) {
+  const base = site.base;
+  const url = base + page;
   const title = `${meta.title}: ${meta.tagline}`;
   return `<!doctype html>
 <html lang="en">
@@ -214,10 +194,10 @@ function narrativeShell({ meta, bodyHtml, tabs, assets }) {
 ${renderHeadMeta({
   title,
   description: meta.description,
-  url: base,
-  type: 'website',
+  url,
+  type: 'article',
   siteBase: base,
-  jsonLd: websiteLd({ siteBase: base, title, description: meta.description }),
+  jsonLd: articleLd({ siteBase: base, url, headline: title, description: meta.description, dateModified: site.dateModified }),
 })}
 <link rel="stylesheet" href="${assets.tokens}">
 <link rel="stylesheet" href="${assets.narrativeCss}">
@@ -237,9 +217,11 @@ ${renderHeadMeta({
 `;
 }
 
-export function renderNarrativePage({ narrative, figuresData, tabs, assets }) {
+export function renderNarrativePage({ narrative, figuresData, introRaw, tabs, assets, site, page }) {
   const ctx = {
     narrative,
+    introRaw,
+    tabs,
     index: buildFigureIndex(figuresData),
     cutoff: stalenessCutoff(figuresData.meta),
   };
@@ -267,5 +249,7 @@ export function renderNarrativePage({ narrative, figuresData, tabs, assets }) {
     bodyHtml: parts.join('\n\n    '),
     tabs,
     assets,
+    site,
+    page,
   });
 }

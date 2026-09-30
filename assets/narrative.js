@@ -9,21 +9,6 @@
 //
 // No localStorage or sessionStorage anywhere: the site must run from file://.
 
-/** Devcon countdown. The absolute date is already in the HTML; this adds the
- *  day count, which is the only part that has to come from the client clock. */
-function enhanceCountdown() {
-  document.querySelectorAll('[data-countdown-to]').forEach(el => {
-    const target = new Date(el.dataset.countdownTo + 'T00:00:00');
-    if (Number.isNaN(target.getTime())) return;
-    const today = new Date();
-    const days = Math.ceil((target - today) / 86400000);
-    if (days > 1) el.textContent = `${days} days away`;
-    else if (days === 1) el.textContent = 'Tomorrow';
-    else if (days === 0) el.textContent = 'Today';
-    else el.textContent = 'This one has been and gone';
-  });
-}
-
 /**
  * Split sort: the static HTML has every item already in its correct column
  * with the real status visible. This collapses the two columns into one
@@ -31,8 +16,8 @@ function enhanceCountdown() {
  * resolves IN PLACE — tapping it must not move it somewhere off-screen, or
  * the feedback is invisible on a phone.
  *
- * "Show me the answers" resolves the rest, which returns the reader to exactly
- * what a no-JS reader sees.
+ * "Show me the answers" toggles the answers on the cards not yet guessed;
+ * shown, the widget reads as exactly what a no-JS reader sees.
  */
 function enhanceSplitSort() {
   document.querySelectorAll('[data-widget="split-sort"]').forEach(widget => {
@@ -102,40 +87,68 @@ function enhanceSplitSort() {
       grid.appendChild(item.el);
     });
 
+    function sideLabel(item) {
+      return sides.find(s => s.id === item.side).label;
+    }
+
     function resolve(item, guess) {
-      if (item.placed !== null) return;
+      if (item.placed !== null || revealed) return;
       item.placed = guess;
       item.el.classList.remove('is-pending');
       item.el.dataset.side = item.side;
-      const actions = item.el.querySelector('.sort-actions');
       const verdict = document.createElement('p');
       verdict.className = 'sort-verdict';
-      if (guess === null) {
-        verdict.textContent = sides.find(s => s.id === item.side).label;
-      } else if (guess === item.side) {
+      if (guess === item.side) {
         item.el.classList.add('is-right');
-        verdict.textContent = 'Right — ' + sides.find(s => s.id === item.side).label;
+        verdict.textContent = 'Right — ' + sideLabel(item);
       } else {
         item.el.classList.add('is-wrong');
         // No .toLowerCase() here: it mangles acronyms like "DLT".
-        verdict.textContent = 'Actually \u2014 ' + sides.find(s => s.id === item.side).label;
+        verdict.textContent = 'Actually \u2014 ' + sideLabel(item);
       }
-      if (actions) actions.replaceWith(verdict); else item.el.appendChild(verdict);
+      item.el.querySelector('.sort-actions').replaceWith(verdict);
       update();
     }
 
-    reveal.addEventListener('click', () => {
-      items.filter(i => i.placed === null).forEach(i => resolve(i, null));
-    });
+    // Show/hide is a toggle over the cards not yet guessed. Showing reveals
+    // their answers without counting them as guesses; hiding puts them back
+    // in play with their buttons, so the reader can still have a go.
+    let revealed = false;
+    function setRevealed(on) {
+      revealed = on;
+      items.filter(i => i.placed === null).forEach(i => {
+        const actions = i.el.querySelector('.sort-actions');
+        i.el.classList.toggle('is-pending', !on);
+        if (on) {
+          i.el.dataset.side = i.side;
+          const verdict = document.createElement('p');
+          verdict.className = 'sort-verdict is-shown';
+          verdict.textContent = sideLabel(i);
+          i.el.appendChild(verdict);
+        } else {
+          i.el.removeAttribute('data-side');
+          i.el.querySelector('.sort-verdict.is-shown')?.remove();
+        }
+        actions.hidden = on;
+      });
+      reveal.textContent = on ? 'Hide the answers' : 'Show me the answers';
+      update();
+    }
+
+    reveal.addEventListener('click', () => setRevealed(!revealed));
 
     function update() {
-      const guessed = items.filter(i => i.placed !== null && i.placed !== undefined);
-      const scored = items.filter(i => i.placed !== null && i.placed === i.side);
-      const left = items.filter(i => i.placed === null).length;
-      score.textContent = left
-        ? (guessed.length ? `${scored.length} of ${guessed.length} right — ${left} to go` : '')
-        : `${scored.length} of ${items.length} right. The status line on each card is the real answer.`;
-      if (!left) reveal.remove();
+      const guessed = items.filter(i => i.placed !== null);
+      const scored = guessed.filter(i => i.placed === i.side);
+      const left = items.length - guessed.length;
+      if (!left) {
+        score.textContent = `${scored.length} of ${items.length} right. The status line on each card is the real answer.`;
+        reveal.remove();
+      } else if (revealed) {
+        score.textContent = 'The status line on each card is the real answer.';
+      } else {
+        score.textContent = guessed.length ? `${scored.length} of ${guessed.length} right — ${left} to go` : '';
+      }
     }
 
     update();
@@ -183,7 +196,7 @@ function pageBaseUrl() {
 }
 
 function enhanceLlmPrompt() {
-  // index.html carries this widget twice, in the hero and in the closing CTA,
+  // research.html carries this widget twice, in the hero and after the modules,
   // so every instance gets the substitution and its own button.
   document.querySelectorAll('.landing-prompt-details').forEach(details => {
     const textarea = details.querySelector('.copy-textarea');
@@ -234,7 +247,6 @@ function enhanceReveal() {
 }
 
 function init() {
-  enhanceCountdown();
   enhanceLlmPrompt();
   enhanceSplitSort();
   enhanceReveal();

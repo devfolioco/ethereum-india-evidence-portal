@@ -64,36 +64,6 @@ function enhanceModuleCopy() {
   });
 }
 
-function landingBaseUrl() {
-  let base = location.href.split(/[?#]/)[0];
-  base = base.replace(/[^/]*\.html$/, '');
-  if (!base.endsWith('/')) base += '/';
-  return base;
-}
-
-function enhanceLandingPrompt() {
-  // Every instance, not just the first: evidence.html ships one today, and the
-  // widget's renderer is shared with index.html, which carries two.
-  document.querySelectorAll('.landing-prompt-details').forEach(details => {
-    const textarea = details.querySelector('.copy-textarea');
-    const summary = details.querySelector('.landing-prompt-summary');
-    if (!textarea) return;
-
-    // The static build can only ship a placeholder — the real URL is known
-    // only at runtime. Substitute before the fallback button (added below by
-    // enhanceModuleCopy) or this summary's own click handler can copy it.
-    textarea.value = textarea.value.split('{{BASE_URL}}').join(landingBaseUrl());
-
-    if (summary) {
-      summary.addEventListener('click', async () => {
-        if (details.open) return; // only copy on the click that opens the panel
-        const ok = await copyToClipboard(textarea.value);
-        flashCopied(summary, ok ? 'Copied — go paste it into your LLM' : 'Copy failed — use the box below');
-      });
-    }
-  });
-}
-
 function enhanceSectionCopy() {
   document.querySelectorAll('h3[data-copy-section]').forEach(h => {
     const payload = h.dataset.copySection;
@@ -142,7 +112,6 @@ async function enhanceLedger() {
 }
 
 function init() {
-  enhanceLandingPrompt();
   enhanceModuleCopy();
   enhanceSectionCopy();
   enhanceNavToggle();

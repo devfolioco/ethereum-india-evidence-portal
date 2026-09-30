@@ -92,6 +92,16 @@ a { color: var(--n-accent); }
 
 .hero-inner { max-width: var(--n-wide); margin: 0 auto; }
 
+.hero-home {
+  display: inline-block;
+  margin: 0 0 2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--n-deep-ink-2);
+  text-decoration: none;
+}
+.hero-home:hover { color: var(--n-deep-ink); }
+
 .hero-eyebrow {
   margin: 0 0 1.5rem;
   font-size: 0.75rem;
@@ -132,15 +142,6 @@ a { color: var(--n-accent); }
   gap: 0.75rem;
   margin: 2.25rem 0 2rem;
 }
-
-.hero-devcon {
-  margin: 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--color-deep-border);
-  font-size: 0.875rem;
-  color: var(--n-deep-ink-2);
-}
-.hero-devcon a { color: var(--n-accent-2); }
 
 /* --- Buttons ------------------------------------------------------------- */
 
@@ -298,91 +299,81 @@ a { color: var(--n-accent); }
   margin-top: 0.3rem;
 }
 
-/* --- CTA ----------------------------------------------------------------- */
-
-.scene-cta {
-  background:
-    radial-gradient(100% 70% at 80% 0%, #17342b 0%, rgba(23,52,43,0) 60%),
-    var(--n-deep);
-  color: var(--n-deep-ink);
-  border-bottom: none;
-}
-.scene-cta .scene-eyebrow { color: var(--n-deep-ink-2); }
-.scene-cta .scene-num { color: var(--n-accent-2); }
-.scene-cta .scene-body { color: var(--n-deep-ink-2); }
-.scene-cta .scene-body p:first-child { color: var(--n-deep-ink); }
-/* Prose links only. Unscoped, this out-specifies .btn-primary and paints the
-   ticket button's label the same green as its own background. */
-.scene-cta a:not([class]) { color: var(--n-accent-2); }
-
-.cta-card {
-  margin: 2.5rem 0 0;
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  background: #1c1a14;
-  border: 1px solid var(--color-deep-border);
-  border-radius: 14px;
-  max-width: 40rem;
-}
-.cta-kicker {
-  margin: 0 0 0.5rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: var(--n-accent-2);
-}
-.cta-when {
-  font-family: var(--n-display);
-  font-size: clamp(1.6rem, 4vw, 2.3rem);
-  line-height: 1.1;
-  margin: 0 0 0.35rem;
-  color: var(--n-deep-ink);
-}
-.countdown {
-  display: block;
-  font-family: var(--n-sans);
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--n-accent-2);
-  margin-top: 0.5rem;
-}
-.countdown:empty { display: none; }
-.cta-where { margin: 0 0 1.75rem; color: var(--n-deep-ink-2); font-size: 0.95rem; }
-
-.tier-list {
+/* --- Findings by module: research.html's router into A–G ------------------
+   Cards rather than a bulleted list, so seven long paragraphs can be scanned
+   and each one is a way in. The letter badge matches .nav-letter in the portal
+   sidebar, so the same module reads the same way in both places. */
+.findings {
   list-style: none;
-  margin: 0 0 1.75rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 0.9rem;
+}
+
+.finding {
+  background: var(--color-bg-raised);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 1rem 1.15rem 1.1rem;
+}
+
+.finding-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.finding-head:hover .finding-title {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.finding-letter {
+  flex: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--color-accent);
+}
+
+.finding-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.finding-body {
+  margin: 0;
+  padding-left: 1.1rem;
+  list-style: disc;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--color-text-muted);
+}
+.finding-body li { margin: 0 0 0.45rem; }
+.finding-body li:last-child { margin-bottom: 0; }
+.finding-body li::marker { color: var(--color-accent); }
+
+.findings { margin: 2rem 0 2.5rem; }
+
+.ref-list {
+  list-style: none;
+  margin: 0;
   padding: 0;
   display: grid;
   gap: 0.75rem;
+  max-width: 40rem;
 }
-.tier {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.15rem 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--color-deep-border);
-}
-.tier-price { font-weight: 700; color: var(--n-deep-ink); white-space: nowrap; }
-.tier-label { font-weight: 600; color: var(--n-deep-ink); }
-.tier-note { grid-column: 2; font-size: 0.85rem; color: var(--n-deep-ink-2); }
-.cta-fineprint { margin: 1rem 0 0; font-size: 0.8rem; color: var(--n-deep-ink-2); }
+.ref-list a { font-weight: 600; }
+.ref-list span { display: block; color: var(--n-ink-2); font-size: 0.88rem; }
 
-.cta-secondary { margin: 2.5rem 0 0; max-width: 40rem; }
-.cta-secondary-label {
-  font-size: 0.75rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--n-deep-ink-2);
-  margin: 0 0 0.75rem;
-}
-.cta-secondary ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
-.cta-secondary li { font-size: 0.95rem; }
-.cta-secondary li a { font-weight: 600; }
-.cta-secondary li span { display: block; color: var(--n-deep-ink-2); font-size: 0.85rem; }
+.scene-modules .landing-prompt { margin-top: 2.5rem; }
 
 /* --- Footer -------------------------------------------------------------- */
 
@@ -446,8 +437,8 @@ a { color: var(--n-accent); }
 /* --- Print --------------------------------------------------------------- */
 
 @media print {
-  .hero, .scene-cta { background: none; color: #000; }
-  .hero-headline, .scene-headline, .cta-when { color: #000; }
+  .hero { background: none; color: #000; }
+  .hero-headline, .scene-headline { color: #000; }
   .btn, .skip-link { display: none; }
   .fig-chip { color: #000; background: none; border-bottom: 1px solid #000; }
   .scene { border-bottom: 1px solid #999; }
@@ -504,6 +495,7 @@ a { color: var(--n-accent); }
 .sort-item.is-wrong { border-left-color: var(--n-amber-border); }
 
 .sort-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+.sort-actions[hidden] { display: none; }
 .sort-btn {
   font: inherit;
   font-size: 0.78rem;
@@ -543,10 +535,10 @@ a { color: var(--n-accent); }
 .sort-widget .btn-ghost { border-color: var(--n-line-2); color: var(--n-ink); }
 
 /* --- "Explore with your own LLM" widget ---------------------------------
-   Same markup as evidence.html (scripts/llm-prompt.js renders both), but this
-   page never loads styles.css, so it needs its own rules. It sits on the deep
-   CTA panel, so the colours are the fixed deep-panel tokens rather than the
-   theme-following ones. */
+   This page never loads styles.css, so it needs its own rules. The widget is
+   a deep panel in the hero and at the foot of the modules scene alike, so
+   the colours are the fixed deep-panel tokens rather than the theme-following
+   ones. */
 
 .landing-prompt { margin: 1.75rem 0 0; max-width: 40rem; }
 

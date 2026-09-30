@@ -2,35 +2,7 @@
   "meta": {
     "title": "Tokenised settlement in India",
     "tagline": "what's live, what's legal, where Ethereum fits",
-    "description": "Where distributed-ledger settlement actually stands in Indian institutional finance: what is live, what Indian law permits, and where public Ethereum fits. Built ahead of Devcon 8, Mumbai, 3–6 November 2026.",
-    "site_base": "https://rohitmalekar.github.io/ethereum-india-evidence-portal/",
-    "devcon": {
-      "name": "Devcon 8",
-      "city": "Mumbai",
-      "venue": "Jio World Centre, BKC",
-      "start": "2026-11-03",
-      "end": "2026-11-06",
-      "date_label": "3–6 November 2026",
-      "url": "https://devcon.org/en/",
-      "tickets_url": "https://devcon.org/en/tickets/store/",
-      "tiers": [
-        {
-          "label": "Indian student",
-          "price": "$25",
-          "note": "Application-based, with ID at check-in."
-        },
-        {
-          "label": "India resident",
-          "price": "$149",
-          "note": "Prove residency with your Aadhaar card through Self.xyz, using a zero-knowledge proof."
-        },
-        {
-          "label": "General admission",
-          "price": "$499",
-          "note": "No ID required. Sold in waves, so check what is open."
-        }
-      ]
-    }
+    "description": "Where distributed-ledger settlement stands in Indian institutional finance: what is live, what Indian law permits, where public Ethereum fits, in seven modules."
   },
   "scenes": [
     {
@@ -171,26 +143,11 @@
       ]
     },
     {
-      "id": "devcon",
-      "kind": "cta",
+      "id": "modules",
+      "kind": "modules",
       "number": "05",
-      "eyebrow": "Devcon 8, Mumbai",
-      "headline": "The question is open. In November it gets argued in Mumbai.",
-      "body": "Devcon is the Ethereum community's annual gathering, and the eighth edition runs from 3 to 6 November at the Jio World Centre in Bandra Kurla Complex, the same district as SEBI's headquarters.\n\nNo Indian regulator is on the programme, and four days will not settle which rail a country runs on. What the week offers is the argument itself, held in the city where the decision will be made, in front of people who will take this page apart rather than nod at it.",
-      "concession": "A conference does not decide which rail India runs on. India's regulatory sandbox does, and Demat 2.0 came out of it: the September launch announced work that had already finished three days earlier.",
-      "asks": [
-        {
-          "kind": "primary",
-          "label": "Get a ticket",
-          "note": "Devcon 8 tickets, from $25"
-        },
-        {
-          "kind": "secondary",
-          "label": "Read the evidence base",
-          "href": "evidence.html",
-          "note": "What shipped worldwide and what failed, what Indian law actually permits, where the rupee value sits, and every objection in its strongest form."
-        }
-      ]
+      "eyebrow": "The evidence base",
+      "headline": "Seven modules, each with its sources."
     }
   ]
 }

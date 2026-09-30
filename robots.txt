@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rohitmalekar.github.io/ethereum-india-evidence-portal/sitemap.xml
+Sitemap: https://institutions.ethindia.co/sitemap.xml

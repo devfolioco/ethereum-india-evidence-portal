@@ -3,31 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tokenised settlement in India: what's live, what's legal, where Ethereum fits</title>
-<meta name="description" content="Where distributed-ledger settlement actually stands in Indian institutional finance: what is live, what Indian law permits, and where public Ethereum fits. Built ahead of Devcon 8, Mumbai, 3–6 November 2026.">
-<link rel="canonical" href="https://rohitmalekar.github.io/ethereum-india-evidence-portal/">
+<title>ETHIndia Institutions: Ethereum for Institutional Finance in India</title>
+<meta name="description" content="Research, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.">
+<link rel="canonical" href="https://institutions.ethindia.co/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Ethereum/India Institutional Evidence Portal">
-<meta property="og:url" content="https://rohitmalekar.github.io/ethereum-india-evidence-portal/">
-<meta property="og:title" content="Tokenised settlement in India: what's live, what's legal, where Ethereum fits">
-<meta property="og:description" content="Where distributed-ledger settlement actually stands in Indian institutional finance: what is live, what Indian law permits, and where public Ethereum fits. Built ahead of Devcon 8, Mumbai, 3–6 November 2026.">
-<meta property="og:image" content="https://rohitmalekar.github.io/ethereum-india-evidence-portal/assets/og-card.png">
+<meta property="og:site_name" content="ETHIndia Institutions">
+<meta property="og:url" content="https://institutions.ethindia.co/">
+<meta property="og:title" content="ETHIndia Institutions: Ethereum for Institutional Finance in India">
+<meta property="og:description" content="Research, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.">
+<meta property="og:image" content="https://institutions.ethindia.co/assets/og-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Ethereum/India Institutional Evidence Portal: tokenised settlement in India, what's live, what's legal, where Ethereum fits">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tokenised settlement in India: what's live, what's legal, where Ethereum fits">
-<meta name="twitter:description" content="Where distributed-ledger settlement actually stands in Indian institutional finance: what is live, what Indian law permits, and where public Ethereum fits. Built ahead of Devcon 8, Mumbai, 3–6 November 2026.">
-<meta name="twitter:image" content="https://rohitmalekar.github.io/ethereum-india-evidence-portal/assets/og-card.png">
+<meta name="twitter:title" content="ETHIndia Institutions: Ethereum for Institutional Finance in India">
+<meta name="twitter:description" content="Research, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.">
+<meta name="twitter:image" content="https://institutions.ethindia.co/assets/og-card.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://rohitmalekar.github.io/ethereum-india-evidence-portal/#website",
-  "name": "Ethereum/India Institutional Evidence Portal",
-  "alternateName": "Tokenised settlement in India: what's live, what's legal, where Ethereum fits",
-  "url": "https://rohitmalekar.github.io/ethereum-india-evidence-portal/",
-  "description": "Where distributed-ledger settlement actually stands in Indian institutional finance: what is live, what Indian law permits, and where public Ethereum fits. Built ahead of Devcon 8, Mumbai, 3–6 November 2026.",
+  "@id": "https://institutions.ethindia.co/#website",
+  "name": "ETHIndia Institutions",
+  "alternateName": "ETHIndia Institutions: Ethereum for Institutional Finance in India",
+  "url": "https://institutions.ethindia.co/",
+  "description": "Research, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.",
   "inLanguage": "en",
   "license": "https://creativecommons.org/licenses/by/4.0/",
   "author": {
@@ -37,229 +37,183 @@
 }
 </script>
 <link rel="stylesheet" href="assets/tokens.css?v=aa017298">
-<link rel="stylesheet" href="assets/narrative.css?v=497bb1f0">
+<link rel="stylesheet" href="assets/landing.css?v=c1594372">
 </head>
-<body class="narrative">
+<body class="landing">
 <a class="skip-link" href="#main-content">Skip to content</a>
-<main id="main-content" tabindex="-1">
-    <header class="hero" id="hero">
-      <div class="hero-inner">
-        <p class="hero-eyebrow">Ethereum and Indian institutional finance</p>
-        <h1 class="hero-headline">India has already decided to tokenise. What will it run on?</h1>
-        <p class="hero-sub">The answer decides who can build here.</p>
-        <div class="hero-lede"><p>SEBI has required a distributed ledger inside corporate-bond infrastructure since 2022. In September 2026 the RBI and SEBI put the first tokenised corporate bonds on a live rail. The direction is not in question.</p>
-<p>The rail underneath is still open. The options are a public chain like Ethereum, a closed ledger shared between institutions, or a closed ledger run by one of them. On a public chain, confidentiality has to be added in a layer above. India's first tokenised bonds went on a closed ledger owned by its stock depositories, with the cash settled in central-bank money.</p>
-<p>What follows is what is live, what Indian law permits, and where public Ethereum actually fits.</p></div>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#the-mandate">Start reading</a>
-          <a class="btn btn-ghost" href="evidence.html">Skip to the evidence base</a>
-        </div>
-        <div class="landing-prompt" id="llm-top">
-    <details class="landing-prompt-details js-copy-widget" data-copy-label="a personalized exploration prompt">
-      <summary class="landing-prompt-summary">Copy a personalized prompt — explore this report with your own LLM</summary>
-      <div class="landing-prompt-panel">
-        <p class="landing-prompt-hint">Paste this into ChatGPT, Claude, Gemini, or any LLM that can fetch a URL. With JavaScript on, the box below already has this page's real address in it. Reading without JavaScript? Swap the <code>{{BASE_URL}}</code> placeholder for this page's address before you paste.</p>
-        <textarea class="copy-textarea landing-prompt-textarea" readonly rows="14" aria-label="Personalized prompt for exploring this report with an LLM">Please fetch {{BASE_URL}}llms.txt first. It indexes the eleven pages of "Ethereum and Distributed Settlement Infrastructure in Indian Institutional Finance": seven module reports, a Figure Ledger carrying a source tier and date on every claim, and a Reconciliation page. Then read the Overview at {{BASE_URL}}evidence.html and open whichever module pages look most relevant.
-
-Before you answer, use what you already know about me from memory and our past conversations: what I work on, what I follow, what I have asked you before. If you know nothing about me, ask me that first.
-
-Then give me a handful of bullet points about Ethereum's institutional potential in India that I'm least likely to already know, each with a line on why it is new or useful for me specifically.</textarea>
-      </div>
-    </details>
-  </div>
-        <p class="hero-devcon">Built ahead of <a href="https://devcon.org/en/">Devcon 8</a> — Mumbai, 3–6 November 2026</p>
+<header class="l-topbar">
+      <div class="l-topbar-inner">
+        <a class="l-brand" href="https://ethindia.co" aria-label="ETHIndia"><svg class="l-logo" aria-hidden="true" focusable="false" viewBox="0 0 167 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="mask0_180_1595" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="23" width="41" height="12">
+<path d="M3.00781 23.3599H43.8357V34.9999H3.00781V23.3599Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_180_1595)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M14.0797 34.3032C10.6085 34.3032 7.16655 33.0734 4.22378 30.7142L3.70508 30.2972L9.01336 24.3036C9.12495 24.1776 9.28203 24.1011 9.45003 24.0909C9.61804 24.0807 9.78322 24.1377 9.90923 24.2493C10.0352 24.3608 10.1118 24.5179 10.122 24.6859C10.1322 24.8539 10.0752 25.0191 9.96361 25.1451L5.54701 30.1306C9.25598 32.8656 13.7346 33.7197 17.9337 32.471L23.0726 30.9407L28.2114 32.471C32.4084 33.7197 36.8864 32.8656 40.596 30.1327L36.1237 25.1144C36.0118 24.9887 35.9545 24.8237 35.9643 24.6557C35.9741 24.4877 36.0502 24.3304 36.176 24.2186C36.3017 24.1067 36.4667 24.0494 36.6347 24.0592C36.8027 24.069 36.96 24.1451 37.0718 24.2709L42.4415 30.2965L41.9207 30.7148C37.7822 34.0334 32.6538 35.1168 27.8496 33.6869L23.0726 32.2654L18.2955 33.6876C16.9275 34.0959 15.5074 34.3035 14.0797 34.3039" fill="currentColor"/>
+</g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0694 31.6313L12.6138 25.598C11.454 24.7571 10.5134 23.6497 9.87114 22.3692C9.22892 21.0886 8.90398 19.6725 8.9237 18.24L9.01224 12.0645L13.1932 13.4379C13.2737 13.4627 13.3484 13.5033 13.413 13.5573C13.4776 13.6113 13.5308 13.6776 13.5695 13.7524C13.6081 13.8272 13.6315 13.9089 13.6383 13.9928C13.645 14.0768 13.6349 14.1612 13.6087 14.2412C13.5824 14.3212 13.5405 14.3952 13.4853 14.4588C13.4301 14.5224 13.3628 14.5743 13.2873 14.6116C13.2119 14.6489 13.1297 14.6708 13.0457 14.676C12.9616 14.6812 12.8774 14.6696 12.7979 14.6419L10.256 13.8081L10.1919 18.2581C10.1751 19.4816 10.4515 20.6913 10.9977 21.7861C11.544 22.881 12.3444 23.8292 13.3319 24.5515L23.0735 30.1694L32.9316 24.5501C33.9239 23.8288 34.7284 22.8796 35.2773 21.7824C35.8262 20.6853 36.1034 19.4723 36.0856 18.2456L36.0229 13.7997L33.1261 14.7235C32.9658 14.7746 32.7917 14.7599 32.6422 14.6827C32.4927 14.6055 32.38 14.4721 32.3289 14.3118C32.2778 14.1515 32.2924 13.9774 32.3696 13.8279C32.4468 13.6784 32.5802 13.5657 32.7406 13.5146L37.2673 12.0721L37.3538 18.2282C37.3741 19.6641 37.0476 21.0838 36.4022 22.3667C35.7567 23.6495 34.8113 24.7578 33.6462 25.5973L33.5897 25.6336L23.0687 31.6306L23.0694 31.6313Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0942 21.5601L14.2764 16.5195L23.0942 28.985L31.7183 16.5195L23.0942 21.5601Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M23.0972 0L14.5547 14.2509L23.0797 19.424L31.7219 14.3207L23.0972 0Z" fill="currentColor"/>
+<mask id="mask1_180_1595" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="16" width="9" height="11">
+<path d="M0 16.6846H8.59616V26.62H0V16.6846Z" fill="white"/>
+</mask>
+<g mask="url(#mask1_180_1595)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.4697 25.9283C5.32607 25.9281 5.18676 25.8792 5.07455 25.7895C4.96235 25.6999 4.88389 25.5748 4.85201 25.4347C4.43091 23.5837 3.24153 21.61 1.41354 19.7263L0.698242 18.9914L1.67638 18.6805C3.83413 17.9945 5.71999 17.9011 7.44131 18.3981C7.60291 18.4447 7.73939 18.5536 7.82071 18.7008C7.90204 18.8481 7.92155 19.0216 7.87495 19.1832C7.82836 19.3448 7.71947 19.4812 7.57225 19.5626C7.42503 19.6439 7.25154 19.6634 7.08993 19.6168C5.85594 19.2613 4.54943 19.2585 3.03656 19.6168C4.62612 21.4364 5.67537 23.3348 6.08949 25.1538C6.11014 25.2467 6.10967 25.3432 6.08811 25.4359C6.06654 25.5287 6.02444 25.6154 5.96489 25.6898C5.90535 25.7641 5.82989 25.8241 5.74406 25.8654C5.65824 25.9067 5.56424 25.9282 5.469 25.9283" fill="currentColor"/>
+</g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M40.7347 25.9288C40.6394 25.9288 40.5454 25.9073 40.4595 25.8659C40.3737 25.8246 40.2983 25.7645 40.2388 25.69C40.1793 25.6156 40.1374 25.5287 40.1161 25.4358C40.0948 25.343 40.0946 25.2465 40.1156 25.1536C40.5304 23.3346 41.5797 21.4369 43.1686 19.6173C41.6557 19.259 40.3499 19.2617 39.1152 19.6173C39.0352 19.6405 38.9514 19.6477 38.8687 19.6385C38.7859 19.6292 38.7058 19.6037 38.6329 19.5634C38.5601 19.5231 38.4959 19.4688 38.444 19.4037C38.3922 19.3385 38.3537 19.2637 38.3309 19.1837C38.3076 19.1037 38.3004 19.02 38.3095 18.9373C38.3186 18.8545 38.344 18.7744 38.3842 18.7015C38.4243 18.6286 38.4785 18.5643 38.5435 18.5123C38.6085 18.4604 38.6831 18.4217 38.7631 18.3986C40.4851 17.9016 42.3717 17.995 44.5287 18.681L45.5069 18.9919L44.7923 19.7268C42.9636 21.6098 41.7749 23.5835 41.3531 25.4352C41.3212 25.5753 41.2428 25.7004 41.1306 25.79C41.0184 25.8797 40.8783 25.9286 40.7347 25.9288Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9816 12.1571C12.8923 12.1573 12.8039 12.1386 12.7224 12.1022C12.6408 12.0658 12.5678 12.0126 12.5082 11.9461C12.4486 11.8795 12.4038 11.8011 12.3767 11.716C12.3495 11.6309 12.3407 11.541 12.3507 11.4523L12.8554 6.93945L16.0171 9.09512C16.1519 9.19154 16.2435 9.33686 16.2725 9.49999C16.3016 9.66313 16.2656 9.83114 16.1723 9.9681C16.0791 10.1051 15.9359 10.2001 15.7735 10.2329C15.6111 10.2657 15.4423 10.2337 15.3032 10.1437L13.8817 9.17459L13.6112 11.5931C13.5939 11.748 13.5201 11.8912 13.404 11.9952C13.2879 12.0992 13.1375 12.1569 12.9816 12.1571" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M33.0104 12.1547C32.8563 12.1545 32.7075 12.0981 32.592 11.9961C32.4765 11.894 32.4022 11.7534 32.383 11.6004L32.072 9.1624L30.6373 10.1412C30.4982 10.236 30.3272 10.2716 30.1619 10.2403C29.9966 10.209 29.8504 10.1133 29.7557 9.97426C29.6609 9.83521 29.6253 9.66421 29.6566 9.49889C29.6879 9.33356 29.7836 9.18744 29.9227 9.09268L33.0697 6.94678L33.6407 11.4408C33.652 11.5301 33.6441 11.6209 33.6176 11.707C33.5911 11.7931 33.5465 11.8726 33.4869 11.9401C33.4272 12.0077 33.3539 12.0617 33.2718 12.0987C33.1896 12.1357 33.1005 12.1548 33.0104 12.1547" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M102.449 8.26318V17.1801H91.834V8.26477H56.1602V29.4231H72.4583V26.0985H60.5026V20.5054H72.4591V17.1809H60.5026V11.5893H77.8258V29.4231H82.1667V11.5893H87.4915V29.4231H91.8332V20.5054H102.449V29.4223H106.79V8.26477L102.449 8.26318Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M109.661 29.4203H113.1V8.19238H109.661V29.4203Z" fill="currentColor"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M116.128 15.0446H119.463V16.3729C120.625 15.2219 121.933 14.6465 123.389 14.6465C125.061 14.6465 126.365 15.1729 127.299 16.2256C128.106 17.1201 128.51 18.5813 128.51 20.6085V29.4185H125.175V21.3913C125.175 19.9744 124.977 18.9961 124.585 18.4547C124.199 17.9037 123.501 17.6283 122.488 17.6283C121.386 17.6283 120.604 17.9924 120.141 18.7206C119.688 19.4386 119.463 20.6932 119.463 22.4837V29.4201H116.127V15.0446H116.128Z" fill="currentColor"/>
+<path d="M133.299 22.1856C133.299 23.5637 133.669 24.6853 134.407 25.5505C135.164 26.4267 136.118 26.8645 137.27 26.8645C138.499 26.8645 139.493 26.4418 140.251 25.5956C141.008 24.7193 141.388 23.6088 141.388 22.26C141.388 20.912 141.008 19.7998 140.251 18.9244C139.493 18.0695 138.509 17.6405 137.3 17.6405C136.157 17.6405 135.202 18.0734 134.437 18.9386C133.679 19.8149 133.299 20.8977 133.299 22.1856V22.1856ZM141.18 8.18927H144.516V29.418H141.18V27.9125C139.873 29.1924 138.392 29.832 136.739 29.832C134.77 29.832 133.137 29.1133 131.838 27.6766C130.548 26.2106 129.905 24.3806 129.905 22.1864C129.905 20.042 130.549 18.2523 131.838 16.8149C133.117 15.3687 134.726 14.646 136.664 14.646C138.347 14.646 139.852 15.3346 141.18 16.712V8.18848V8.18927Z" fill="currentColor"/>
+<path d="M146.893 29.4197H150.214V15.0451H146.893V29.4197ZM146.392 10.3329C146.392 9.75193 146.603 9.25008 147.026 8.82739C147.223 8.62329 147.459 8.46166 147.721 8.35247C147.982 8.24329 148.264 8.18886 148.547 8.19256C149.146 8.19256 149.658 8.4047 150.081 8.82739C150.504 9.24058 150.716 9.74718 150.716 10.3472C150.716 10.9472 150.504 11.4593 150.081 11.882C149.886 12.0875 149.65 12.25 149.388 12.3593C149.126 12.4686 148.845 12.5222 148.561 12.5168C148.276 12.5215 147.992 12.4676 147.728 12.3584C147.464 12.2492 147.225 12.0871 147.026 11.882C146.603 11.4593 146.392 10.9432 146.392 10.3329Z" fill="currentColor"/>
+<path d="M155.322 22.1861C155.322 23.5642 155.691 24.6858 156.429 25.551C157.186 26.4272 158.142 26.8649 159.293 26.8649C160.522 26.8649 161.517 26.4423 162.273 25.5961C163.03 24.7198 163.41 23.6093 163.41 22.2605C163.41 20.9124 163.03 19.8003 162.273 18.9248C161.516 18.07 160.532 17.6409 159.322 17.6409C158.18 17.6409 157.226 18.0739 156.459 18.9391C155.701 19.8153 155.322 20.8982 155.322 22.1861V22.1861ZM163.203 15.0438H166.538V29.4185H163.203V27.9122C161.836 29.1921 160.364 29.8317 158.791 29.8317C156.802 29.8317 155.16 29.113 153.86 27.6763C152.572 26.2103 151.929 24.3803 151.929 22.1861C151.929 20.0314 152.572 18.2362 153.86 16.7995C155.15 15.3628 156.763 14.6465 158.702 14.6465C160.375 14.6465 161.875 15.3336 163.203 16.7109V15.0438V15.0438Z" fill="currentColor"/>
+</svg></a>
+        <span class="l-brand-sub">Institutions</span>
+        <nav class="l-topnav" aria-label="Sections">
+          <a href="#why-india">Why India</a>
+          <a href="#ethereum">Ethereum</a>
+          <a href="#research">Research</a>
+          <a href="#updates">Updates</a>
+        </nav>
       </div>
     </header>
-
-    <section class="scene scene-prose" id="the-mandate">
-      <div class="scene-inner">
-        <p class="scene-eyebrow"><span class="scene-num" aria-hidden="true">01</span>Why "whether" is already settled</p><h2 class="scene-headline">It arrived by regulation, not adoption.</h2>
-        <div class="scene-body"><p>SEBI's Security and Covenant Monitoring System (tracks corporate bonds and non-convertible securities) has recorded charges and covenants for corporate bonds on a distributed ledger since 1 April 2022. It is operated by the two depositories, NSDL and CDSL. No corporate bond ISIN activates without it.</p>
-<p>The most durable piece of blockchain infrastructure in Indian finance did not come from a startup and does not involve a token. A regulator required it, and the depositories run it.</p>
-<p><a class="fig-chip fig-warn is-stale" href="ledger.html#fig-35" title="SEBI DLT covenant system - issuers onboarded: 4,291 issuers (as of FY25) — Cognizant case study [T4], WEAK_TIER, STALE">4,291 issuers<span class="fig-tier">T4</span></a> have been onboarded as a result of the mandate.</p></div>
-        <aside class="scene-limit">
-        <span class="scene-limit-label">What this could not establish</span>
-        <p>What the system cost to build or to operate. No figure has been published, by SEBI or by either depository.</p>
-      </aside>
-        <p class="scene-deeper"><a href="what-shipped.html">Module A — what actually shipped, worldwide<span aria-hidden="true"> →</span></a></p>
+<main id="main-content" tabindex="-1">
+    <section class="l-hero" aria-labelledby="hero-title">
+      <div class="l-inner">
+        <p class="l-hero-eyebrow">ETHIndia Institutions</p>
+        <h1 class="l-hero-headline" id="hero-title">Ethereum for Institutional Finance in India</h1>
+        <p class="l-hero-sub">Indian finance has started putting assets on distributed ledgers. ETHIndia Institutions is where banks, market infrastructure, regulators and builders work out what role Ethereum and its ecosystem should play in that.</p>
       </div>
     </section>
 
-    <section class="scene scene-sort" id="the-line">
-      <div class="scene-inner">
-        <p class="scene-eyebrow"><span class="scene-num" aria-hidden="true">02</span>The line India actually draws</p><h2 class="scene-headline">The ledger is mandated. The asset is taxed at 30%.</h2>
-        <div class="scene-body"><p>On 10 September 2026 the RBI Governor and the SEBI Chairman launched a tokenised corporate-bond rail together: <a class="fig-chip fig-safe" href="ledger.html#fig-156" title="Demat 2.0 tokenised corporate bond pilot: total raised: 1,025 Rs cr (as of 10 Sep 2026) — SEBI PR 56/2026 [T1]">₹1,025 crore<span class="fig-tier">T1</span></a> raised across three issuers, settled atomically in wholesale CBDC. At the same event, crypto and stablecoins were kept off the programme entirely.</p>
-<p>Gains on crypto are taxed at <a class="fig-chip fig-safe" href="ledger.html#fig-45" title="VDA tax rate: 30 + 4 cess % (as of current) — Income-tax Act s.115BBH [T1], CURRENT">30% plus a 4% cess<span class="fig-tier">T1</span></a>, losses cannot be offset against gains or carried forward, and <a class="fig-chip fig-safe" href="ledger.html#fig-46" title="VDA TDS: 1 above 10k (50k specified) % / Rs (as of current) — Income-tax Act s.194S [T1], CURRENT">1%<span class="fig-tier">T1</span></a> is withheld at source on every transfer. A trader who ends the year down still owes tax on the trades that went up. Holding crypto is legal; running a book in it is not really viable.</p></div>
-        <div class="sort-widget" data-widget="split-sort">
-          <p class="sort-prompt">Nine activities. Which side of the line does each fall on?</p>
-          <div class="sort-col" data-side="infra">
-            <h3 class="sort-col-label">DLT as infrastructure</h3>
-            <p class="sort-col-sub">Mandated, piloted, or permitted</p>
-            <ul class="sort-list">
-            <li class="sort-item" data-side="infra">
-              <span class="sort-item-text">DLT security &amp; covenant monitoring for corporate bonds</span>
-              <span class="sort-item-status">Mandatory, in production since Apr 2022</span>
-              <span class="sort-item-authority">SEBI; NSDL/CDSL</span>
-            </li>
-            <li class="sort-item" data-side="infra">
-              <span class="sort-item-text">Tokenised corporate bond primary issuance</span>
-              <span class="sort-item-status">Sandbox only — Demat 2.0, Sep 2026</span>
-              <span class="sort-item-authority">SEBI; RBI (e₹-W leg)</span>
-            </li>
-            <li class="sort-item" data-side="infra">
-              <span class="sort-item-text">Bank issuance of tokenised CDs settled in wholesale CBDC</span>
-              <span class="sort-item-status">Sandbox only — UMI pilot</span>
-              <span class="sort-item-authority">RBI</span>
-            </li>
-            <li class="sort-item" data-side="infra">
-              <span class="sort-item-text">Tokenisation technology provision in GIFT City</span>
-              <span class="sort-item-status">Permitted — TechFin registration, since Jul 2025</span>
-              <span class="sort-item-authority">IFSCA</span>
-            </li>
-            <li class="sort-item" data-side="infra">
-              <span class="sort-item-text">On-chain records as evidence in court</span>
-              <span class="sort-item-status">Permitted, with a s.63(4) certificate</span>
-              <span class="sort-item-authority">Bharatiya Sakshya Adhiniyam 2023</span>
-            </li>
-            </ul>
-          </div>
-          <div class="sort-col" data-side="asset">
-            <h3 class="sort-col-label">Crypto as an asset</h3>
-            <p class="sort-col-sub">Tolerated, taxed, or refused</p>
-            <ul class="sort-list">
-            <li class="sort-item" data-side="asset">
-              <span class="sort-item-text">Trading or holding private crypto</span>
-              <span class="sort-item-status">Permitted, taxed punitively — 30% + 4% cess, 1% TDS, no loss set-off</span>
-              <span class="sort-item-authority">CBDT, ss.115BBH / 194S</span>
-            </li>
-            <li class="sort-item" data-side="asset">
-              <span class="sort-item-text">Running an exchange or custody service</span>
-              <span class="sort-item-status">Permitted with registration</span>
-              <span class="sort-item-authority">FIU-IND under PMLA</span>
-            </li>
-            <li class="sort-item" data-side="asset">
-              <span class="sort-item-text">Banking services to crypto businesses</span>
-              <span class="sort-item-status">Permitted — the 2018 RBI ban was set aside</span>
-              <span class="sort-item-authority">Supreme Court, IAMAI v. RBI, 2020</span>
-            </li>
-            <li class="sort-item" data-side="asset">
-              <span class="sort-item-text">Issuing a private rupee stablecoin domestically</span>
-              <span class="sort-item-status">Unaddressed, and de facto barred — no framework, active RBI opposition</span>
-              <span class="sort-item-authority">RBI</span>
-            </li>
-            </ul>
-          </div>
+    <section class="l-section" id="why-india" aria-labelledby="why-india-title">
+      <div class="l-inner">
+        <p class="l-eyebrow">Why India</p>
+        <h2 class="l-headline" id="why-india-title">India is already tokenising.</h2>
+        <ul class="l-points">
+          <li class="l-point">
+            <h3>The regulator mandated the ledger first.</h3>
+            <p>SEBI has required a distributed ledger for corporate-bond covenant monitoring since April 2022. The depositories, NSDL and CDSL, run it, and no corporate bond activates without it.</p>
+          </li>
+          <li class="l-point">
+            <h3>The first tokenised bonds are live.</h3>
+            <p>In September 2026 the RBI and SEBI launched a tokenised corporate-bond rail together. It raised <a class="fig-chip fig-safe" href="ledger.html#fig-156" title="Demat 2.0 tokenised corporate bond pilot: total raised: 1,025 Rs cr (as of 10 Sep 2026) — SEBI PR 56/2026 [T1]">₹1,025 crore<span class="fig-tier">T1</span></a> across three issuers, settled in wholesale CBDC.</p>
+          </li>
+          <li class="l-point">
+            <h3>The markets are large and slow.</h3>
+            <p>India has <a class="fig-chip fig-safe is-stale" href="ledger.html#fig-54" title="Corporate bonds outstanding: 53.6 lakh Rs cr (as of FY25) — RBI FSR / NITI Aayog [T1]">₹53.6 lakh crore<span class="fig-tier">T1</span></a> of corporate bonds outstanding and trades about <a class="fig-chip fig-safe is-stale" href="ledger.html#fig-56" title="Corporate bond daily secondary turnover: 7,645/day (3.8%/mo) Rs cr (as of FY25) — RBI Annual Report / FSR [T1]">₹7,645 crore<span class="fig-tier">T1</span></a> of them a day. Away from the exchange a trade can take three to seven days to settle.</p>
+          </li>
+          <li class="l-point">
+            <h3>The flows are the world's largest.</h3>
+            <p>India receives <a class="fig-chip fig-safe is-stale" href="ledger.html#fig-61" title="Remittances (RBI, FY25): 135.46 US$bn (as of FY25) — RBI / PIB [T1]">$135 billion<span class="fig-tier">T1</span></a> a year in remittances, more than any other country.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="l-section l-section-alt" id="ethereum" aria-labelledby="ethereum-title">
+      <div class="l-inner">
+        <p class="l-eyebrow">Where Ethereum fits</p>
+        <h2 class="l-headline" id="ethereum-title">The rail underneath is still open.</h2>
+        <div class="l-prose"><p>India's first tokenised bonds run on a closed ledger owned by its stock depositories. What comes next could run on that model, on a ledger shared between institutions, or on a public chain like Ethereum.</p>
+<p>Ethereum gives institutions a settlement layer that no single one of them controls, the largest pool of smart-contract developers and tooling, and a network that has run since 2015. Its open problem for institutions is confidentiality, which has to be built in a layer above the chain. The research sets out where Ethereum fits in India and where it does not.</p></div>
+        <p class="l-deeper"><a href="ethereum-vs-alternatives.html">Ethereum against the alternatives<span aria-hidden="true"> →</span></a><a href="the-privacy-question.html">The privacy question<span aria-hidden="true"> →</span></a></p>
+      </div>
+    </section>
+
+    <section class="l-section" id="expect" aria-labelledby="expect-title">
+      <div class="l-inner">
+        <p class="l-eyebrow">On this site</p>
+        <h2 class="l-headline" id="expect-title">Research, convenings and announcements.</h2>
+        <ul class="l-expect">
+          <li>
+            <h3>Research</h3>
+            <p>Reports on what is live, what Indian law permits and where Ethereum fits. Every figure carries its source, its date and a rating of how strong that source is.</p>
+          </li>
+          <li>
+            <h3>Convenings</h3>
+            <p>Closed-door dinners and roundtables for people at banks, asset managers, market infrastructure institutions and regulators, starting at Devcon 8 in Mumbai.</p>
+          </li>
+          <li>
+            <h3>Announcements</h3>
+            <p>Pilots, working groups and new reports as they happen, posted to the updates list on this page.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="l-section l-section-alt" id="research" aria-labelledby="research-title">
+      <div class="l-inner">
+        <p class="l-eyebrow">Research</p>
+        <h2 class="l-headline" id="research-title">Start with the evidence.</h2>
+        <div class="l-reports">
+          <article class="l-report">
+            <p class="l-report-date"><time datetime="2026-09-25">25 September 2026</time></p>
+            <h3 class="l-report-title"><a href="research.html">Tokenised settlement in India</a></h3>
+            <p class="l-report-sub">What's live, what's legal, where Ethereum fits</p>
+            <p class="l-report-summary">A seven-module evidence base: what institutions run in production worldwide, what RBI, SEBI and IFSCA permit, where the rupee value sits, how Ethereum compares with Canton and permissioned chains, and the strongest objections in their strongest form.</p>
+            <div class="l-report-actions">
+              <a class="btn btn-solid" href="research.html">Read the research<span aria-hidden="true"> →</span></a>
+              <span class="l-report-links"><a href="ledger.html">Figure Ledger</a></span>
+            </div>
+          </article>
         </div>
-        <aside class="scene-limit">
-        <span class="scene-limit-label">What this could not establish</span>
-        <p>Whether the CBDT will treat a tokenised security as a virtual digital asset. That single unanswered classification sits over the economics of every case on the left-hand side.</p>
-      </aside>
-        <p class="scene-deeper"><a href="whats-legal-in-india.html">Module B — what's legal in India<span aria-hidden="true"> →</span></a></p>
       </div>
     </section>
 
-    <section class="scene scene-prose" id="where-the-value-is">
-      <div class="scene-inner">
-        <p class="scene-eyebrow"><span class="scene-num" aria-hidden="true">03</span>What is actually at stake</p><h2 class="scene-headline">The biggest prizes sit where the law is silent.</h2>
-        <div class="scene-body"><p>The largest opportunities in India are inside the domestic perimeter where the law is silent, while the permitted pilots are offshore, small, or aimed at the leg that was never slow.</p>
-<p>India's corporate bond market has <a class="fig-chip fig-safe is-stale" href="ledger.html#fig-54" title="Corporate bonds outstanding: 53.6 lakh Rs cr (as of FY25) — RBI FSR / NITI Aayog [T1]">₹53.6 lakh crore<span class="fig-tier">T1</span></a> outstanding and trades about <a class="fig-chip fig-safe is-stale" href="ledger.html#fig-56" title="Corporate bond daily secondary turnover: 7,645/day (3.8%/mo) Rs cr (as of FY25) — RBI Annual Report / FSR [T1]">₹7,645 crore<span class="fig-tier">T1</span></a> on an average day. Less than four percent of it changes hands in a month. On an exchange a trade settles the next day. Away from the exchange it can take three to seven, most of that spent on paperwork.</p>
-<p>The pattern repeats across the economy. India receives <a class="fig-chip fig-safe is-stale" href="ledger.html#fig-61" title="Remittances (RBI, FY25): 135.46 US$bn (as of FY25) — RBI / PIB [T1]">$135 billion<span class="fig-tier">T1</span></a> a year in remittances, more than any other country. Small businesses face a <a class="fig-chip fig-neutral is-stale" href="ledger.html#fig-63" title="MSME credit gap: 25 lakh Rs cr (as of Mar 2025) — Deloitte [T3]">₹25 lakh crore<span class="fig-tier">T3</span></a> credit gap, and only <a class="fig-chip fig-neutral" href="ledger.html#fig-64" title="MSMEs with formal credit access: 14 % (as of Jun 2026) — Deloitte [T3]">14%<span class="fig-tier">T3</span></a> of them hold formal credit at all.</p>
-<p>Set that against what has actually been built. The September pilot tokenised the primary issuance of a bond, the part that already completed in a day. The illiquid secondary market, where the friction actually sits, was left alone.</p></div>
-        <aside class="scene-limit">
-        <span class="scene-limit-label">What this could not establish</span>
-        <p>What any of it saves. No live Indian pilot has published a measured rupee figure, which is the largest hole in this evidence base and the first thing a fund manager will ask for.</p>
-      </aside>
-        <p class="scene-deeper"><a href="where-the-value-is.html">Module C — the full sizing of where the value is, segment by segment<span aria-hidden="true"> →</span></a></p>
-      </div>
-    </section>
-
-    <section class="scene scene-prose" id="the-concession">
-      <div class="scene-inner">
-        <p class="scene-eyebrow"><span class="scene-num" aria-hidden="true">04</span>What the case has to survive</p><h2 class="scene-headline">Confidentiality ruled out every public chain.</h2>
-        <div class="scene-body"><p>On a public chain, positions and transfers are visible to anyone who looks; a whitelist controls who can enter, not who can see. That is the stated reason JPMorgan, Goldman Sachs, DTCC and HSBC built on permissioned Canton, and the reason India's own tokenised bonds settled on a ledger owned by the depositories. The requirement disqualifies any ledger whose contents are public by default, Ethereum included, so a proposal that puts confidential bank activity on one is answering a question nobody asked.</p>
-<p>Privacy is the fastest-moving part of the Ethereum stack, and none of it has yet reached the layer where the rejection happened. The Ethereum Foundation's roadmap leaves the base layer alone: L1 stays a public ledger by design, and confidentiality is built above it at the wallet, application and layer-2 layers. So the overlay is what an institution actually has to judge. The Enterprise Ethereum Alliance's own April 2026 survey rates <a class="fig-chip fig-safe" href="ledger.html#fig-142" title="Enterprise privacy solutions rated generally available (of 7 profiled): 1 solutions (as of Apr 2026) — EEA Privacy WG, State of Privacy on Ethereum for Enterprise v1 [T1]">one of seven<span class="fig-tier">T1</span></a> enterprise privacy stacks generally available, with <a class="fig-chip fig-safe" href="ledger.html#fig-143" title="Enterprise privacy solutions still at pilot stage (of 7 profiled): 5 solutions (as of Apr 2026) — EEA Privacy WG, State of Privacy on Ethereum for Enterprise v1 [T1]">five<span class="fig-tier">T1</span></a> still at pilot.</p>
-<p>The one regulated production deployment sits in fund distribution rather than bank settlement. Since February 2026, tokenised money-market funds from <a class="fig-chip fig-warn is-stale" href="ledger.html#fig-144" title="Named fund managers with privacy-wrapped tokenised MMFs live via Archax on Silent Data: 4 managers (Aberdeen, BlackRock, Fidelity Intl, State Street) (as of 19 Feb 2026) — Applied Blockchain / Archax release; Asset Servicing Times [T4/T3], WEAK_TIER">four managers<span class="fig-tier">T4/T3</span></a> — Aberdeen, BlackRock, Fidelity International and State Street — have been available through Archax with a privacy wrapper on a TEE-based Ethereum layer-2. That is a layer which had already chosen public chains. No bank-run core-settlement venue has moved. SWIFT built its shared ledger on Linea, Ethereum layer-2 technology, put <a class="fig-chip fig-safe" href="ledger.html#fig-148" title="SWIFT shared ledger (built on Linea) banks at initial use: 17 banks (as of 9 Jul 2026) — SWIFT press release [T1]">17 banks<span class="fig-tier">T1</span></a> on it, and kept it permissioned.</p>
-<p>The remaining objections concede better than they argue. Every consortium blockchain of the last decade failed, which is true, and the failures were governance failures rather than technical ones. And India already has UPI, an account aggregator and a working depository, which is largely correct for the retail and data layers. What survives both concessions is narrow and specific: bond secondary settlement, cross-border, and deep-tier MSME receivables, none of which those rails were built to solve.</p></div>
-        <aside class="scene-limit">
-        <span class="scene-limit-label">What this could not establish</span>
-        <p>How firmly India has closed the shielded-pool branch of this work. FIU-IND's 2026 guidelines appear to leave <a class="fig-chip fig-neutral is-stale is-unverified" href="ledger.html#fig-153" title="FIU-IND 2026 AML/CFT guidelines: permitted AEC deposit/withdrawal flows for reporting entities: 0 permitted flows (as of 2026) — Law-firm summary of FIU-IND guidelines; primary circular not located [T3], UNVERIFIED">no permitted flows<span class="fig-tier">T3</span></a> for a reporting entity handling anonymity-enhancing assets, but that reading rests on a law-firm summary; the primary circular could not be located.</p>
-      </aside>
-        <p class="scene-deeper"><a href="the-privacy-question.html">Module E — what is actually moving on privacy, and what is not<span aria-hidden="true"> →</span></a><a href="the-objections.html">Module F — every objection in its strongest form, with its residual weakness<span aria-hidden="true"> →</span></a></p>
-      </div>
-    </section>
-
-    <section class="scene scene-cta" id="devcon">
-      <div class="scene-inner">
-        <p class="scene-eyebrow"><span class="scene-num" aria-hidden="true">05</span>Devcon 8, Mumbai</p><h2 class="scene-headline">The question is open. In November it gets argued in Mumbai.</h2>
-        <div class="scene-body"><p>Devcon is the Ethereum community's annual gathering, and the eighth edition runs from 3 to 6 November at the Jio World Centre in Bandra Kurla Complex, the same district as SEBI's headquarters.</p>
-<p>No Indian regulator is on the programme, and four days will not settle which rail a country runs on. What the week offers is the argument itself, held in the city where the decision will be made, in front of people who will take this page apart rather than nod at it.</p></div>
-        <aside class="scene-limit scene-limit-strong">
-          <span class="scene-limit-label">The concession that comes first</span>
-          <p>A conference does not decide which rail India runs on. India's regulatory sandbox does, and Demat 2.0 came out of it: the September launch announced work that had already finished three days earlier.</p>
-        </aside>
-        <div class="cta-card">
-          <p class="cta-kicker">Devcon 8</p>
-          <p class="cta-when"><time datetime="2026-11-03">3–6 November 2026</time><span class="countdown" data-countdown-to="2026-11-03"></span></p>
-          <p class="cta-where">Jio World Centre, BKC, Mumbai</p>
-          <ul class="tier-list">
-            <li class="tier">
-              <span class="tier-price">$25</span>
-              <span class="tier-label">Indian student</span>
-              <span class="tier-note">Application-based, with ID at check-in.</span>
-            </li>
-            <li class="tier">
-              <span class="tier-price">$149</span>
-              <span class="tier-label">India resident</span>
-              <span class="tier-note">Prove residency with your Aadhaar card through Self.xyz, using a zero-knowledge proof.</span>
-            </li>
-            <li class="tier">
-              <span class="tier-price">$499</span>
-              <span class="tier-label">General admission</span>
-              <span class="tier-note">No ID required. Sold in waves, so check what is open.</span>
-            </li>
-          </ul>
-          <!-- Arrow is UI chrome; see the note above renderDeeperLink. -->
-          <a class="btn btn-primary btn-lg" href="https://devcon.org/en/tickets/store/">Get a ticket<span aria-hidden="true"> →</span></a>
-          <p class="cta-fineprint">Ticket tiers and prices are Devcon's and change in waves — check the store for what is open now.</p>
+    <section class="l-dinner" id="dinner" aria-labelledby="dinner-title">
+      <div class="l-inner l-dinner-grid">
+        <div>
+          <p class="l-hero-eyebrow">During Devcon 8, Mumbai</p>
+          <h2 class="l-dinner-title" id="dinner-title">ETHIndia Institutional Dinner</h2>
+          <p class="l-dinner-body">A closed-door dinner for senior people at Indian banks, asset managers, market infrastructure institutions and regulators, with the researchers and builders working on Ethereum. Seats are limited and each invitation is confirmed individually.</p>
         </div>
-        <div class="cta-secondary">
-          <p class="cta-secondary-label">Whether or not you come</p>
-          <ul>
-            <li><a href="evidence.html">Read the evidence base</a> <span>What shipped worldwide and what failed, what Indian law actually permits, where the rupee value sits, and every objection in its strongest form.</span></li>
-          </ul>
-          <div class="landing-prompt" id="llm">
-    <details class="landing-prompt-details js-copy-widget" data-copy-label="a personalized exploration prompt">
-      <summary class="landing-prompt-summary">Copy a personalized prompt — explore this report with your own LLM</summary>
-      <div class="landing-prompt-panel">
-        <p class="landing-prompt-hint">Paste this into ChatGPT, Claude, Gemini, or any LLM that can fetch a URL. With JavaScript on, the box below already has this page's real address in it. Reading without JavaScript? Swap the <code>{{BASE_URL}}</code> placeholder for this page's address before you paste.</p>
-        <textarea class="copy-textarea landing-prompt-textarea" readonly rows="14" aria-label="Personalized prompt for exploring this report with an LLM">Please fetch {{BASE_URL}}llms.txt first. It indexes the eleven pages of "Ethereum and Distributed Settlement Infrastructure in Indian Institutional Finance": seven module reports, a Figure Ledger carrying a source tier and date on every claim, and a Reconciliation page. Then read the Overview at {{BASE_URL}}evidence.html and open whichever module pages look most relevant.
-
-Before you answer, use what you already know about me from memory and our past conversations: what I work on, what I follow, what I have asked you before. If you know nothing about me, ask me that first.
-
-Then give me a handful of bullet points about Ethereum's institutional potential in India that I'm least likely to already know, each with a line on why it is new or useful for me specifically.</textarea>
-      </div>
-    </details>
-  </div>
+        <div class="l-dinner-card">
+          <p class="l-dinner-when"><time datetime="2026-11-04">Wednesday, 4 November 2026</time></p>
+          <p class="l-dinner-where">Mumbai. The venue is shared with confirmed guests.</p>
+          <p class="l-dinner-access">By invitation</p>
+          <span class="btn btn-pending btn-lg">Invite requests open soon</span>
         </div>
+      </div>
+    </section>
+
+    <section class="l-section" id="updates" aria-labelledby="updates-title">
+      <div class="l-inner">
+        <p class="l-eyebrow">Updates</p>
+        <h2 class="l-headline" id="updates-title">Events, announcements and reports.</h2>
+        <ol class="l-updates">
+          <li class="l-update">
+            <p class="l-update-meta"><span class="l-update-type l-type-event">Event</span><time datetime="2026-09-30">30 September 2026</time></p>
+            <h3 class="l-update-title"><a href="#dinner">ETHIndia Institutional Dinner announced</a></h3>
+            <p class="l-update-summary">4 November 2026, during Devcon 8 in Mumbai. Seats are by invitation.</p>
+          </li>
+          <li class="l-update">
+            <p class="l-update-meta"><span class="l-update-type l-type-report">Report</span><time datetime="2026-09-25">25 September 2026</time></p>
+            <h3 class="l-update-title"><a href="research.html">Tokenised settlement in India published</a></h3>
+            <p class="l-update-summary">The seven-module evidence base and its Figure Ledger.</p>
+          </li>
+        </ol>
       </div>
     </section>
   </main>
-<footer class="site-foot">
-    <nav class="foot-nav" aria-label="The evidence base">
-      <h2>The evidence base</h2>
-      <ul>
-        <li><a href="evidence.html">Overview</a></li>
-        <li><a href="what-shipped.html"><span class="foot-letter" aria-hidden="true">A</span>What shipped</a></li>
-        <li><a href="whats-legal-in-india.html"><span class="foot-letter" aria-hidden="true">B</span>What's legal in India</a></li>
-        <li><a href="where-the-value-is.html"><span class="foot-letter" aria-hidden="true">C</span>Where the value is</a></li>
-        <li><a href="ethereum-vs-alternatives.html"><span class="foot-letter" aria-hidden="true">D</span>Ethereum vs alternatives</a></li>
-        <li><a href="the-privacy-question.html"><span class="foot-letter" aria-hidden="true">E</span>The privacy question</a></li>
-        <li><a href="the-objections.html"><span class="foot-letter" aria-hidden="true">F</span>The objections</a></li>
-        <li><a href="how-adoption-happens.html"><span class="foot-letter" aria-hidden="true">G</span>How adoption happens</a></li>
-      </ul>
-    </nav>
-    <p class="foot-note">Prose and data CC BY 4.0. Code MIT.</p>
-  </footer>
-<script type="module" src="assets/narrative.js?v=a5458831"></script>
+<footer class="l-foot">
+      <div class="l-inner">
+        <nav class="l-foot-nav" aria-label="The research">
+          <h2>Tokenised settlement in India</h2>
+          <ul>
+          <li><a href="research.html">Research overview</a></li>
+          <li><a href="what-shipped.html"><span class="foot-letter" aria-hidden="true">A</span>What shipped</a></li>
+          <li><a href="whats-legal-in-india.html"><span class="foot-letter" aria-hidden="true">B</span>What's legal in India</a></li>
+          <li><a href="where-the-value-is.html"><span class="foot-letter" aria-hidden="true">C</span>Where the value is</a></li>
+          <li><a href="ethereum-vs-alternatives.html"><span class="foot-letter" aria-hidden="true">D</span>Ethereum vs alternatives</a></li>
+          <li><a href="the-privacy-question.html"><span class="foot-letter" aria-hidden="true">E</span>The privacy question</a></li>
+          <li><a href="the-objections.html"><span class="foot-letter" aria-hidden="true">F</span>The objections</a></li>
+          <li><a href="how-adoption-happens.html"><span class="foot-letter" aria-hidden="true">G</span>How adoption happens</a></li>
+          </ul>
+        </nav>
+        <p class="l-foot-note">An <a href="https://ethindia.co">ETHIndia</a> initiative. Prose and data CC BY 4.0. Code MIT.</p>
+      </div>
+    </footer>
 </body>
 </html>

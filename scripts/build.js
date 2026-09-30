@@ -15,7 +15,7 @@ import path from 'node:path';
 import { renderMarkdown } from '../vendor/minimark.js';
 import { isStale, worstTierNum, stalenessCutoff } from '../assets/ledger-core.js';
 import { renderNarrativePage } from './narrative.js';
-import { renderLandingPromptCta } from './llm-prompt.js';
+import { renderLandingPage } from './landing.js';
 import { SITE_NAME, escapeHtmlText, escapeAttr, renderHeadMeta, articleLd, datasetLd } from './meta.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -41,8 +41,8 @@ async function versionedAsset(relPath) {
 // renderSidebar() emits a heading wherever the group changes, so interleaving
 // two runs of the same group would print its heading twice.
 const TABS = [
-  { id: 'narrative', label: 'Start here', file: 'data/narrative.json', page: 'index.html', isNarrative: true },
-  { id: 'overview', label: 'Overview', file: 'content/intro.md', page: 'evidence.html', hasTiers: false, description: 'A seven-module evidence base on Ethereum and distributed settlement in Indian institutional finance: the finding of each module, with sources and source tiers.' },
+  { id: 'home', label: 'ETHIndia Institutions', file: 'data/landing.json', page: 'index.html', isLanding: true },
+  { id: 'narrative', label: 'Research overview', file: 'data/narrative.json', page: 'research.html', isNarrative: true },
   { id: 'what-shipped', label: 'What shipped', module: 'A', group: 'modules', file: 'content/module-a.md', page: 'what-shipped.html', hasTiers: true, description: 'Which blockchain systems the largest financial institutions run in production, at what volume, on which chains, and why bank settlement went permissioned.' },
   { id: 'whats-legal-in-india', label: "What's legal in India", module: 'B', group: 'modules', file: 'content/module-b.md', page: 'whats-legal-in-india.html', hasTiers: true, description: 'What RBI, SEBI and IFSCA permit in India today for tokenised instruments, distributed settlement and blockchain registries, and where the legal gaps remain.' },
   { id: 'where-the-value-is', label: 'Where the value is', module: 'C', group: 'modules', file: 'content/module-c.md', page: 'where-the-value-is.html', hasTiers: true, description: 'Which processes in Indian financial institutions are costly or slow enough for tokenised settlement to help, sized in rupees, with the budget owner for each.' },
@@ -142,59 +142,7 @@ function renderCopyDetails(tab, fullRaw) {
       </details>`;
 }
 
-function splitBeforeFirstH2(raw) {
-  const normalized = raw.replace(/\r\n/g, '\n');
-  const m = normalized.match(/\n(?=##\s)/);
-  const splitAt = m ? m.index + 1 : normalized.length;
-  return { introRaw: normalized.slice(0, splitAt), restRaw: normalized.slice(splitAt) };
-}
-
-/**
- * The findings list is the overview's router into the seven modules, and as a
- * plain <ul> of long paragraphs it read as a wall. Each item opens
- * `**A \u2014 What shipped.** ...`, so the letter and title are lifted out into a
- * linked card head and the rest becomes the card body. The destination comes
- * from TABS, so the links cannot drift from the pages that exist.
- *
- * Anything that does not match the pattern is left exactly as markdown
- * rendered it, which is also what happens if the list is ever rewritten.
- */
-function renderFindingCards(listHtml) {
-  const byModule = new Map(TABS.filter(t => t.module).map(t => [t.module, t]));
-  const items = listHtml.match(/<li>[\s\S]*?<\/li>/g);
-  if (!items) return listHtml;
-
-  const cards = items.map(item => {
-    const m = item.match(/^<li><strong>([A-G])\s*\u2014\s*([^<]*?)\.?<\/strong>\s*([\s\S]*)<\/li>$/);
-    if (!m) return item;
-    const [, letter, title, body] = m;
-    const tab = byModule.get(letter);
-    if (!tab) return item;
-    return `<li class="finding">
-        <a class="finding-head" href="${escapeAttr(tab.page)}" aria-label="Module ${letter}, ${escapeAttr(title)}">
-          <span class="finding-letter" aria-hidden="true">${letter}</span>
-          <span class="finding-title">${escapeHtmlText(title)}</span>
-        </a>
-        <p class="finding-body">${body}</p>
-      </li>`;
-  });
-
-  return `<ul class="findings">\n      ${cards.join('\n      ')}\n    </ul>`;
-}
-
-function renderOverviewBody(raw) {
-  const { introRaw, restRaw } = splitBeforeFirstH2(raw);
-  const introHtml = renderMarkdown(introRaw);
-  let restHtml = restRaw ? renderMarkdown(restRaw) : '';
-  restHtml = restHtml.replace(/<ul>[\s\S]*?<\/ul>/, renderFindingCards);
-  return `<div class="tab-header"></div>
-<div class="tab-body">${introHtml}
-${renderLandingPromptCta()}
-${restHtml}</div>`;
-}
-
 function renderModuleBody(tab, raw) {
-  if (tab.id === 'overview') return renderOverviewBody(raw);
   const { header, tiers } = splitIntoTiers(raw);
   const availableTiers = TIER_ORDER.filter(k => tiers[k] !== undefined);
   const headerHtml = `<div class="tab-header">${styleQuestionCallout(renderMarkdown(header))}</div>`;
@@ -348,11 +296,11 @@ function renderLedgerBody(data) {
 
 function renderNavItem(tab, activeId) {
   const active = tab.id === activeId;
-  const classes = ['nav-item', tab.isNarrative ? 'nav-return' : '', active ? 'active' : ''].filter(Boolean).join(' ');
+  const classes = ['nav-item', tab.isLanding ? 'nav-return' : '', active ? 'active' : ''].filter(Boolean).join(' ');
   const currentAttr = active ? ' aria-current="page"' : '';
   const ariaLabel = tab.module ? ` aria-label="Module ${tab.module}, ${tab.label}"` : '';
   // The arrow is chrome, like the → in scripts/narrative.js deeperLink().
-  const inner = tab.isNarrative
+  const inner = tab.isLanding
     ? `<span class="nav-arrow" aria-hidden="true">←</span>${tab.label}`
     : tab.module
       ? `<span class="nav-letter" aria-hidden="true">${tab.module}</span> ${tab.label}`
@@ -365,7 +313,7 @@ function renderNavItem(tab, activeId) {
  * door, the seven modules and the two reference tables. Consecutive tabs
  * sharing a `group` are wrapped in a labelled role="group", so the grouping
  * reaches a screen reader rather than being a visual heading only. Ungrouped
- * tabs (the narrative and the overview) render as bare links, as before.
+ * tabs (the landing page and the research overview) render as bare links.
  */
 function renderSidebar(activeId) {
   const parts = [];
@@ -449,6 +397,36 @@ ${pageHeadMeta({ tab, raw, site })}
 `;
 }
 
+/**
+ * Pages that used to exist, kept alive for links already shared. GitHub Pages
+ * has no server-side redirects, so each is a meta refresh with a canonical
+ * pointing at the new page. Not listed in the sitemap or llms.txt.
+ */
+const REDIRECTS = [
+  { from: 'evidence.html', to: 'research.html' },
+  { from: 'tokenised-settlement.html', to: 'research.html' },
+];
+
+async function writeRedirects(siteBase) {
+  for (const r of REDIRECTS) {
+    const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moved</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="${escapeAttr(siteBase + r.to)}">
+<meta http-equiv="refresh" content="0; url=${escapeAttr(r.to)}">
+</head>
+<body>
+<p>This page has moved to <a href="${escapeAttr(r.to)}">${escapeHtmlText(r.to)}</a>.</p>
+</body>
+</html>
+`;
+    await writeFile(path.join(ROOT, r.from), html, 'utf8');
+  }
+}
+
 async function writeLlmsTxt() {
   const lines = [
     `# ${SITE_NAME}`,
@@ -484,7 +462,7 @@ async function writeRobots(siteBase) {
 /** A new page without a description would ship with a bare link preview. */
 function checkDescriptions() {
   for (const tab of TABS) {
-    if (tab.isNarrative) continue; // described in data/narrative.json meta
+    if (tab.isNarrative || tab.isLanding) continue; // described in their JSON meta
     if (!tab.description) throw new Error(`TABS: "${tab.id}" has no description.`);
     if (tab.description.length > 160) throw new Error(`TABS: "${tab.id}" description is ${tab.description.length} chars; keep it to 160 so search results do not truncate it.`);
   }
@@ -501,18 +479,23 @@ async function main() {
     app: await versionedAsset('assets/app.js'),
     narrativeCss: await versionedAsset('assets/narrative.css'),
     narrativeJs: await versionedAsset('assets/narrative.js'),
+    landingCss: await versionedAsset('assets/landing.css'),
   };
   const narrativeTab = TABS.find(t => t.isNarrative);
   const narrative = JSON.parse(await readFile(path.join(ROOT, narrativeTab.file), 'utf8'));
+  const landingTab = TABS.find(t => t.isLanding);
+  const landing = JSON.parse(await readFile(path.join(ROOT, landingTab.file), 'utf8'));
   // One base URL for every canonical, og:url, sitemap entry and JSON-LD id.
-  const site = { base: narrative.meta.site_base, dateModified: figuresData.meta.generated };
+  const site = { base: landing.meta.site_base, dateModified: figuresData.meta.generated };
   const built = [];
   for (const tab of TABS) {
     let html;
-    if (tab.isNarrative) {
-      // The narrative page brings its own shell: no sidebar, its own
-      // stylesheet, and a WebSite rather than Article JSON-LD.
-      html = renderNarrativePage({ narrative, figuresData, tabs: TABS, assets });
+    if (tab.isLanding) {
+      html = await renderLandingPage({ landing, figuresData, tabs: TABS, assets, logoPath: path.join(ROOT, 'assets/ethindia-logo.svg') });
+    } else if (tab.isNarrative) {
+      // The narrative page brings its own shell: no sidebar and its own stylesheet.
+      const introRaw = await readFile(path.join(ROOT, 'content/intro.md'), 'utf8');
+      html = renderNarrativePage({ narrative, figuresData, introRaw, tabs: TABS, assets, site, page: tab.page });
     } else if (tab.isLedger) {
       html = pageShell({ tab, bodyHtml: renderLedgerBody(figuresData), assets, site });
     } else {
@@ -522,6 +505,7 @@ async function main() {
     await writeFile(path.join(ROOT, tab.page), html, 'utf8');
     built.push(tab.page);
   }
+  await writeRedirects(site.base);
   await writeLlmsTxt();
   await writeSitemap(site.base);
   await writeRobots(site.base);

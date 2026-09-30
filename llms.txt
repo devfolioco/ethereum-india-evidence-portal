@@ -3,8 +3,8 @@
 > A seven-module evidence base on Ethereum and distributed-settlement infrastructure for Indian institutional finance. Every claim carries a source and date; every quantitative figure carries a source tier (T1 primary … T5 crypto media/aggregator) in the Figure Ledger.
 
 ## Pages
-- [Start here](index.html)
-- [Overview](evidence.html)
+- [ETHIndia Institutions](index.html)
+- [Research overview](research.html)
 - [What shipped](what-shipped.html)
 - [What's legal in India](whats-legal-in-india.html)
 - [Where the value is](where-the-value-is.html)

@@ -1,0 +1,105 @@
+{
+  "meta": {
+    "title": "ETHIndia Institutions",
+    "tagline": "Ethereum for Institutional Finance in India",
+    "description": "Research, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.",
+    "site_base": "https://institutions.ethindia.co/",
+    "ethindia_url": "https://ethindia.co"
+  },
+  "hero": {
+    "eyebrow": "ETHIndia Institutions",
+    "headline": "Ethereum for Institutional Finance in India",
+    "sub": "Indian finance has started putting assets on distributed ledgers. ETHIndia Institutions is where banks, market infrastructure, regulators and builders work out what role Ethereum and its ecosystem should play in that."
+  },
+  "why_india": {
+    "eyebrow": "Why India",
+    "headline": "India is already tokenising.",
+    "points": [
+      {
+        "title": "The regulator mandated the ledger first.",
+        "body": "SEBI has required a distributed ledger for corporate-bond covenant monitoring since April 2022. The depositories, NSDL and CDSL, run it, and no corporate bond activates without it."
+      },
+      {
+        "title": "The first tokenised bonds are live.",
+        "body": "In September 2026 the RBI and SEBI launched a tokenised corporate-bond rail together. It raised [[fig:156|₹1,025 crore]] across three issuers, settled in wholesale CBDC."
+      },
+      {
+        "title": "The markets are large and slow.",
+        "body": "India has [[fig:54|₹53.6 lakh crore]] of corporate bonds outstanding and trades about [[fig:56|₹7,645 crore]] of them a day. Away from the exchange a trade can take three to seven days to settle."
+      },
+      {
+        "title": "The flows are the world's largest.",
+        "body": "India receives [[fig:61|$135 billion]] a year in remittances, more than any other country."
+      }
+    ]
+  },
+  "ethereum": {
+    "eyebrow": "Where Ethereum fits",
+    "headline": "The rail underneath is still open.",
+    "body": "India's first tokenised bonds run on a closed ledger owned by its stock depositories. What comes next could run on that model, on a ledger shared between institutions, or on a public chain like Ethereum.\n\nEthereum gives institutions a settlement layer that no single one of them controls, the largest pool of smart-contract developers and tooling, and a network that has run since 2015. Its open problem for institutions is confidentiality, which has to be built in a layer above the chain. The research sets out where Ethereum fits in India and where it does not.",
+    "deeper": [
+      { "page": "ethereum-vs-alternatives.html", "label": "Ethereum against the alternatives" },
+      { "page": "the-privacy-question.html", "label": "The privacy question" }
+    ]
+  },
+  "expect": {
+    "eyebrow": "On this site",
+    "headline": "Research, convenings and announcements.",
+    "items": [
+      {
+        "title": "Research",
+        "body": "Reports on what is live, what Indian law permits and where Ethereum fits. Every figure carries its source, its date and a rating of how strong that source is."
+      },
+      {
+        "title": "Convenings",
+        "body": "Closed-door dinners and roundtables for people at banks, asset managers, market infrastructure institutions and regulators, starting at Devcon 8 in Mumbai."
+      },
+      {
+        "title": "Announcements",
+        "body": "Pilots, working groups and new reports as they happen, posted to the updates list on this page."
+      }
+    ]
+  },
+  "reports": [
+    {
+      "title": "Tokenised settlement in India",
+      "sub": "What's live, what's legal, where Ethereum fits",
+      "date": "2026-09-25",
+      "summary": "A seven-module evidence base: what institutions run in production worldwide, what RBI, SEBI and IFSCA permit, where the rupee value sits, how Ethereum compares with Canton and permissioned chains, and the strongest objections in their strongest form.",
+      "href": "research.html",
+      "cta": "Read the research",
+      "links": [
+        { "label": "Figure Ledger", "href": "ledger.html" }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "dinner",
+      "featured": true,
+      "title": "ETHIndia Institutional Dinner",
+      "date": "2026-11-04",
+      "date_label": "Wednesday, 4 November 2026",
+      "context": "During Devcon 8, Mumbai",
+      "place": "Mumbai. The venue is shared with confirmed guests.",
+      "body": "A closed-door dinner for senior people at Indian banks, asset managers, market infrastructure institutions and regulators, with the researchers and builders working on Ethereum. Seats are limited and each invitation is confirmed individually.",
+      "luma_url": ""
+    }
+  ],
+  "updates": [
+    {
+      "type": "event",
+      "date": "2026-09-30",
+      "title": "ETHIndia Institutional Dinner announced",
+      "summary": "4 November 2026, during Devcon 8 in Mumbai. Seats are by invitation.",
+      "href": "#dinner"
+    },
+    {
+      "type": "report",
+      "date": "2026-09-25",
+      "title": "Tokenised settlement in India published",
+      "summary": "The seven-module evidence base and its Figure Ledger.",
+      "href": "research.html"
+    }
+  ]
+}

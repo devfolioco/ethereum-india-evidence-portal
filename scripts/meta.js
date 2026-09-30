@@ -28,14 +28,14 @@ function renderJsonLd(obj) {
   return `<script type="application/ld+json">\n${json}\n</script>`;
 }
 
-export function renderHeadMeta({ title, description, url, type, siteBase, jsonLd, extraLinks = [] }) {
+export function renderHeadMeta({ title, description, url, type, siteBase, siteName = SITE_NAME, jsonLd, extraLinks = [] }) {
   const image = siteBase + OG_IMAGE.path;
   const lines = [
     `<meta name="description" content="${escapeAttr(description)}">`,
     `<link rel="canonical" href="${escapeAttr(url)}">`,
     ...extraLinks,
     `<meta property="og:type" content="${type}">`,
-    `<meta property="og:site_name" content="${escapeAttr(SITE_NAME)}">`,
+    `<meta property="og:site_name" content="${escapeAttr(siteName)}">`,
     `<meta property="og:url" content="${escapeAttr(url)}">`,
     `<meta property="og:title" content="${escapeAttr(title)}">`,
     `<meta property="og:description" content="${escapeAttr(description)}">`,
@@ -54,12 +54,12 @@ export function renderHeadMeta({ title, description, url, type, siteBase, jsonLd
 
 const author = { '@type': 'Person', name: AUTHOR };
 
-export function websiteLd({ siteBase, title, description }) {
+export function websiteLd({ siteBase, name = SITE_NAME, title, description }) {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     '@id': `${siteBase}#website`,
-    name: SITE_NAME,
+    name,
     alternateName: title,
     url: siteBase,
     description,

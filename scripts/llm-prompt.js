@@ -1,5 +1,5 @@
 // The "explore this with your own LLM" widget, shared by both surfaces:
-// evidence.html (via scripts/build.js) and index.html (via scripts/narrative.js).
+// research.html (via scripts/narrative.js), in the hero and after the modules.
 //
 // One copy of the prompt text, so the two pages cannot drift apart. {{BASE_URL}}
 // is a placeholder the static build cannot resolve — the real address is only
@@ -11,15 +11,15 @@ function escapeHtmlText(str) {
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-export const OVERVIEW_PROMPT = `Please fetch {{BASE_URL}}llms.txt first. It indexes the eleven pages of "Ethereum and Distributed Settlement Infrastructure in Indian Institutional Finance": seven module reports, a Figure Ledger carrying a source tier and date on every claim, and a Reconciliation page. Then read the Overview at {{BASE_URL}}evidence.html and open whichever module pages look most relevant.
+export const OVERVIEW_PROMPT = `Please fetch {{BASE_URL}}llms.txt first. It indexes the pages of "Ethereum and Distributed Settlement Infrastructure in Indian Institutional Finance": seven module reports, a Figure Ledger carrying a source tier and date on every claim, and a Reconciliation page. Then read the Research overview at {{BASE_URL}}research.html and open whichever module pages look most relevant.
 
 Before you answer, use what you already know about me from memory and our past conversations: what I work on, what I follow, what I have asked you before. If you know nothing about me, ask me that first.
 
 Then give me a handful of bullet points about Ethereum's institutional potential in India that I'm least likely to already know, each with a line on why it is new or useful for me specifically.`;
 
 /**
- * `id` is a parameter because index.html carries this widget twice — once in
- * the hero and once in the closing Devcon call to action — and two elements
+ * `id` is a parameter because research.html carries this widget twice — once in
+ * the hero and once after the module cards — and two elements
  * cannot share an id. The markup is otherwise identical, which is the point:
  * both surfaces copy the same prompt text.
  */
