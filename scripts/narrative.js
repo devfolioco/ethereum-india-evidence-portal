@@ -1,4 +1,4 @@
-// Renders research.html: the research overview. The story scenes first, then
+// Renders briefing.html: the briefing overview. The story scenes first, then
 // the A-G finding cards from content/intro.md.
 //
 // THE BUILD MUST NEVER READ THE CLOCK. No Date.now(), no bare new Date().
@@ -173,8 +173,8 @@ function renderFooterNav(tabs) {
     const letter = t.module ? `<span class="foot-letter" aria-hidden="true">${t.module}</span>` : '';
     return `        <li><a href="${escapeAttr(t.page)}">${letter}${escapeHtmlText(t.label)}</a></li>`;
   }).join('\n');
-  return `<nav class="foot-nav" aria-label="The evidence base">
-      <h2>The evidence base</h2>
+  return `<nav class="foot-nav" aria-label="The full briefing">
+      <h2>The full briefing</h2>
       <ul>
 ${items}
       </ul>

@@ -42,7 +42,7 @@ async function versionedAsset(relPath) {
 // two runs of the same group would print its heading twice.
 const TABS = [
   { id: 'home', label: 'ETHIndia Institutions', file: 'data/landing.json', page: 'index.html', isLanding: true },
-  { id: 'narrative', label: 'Research overview', file: 'data/narrative.json', page: 'research.html', isNarrative: true },
+  { id: 'narrative', label: 'Briefing overview', file: 'data/narrative.json', page: 'briefing.html', isNarrative: true },
   { id: 'what-shipped', label: 'What shipped', module: 'A', group: 'modules', file: 'content/module-a.md', page: 'what-shipped.html', hasTiers: true, description: 'Which blockchain systems the largest financial institutions run in production, at what volume, on which chains, and why bank settlement went permissioned.' },
   { id: 'whats-legal-in-india', label: "What's legal in India", module: 'B', group: 'modules', file: 'content/module-b.md', page: 'whats-legal-in-india.html', hasTiers: true, description: 'What RBI, SEBI and IFSCA permit in India today for tokenised instruments, distributed settlement and blockchain registries, and where the legal gaps remain.' },
   { id: 'where-the-value-is', label: 'Where the value is', module: 'C', group: 'modules', file: 'content/module-c.md', page: 'where-the-value-is.html', hasTiers: true, description: 'Which processes in Indian financial institutions are costly or slow enough for tokenised settlement to help, sized in rupees, with the budget owner for each.' },
@@ -50,8 +50,8 @@ const TABS = [
   { id: 'the-privacy-question', label: 'The privacy question', module: 'E', group: 'modules', file: 'content/module-e.md', page: 'the-privacy-question.html', hasTiers: true, description: 'Institutions rejected public Ethereum on confidentiality. What has changed in protocol, wallets, layer-2s and standards since, and whether it changes that call.' },
   { id: 'the-objections', label: 'The objections', module: 'F', group: 'modules', file: 'content/module-f.md', page: 'the-objections.html', hasTiers: true, description: 'The strongest objections Indian institutions and regulators raise to tokenised settlement on Ethereum, each in its strongest form, with the evidence in reply.' },
   { id: 'how-adoption-happens', label: 'How adoption happens', module: 'G', group: 'modules', file: 'content/module-g.md', page: 'how-adoption-happens.html', hasTiers: true, description: 'How new financial infrastructure such as demat and UPI reached institutional adoption in India, and what that sequence implies for a tokenised settlement layer.' },
-  { id: 'ledger', label: 'Figure Ledger', group: 'reference', page: 'ledger.html', isLedger: true, description: 'Every quantitative claim in the evidence base with its figure, unit, as-of date, source and tier (T1 to T5). Rows are deep-linkable; the full set is JSON.' },
-  { id: 'reconciliation', label: 'Reconciliation', group: 'reference', file: 'content/reconciliation.md', page: 'reconciliation.html', hasTiers: false, description: 'A cross-module audit of the evidence base: where the modules contradict each other, which figures rest on weak sources, and which claims were retired.' },
+  { id: 'ledger', label: 'Figure Ledger', group: 'reference', page: 'ledger.html', isLedger: true, description: 'Every quantitative claim in the briefing with its figure, unit, as-of date, source and tier (T1 to T5). Rows are deep-linkable; the full set is JSON.' },
+  { id: 'reconciliation', label: 'Reconciliation', group: 'reference', file: 'content/reconciliation.md', page: 'reconciliation.html', hasTiers: false, description: 'A cross-module audit of the briefing: where the modules contradict each other, which figures rest on weak sources, and which claims were retired.' },
 ];
 
 const GROUP_LABELS = { modules: 'Modules', reference: 'Reference' };
@@ -65,7 +65,7 @@ const TIER_MARKERS = {
 };
 
 const PROVENANCE_HEADER = (label, file) =>
-  `[Source: ${label} — ${file} — Ethereum/India institutional evidence base]\n` +
+  `[Source: ${label} — ${file} — Ethereum/India institutional briefing]\n` +
   `[Every figure carries a source tier (T1 primary … T5 crypto media) and an "as of" date. Treat T4/T5 figures as unverified for volumes/adoption. This subject moves monthly; re-check anything dated more than six months ago.]\n\n`;
 
 /**
@@ -266,7 +266,7 @@ function renderLedgerBody(data) {
   return `<div id="ledger-root">
     <div class="tab-header">
       <h1>Figure Ledger</h1>
-      <p class="ledger-intro">Every quantitative claim in this evidence base, with its source tier and "as of" date.</p>
+      <p class="ledger-intro">Every quantitative claim in this briefing, with its source tier and "as of" date.</p>
       <p class="ledger-data-link"><a href="data/figures.json">Download the ledger as JSON</a> (data/figures.json)</p>
     </div>
     ${renderLedgerLegend(meta)}
@@ -403,8 +403,9 @@ ${pageHeadMeta({ tab, raw, site })}
  * pointing at the new page. Not listed in the sitemap or llms.txt.
  */
 const REDIRECTS = [
-  { from: 'evidence.html', to: 'research.html' },
-  { from: 'tokenised-settlement.html', to: 'research.html' },
+  { from: 'evidence.html', to: 'briefing.html' },
+  { from: 'tokenised-settlement.html', to: 'briefing.html' },
+  { from: 'research.html', to: 'briefing.html' },
 ];
 
 async function writeRedirects(siteBase) {
@@ -431,7 +432,7 @@ async function writeLlmsTxt() {
   const lines = [
     `# ${SITE_NAME}`,
     '',
-    '> A seven-module evidence base on Ethereum and distributed-settlement infrastructure for Indian institutional finance. Every claim carries a source and date; every quantitative figure carries a source tier (T1 primary … T5 crypto media/aggregator) in the Figure Ledger.',
+    '> A seven-module briefing, drawn from published sources, on Ethereum and distributed-settlement infrastructure for Indian institutional finance. Every claim carries a source and date; every quantitative figure carries a source tier (T1 primary … T5 crypto media/aggregator) in the Figure Ledger.',
     '',
     '## Pages',
     ...TABS.map(t => `- [${t.label}](${t.page})`),

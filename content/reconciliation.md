@@ -58,7 +58,7 @@ Ranked by how hard a skeptical Indian institutional audience would find them to 
 
 ## 5. The weakest points
 
-Where the research is thinnest and where an informed opponent attacks first.
+Where the briefing is thinnest and where an informed opponent attacks first.
 
 1. **Every vendor volume claim is company-reported and unaudited** (Kinexys, Citi, Broadridge, HSBC). *Fix:* a Bloomberg/filing confirmation for at least Kinexys and Broadridge; label as company disclosure until then. The Broadridge Bloomberg/Kaiko feed (T2) is the one upgrade available now.
 2. **Ethereum's RWA share is quoted at 50/58–63/65% across modules.** *Fix:* commit to one measure (RWA.xyz distributed value), one date, "largest single share, roughly half"; retire the others from external use.

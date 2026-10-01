@@ -5,7 +5,7 @@
 // Same rule as the rest of the build: no clock reads. Every date here comes
 // from figures.json meta.generated.
 
-export const SITE_NAME = 'Ethereum/India Institutional Evidence Portal';
+export const SITE_NAME = 'Ethereum/India Institutional Briefing';
 export const AUTHOR = 'Rohit Malekar';
 export const CONTENT_LICENSE = 'https://creativecommons.org/licenses/by/4.0/';
 export const OG_IMAGE = { path: 'assets/og-card.png', width: 1200, height: 630, alt: `${SITE_NAME}: tokenised settlement in India, what's live, what's legal, where Ethereum fits` };

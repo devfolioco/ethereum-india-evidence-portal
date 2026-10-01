@@ -44,7 +44,7 @@ function renderTopbar(data, logoSvg) {
   const links = [
     ['why-india', 'Why India'],
     ['ethereum', 'Ethereum'],
-    ['research', 'Research'],
+    ['briefing', 'Briefing'],
     data.updates.length ? ['updates', 'Updates'] : null,
   ].filter(Boolean).map(([id, label]) => `<a href="#${id}">${label}</a>`).join('\n          ');
   return `<header class="l-topbar">
@@ -122,15 +122,15 @@ function renderResearch(reports, ctx) {
             <p class="l-report-sub">${escapeHtmlText(r.sub)}</p>
             <p class="l-report-summary">${inline(r.summary, ctx, `reports[${i}]`)}</p>
             <div class="l-report-actions">
-              <a class="btn btn-solid" href="${escapeAttr(r.href)}">${escapeHtmlText(r.cta || 'Read the report')}<span aria-hidden="true"> →</span></a>
+              <a class="btn btn-solid" href="${escapeAttr(r.href)}">${escapeHtmlText(r.cta || 'Read the briefing')}<span aria-hidden="true"> →</span></a>
               ${links ? `<span class="l-report-links">${links}</span>` : ''}
             </div>
           </article>`;
   }).join('\n          ');
-  return `<section class="l-section l-section-alt" id="research" aria-labelledby="research-title">
+  return `<section class="l-section l-section-alt" id="briefing" aria-labelledby="briefing-title">
       <div class="l-inner">
-        <p class="l-eyebrow">Research</p>
-        <h2 class="l-headline" id="research-title">Start with the evidence.</h2>
+        <p class="l-eyebrow">Briefing</p>
+        <h2 class="l-headline" id="briefing-title">Start with the evidence.</h2>
         <div class="l-reports">
           ${cards}
         </div>
@@ -199,7 +199,7 @@ function renderFooter(data, tabs) {
   }).join('\n');
   return `<footer class="l-foot">
       <div class="l-inner">
-        <nav class="l-foot-nav" aria-label="The research">
+        <nav class="l-foot-nav" aria-label="The briefing">
           <h2>Tokenised settlement in India</h2>
           <ul>
 ${items}

@@ -112,7 +112,7 @@ export function renderLedger(container, data) {
 
   const heading = document.createElement('div');
   heading.className = 'tab-header';
-  heading.innerHTML = `<h1>Figure Ledger</h1><p class="ledger-intro">Every quantitative claim in this evidence base, with its source tier and "as of" date — filterable, searchable, and one click from a properly-attributed citation.</p><p class="ledger-data-link"><a href="data/figures.json">Download the ledger as JSON</a> (data/figures.json)</p>`;
+  heading.innerHTML = `<h1>Figure Ledger</h1><p class="ledger-intro">Every quantitative claim in this briefing, with its source tier and "as of" date — filterable, searchable, and one click from a properly-attributed citation.</p><p class="ledger-data-link"><a href="data/figures.json">Download the ledger as JSON</a> (data/figures.json)</p>`;
   root.appendChild(heading);
 
   root.appendChild(buildLegend(meta));

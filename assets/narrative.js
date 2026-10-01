@@ -196,7 +196,7 @@ function pageBaseUrl() {
 }
 
 function enhanceLlmPrompt() {
-  // research.html carries this widget twice, in the hero and after the modules,
+  // briefing.html carries this widget twice, in the hero and after the modules,
   // so every instance gets the substitution and its own button.
   document.querySelectorAll('.landing-prompt-details').forEach(details => {
     const textarea = details.querySelector('.copy-textarea');

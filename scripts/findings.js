@@ -1,4 +1,4 @@
-// The A-G finding cards on research.html, built from content/intro.md.
+// The A-G finding cards on briefing.html, built from content/intro.md.
 //
 // Each module is a `### A — What shipped` heading followed by a bullet list.
 // The letter and title become a linked card head and the list becomes the

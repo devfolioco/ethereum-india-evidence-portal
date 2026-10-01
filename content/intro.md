@@ -1,6 +1,6 @@
 # Ethereum and Distributed Settlement Infrastructure in Indian Institutional Finance
 
-**What this is:** A seven-module evidence base on where distributed-ledger settlement and tokenisation stand for Indian institutional finance, built for readers who have seen several blockchain pitches this year and were unconvinced by all of them.
+**What this is:** A seven-module briefing, drawn from published sources, on where distributed-ledger settlement and tokenisation stand for Indian institutional finance, built for readers who have seen several blockchain pitches this year and were unconvinced by all of them.
 
 ## Findings by module
 

@@ -299,7 +299,7 @@ a { color: var(--n-accent); }
   margin-top: 0.3rem;
 }
 
-/* --- Findings by module: research.html's router into A–G ------------------
+/* --- Findings by module: briefing.html's router into A–G ------------------
    Cards rather than a bulleted list, so seven long paragraphs can be scanned
    and each one is a way in. The letter badge matches .nav-letter in the portal
    sidebar, so the same module reads the same way in both places. */

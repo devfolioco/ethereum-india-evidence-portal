@@ -2,7 +2,7 @@
   "meta": {
     "title": "ETHIndia Institutions",
     "tagline": "Ethereum for Institutional Finance in India",
-    "description": "Research, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.",
+    "description": "Briefings, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.",
     "site_base": "https://institutions.ethindia.co/",
     "ethindia_url": "https://ethindia.co"
   },
@@ -44,11 +44,11 @@
   },
   "expect": {
     "eyebrow": "On this site",
-    "headline": "Research, convenings and announcements.",
+    "headline": "Briefings, convenings and announcements.",
     "items": [
       {
-        "title": "Research",
-        "body": "Reports on what is live, what Indian law permits and where Ethereum fits. Every figure carries its source, its date and a rating of how strong that source is."
+        "title": "Briefings",
+        "body": "Briefings on what is live, what Indian law permits and where Ethereum fits. Every figure carries its source, its date and a rating of how strong that source is."
       },
       {
         "title": "Convenings",
@@ -56,7 +56,7 @@
       },
       {
         "title": "Announcements",
-        "body": "Pilots, working groups and new reports as they happen, posted to the updates list on this page."
+        "body": "Pilots, working groups and new briefings as they happen, posted to the updates list on this page."
       }
     ]
   },
@@ -65,9 +65,9 @@
       "title": "Tokenised settlement in India",
       "sub": "What's live, what's legal, where Ethereum fits",
       "date": "2026-09-25",
-      "summary": "A seven-module evidence base: what institutions run in production worldwide, what RBI, SEBI and IFSCA permit, where the rupee value sits, how Ethereum compares with Canton and permissioned chains, and the strongest objections in their strongest form.",
-      "href": "research.html",
-      "cta": "Read the research",
+      "summary": "A seven-module briefing drawn from published sources: what institutions run in production worldwide, what RBI, SEBI and IFSCA permit, where the rupee value sits, how Ethereum compares with Canton and permissioned chains, and the strongest objections in their strongest form.",
+      "href": "briefing.html",
+      "cta": "Read the briefing",
       "links": [
         { "label": "Figure Ledger", "href": "ledger.html" }
       ]
@@ -98,8 +98,8 @@
       "type": "report",
       "date": "2026-09-25",
       "title": "Tokenised settlement in India published",
-      "summary": "The seven-module evidence base and its Figure Ledger.",
-      "href": "research.html"
+      "summary": "The seven-module briefing and its Figure Ledger.",
+      "href": "briefing.html"
     }
   ]
 }
