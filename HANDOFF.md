@@ -10,7 +10,7 @@ Start a new chat with: "Read HANDOFF.md, ETHINDIA_INSTITUTIONAL_BUILD.md and PRO
 
 ## Stack and commands
 
-Astro 7 (static), plain CSS custom properties, vanilla JS. One dependency (`astro`). Windows; Node 24. **Not a git repo yet.**
+Astro 7 (static), plain CSS custom properties, vanilla JS. One dependency (`astro`). Windows; Node 24. Git repo on `main` (local only, no remote yet).
 
 ```bash
 npm run dev        # http://localhost:4321 (also in .claude/launch.json as "eii")
@@ -23,6 +23,13 @@ Lighthouse (run against `preview`, not dev — dev adds toolbar noise):
 CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe" npx -y lighthouse http://localhost:4330/ --preset=desktop --only-categories=accessibility,performance,best-practices,seo --chrome-flags="--headless=new"
 ```
 Last result: **100/100/100/100 desktop and mobile, CLS 0.**
+
+## Deploy
+
+- Vercel project `superark21s-projects/ethindia-institutional`, linked locally (`.vercel/`, gitignored). CLI is signed in.
+- Live: **https://ethindia-institutional.vercel.app** (production alias).
+- Redeploy: `npx vercel deploy --prod --yes`. No Git integration yet, so deploys are manual from the CLI.
+- **Do not attach `institutions.ethindia.co`** until Phases 3–4 are done and the old portal URLs are redirected. That domain serves the current live portal.
 
 ## Status
 
@@ -112,10 +119,10 @@ public/favicon.svg            placeholder mark
 1. Read the current portal at https://institutions.ethindia.co — briefing modules, their URLs/anchors, stats sources. Not fetched yet.
 2. Port module content into `src/content/briefing/a.md … g.md` (bodies are TODO stubs; frontmatter has letter/order/title/summary).
 3. Build `src/pages/briefing/index.astro` (title, date, summary, module index, PDF link, how to cite) and `src/pages/briefing/[module].astro`: solid paper panel, 64ch measure, sticky A–G nav with progress on desktop, prev/next, full-width tables/figures.
-4. Preserve old portal URLs or add redirects (`vercel.json` / `_redirects`, depending on host — Vercel vs Cloudflare not yet chosen).
+4. Preserve old portal URLs or add redirects (`vercel.json` redirects — the host is Vercel).
 5. Fill the stat sources in `stats.json` from the portal if they're cited there.
 6. Stop and report for review (the brief requires a stop after each phase).
 
 ## Still needed from the client (Arko / ETHIndia)
 
-Logo SVG · Neue Montreal + Matrix Sans font files · textile motif files · briefing content + PDF, and whether "report" = this briefing · stat sources/dates · Why India intro line · ETHIndia proof point (year/scale) · final focus-area list · segment one-liners · team names/roles/bios/photos · supporters + logos · FAQ answers · contact + careers emails · newsletter provider endpoint · invite form endpoint (Tally/Formspree) · analytics choice · host (Vercel or Cloudflare Pages) · privacy copy.
+Logo SVG · Neue Montreal + Matrix Sans font files · textile motif files · briefing content + PDF, and whether "report" = this briefing · stat sources/dates · Why India intro line · ETHIndia proof point (year/scale) · final focus-area list · segment one-liners · team names/roles/bios/photos · supporters + logos · FAQ answers · contact + careers emails · newsletter provider endpoint · invite form endpoint (Tally/Formspree) · analytics choice · privacy copy.
