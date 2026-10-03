@@ -1,0 +1,171 @@
+---
+import site from '../content/site.json';
+import team from '../content/team.json';
+
+// The Team section is hidden while team.json is empty, so its link is too.
+const nav = site.nav.filter((l) => l.href !== '/#team' || team.length);
+---
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav__inner">
+    <a class="nav__logo" href="/">
+      {/* TODO: /logo/ethindia-institutional.svg — Arko supplies the final mark. */}
+      <span class="nav__logo-eth">ETHIndia</span>
+      <span class="nav__logo-sub">Institutional</span>
+    </a>
+
+    <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+      <span class="nav__bars" aria-hidden="true"></span>
+    </button>
+
+    <ul class="nav__links" id="nav-menu">
+      {nav.map((link) => (
+        <li><a href={link.href} data-nav-link>{link.label}</a></li>
+      ))}
+      <li class="nav__links-cta">
+        <a class="btn" href={site.cta.href}>{site.cta.label}</a>
+      </li>
+    </ul>
+
+    <a class="btn nav__cta" href={site.cta.href}>{site.cta.label}</a>
+  </div>
+</nav>
+
+<style>
+  .nav { background: var(--paper); border-bottom: 1px solid var(--border); }
+
+  .nav__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: var(--nav-h);
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .nav__logo {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav__logo-eth { font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
+  .nav__logo-sub { font-weight: 500; font-size: 18px; color: var(--ink-2); }
+
+  .nav__links { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); }
+  .nav__links a {
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--ink-2);
+    padding-block: 11px;
+  }
+  .nav__links a:hover { color: var(--ink); }
+  .nav__links a[aria-current="true"] { color: var(--ink); font-weight: 500; }
+  .nav__links-cta { display: none; }
+
+  .nav__cta { padding-inline: 18px; }
+  .nav__toggle { display: none; }
+
+  @media (max-width: 900px) {
+    .nav__toggle {
+      display: grid;
+      place-items: center;
+      position: relative;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      cursor: pointer;
+    }
+    .nav__bars, .nav__bars::before, .nav__bars::after {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--ink);
+    }
+    .nav__bars::before, .nav__bars::after { content: ""; position: absolute; }
+    .nav__bars::before { transform: translateY(-5px); }
+    .nav__bars::after { transform: translateY(5px); }
+    .nav__toggle[aria-expanded="true"] .nav__bars { background: transparent; }
+    .nav__toggle[aria-expanded="true"] .nav__bars::before { transform: rotate(45deg); }
+    .nav__toggle[aria-expanded="true"] .nav__bars::after { transform: rotate(-45deg); }
+
+    .nav__links {
+      position: absolute;
+      right: var(--gutter);
+      top: calc(100% + 1px);
+      z-index: 20;
+      display: none;
+      gap: 4px;
+      min-width: min(74vw, 260px);
+      padding: 12px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+    }
+    .nav__links[data-open] { display: grid; }
+    .nav__links a { display: block; padding: 10px 8px; font-size: 16px; }
+    .nav__links-cta { display: block; margin-top: 6px; }
+    .nav__links-cta .btn { width: 100%; }
+    .nav__cta { display: none; }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
+  const menu = document.getElementById('nav-menu');
+
+  const setOpen = (open: boolean) => {
+    toggle?.setAttribute('aria-expanded', String(open));
+    open ? menu?.setAttribute('data-open', '') : menu?.removeAttribute('data-open');
+  };
+
+  toggle?.addEventListener('click', () => {
+    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+  });
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+
+  // Highlight the nav link for the section currently on screen.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+  const byId = new Map(
+    links
+      .map((a) => [a.getAttribute('href')?.split('#')[1], a] as const)
+      .filter((pair): pair is [string, HTMLAnchorElement] => Boolean(pair[0]))
+  );
+  const sections = [...byId.keys()]
+    .map((id) => document.getElementById(id))
+    .filter((el): el is HTMLElement => Boolean(el));
+
+  if (sections.length) {
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          entry.isIntersecting ? visible.add(entry.target.id) : visible.delete(entry.target.id);
+        }
+        const active = sections.find((s) => visible.has(s.id))?.id;
+        for (const [id, link] of byId) {
+          if (id === active) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' }
+    );
+    sections.forEach((s) => observer.observe(s));
+  }
+</script>

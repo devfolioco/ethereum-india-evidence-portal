@@ -1,0 +1,75 @@
+---
+import site from '../content/site.json';
+import team from '../content/team.json';
+import T from './T.astro';
+
+const nav = site.nav.filter((l) => l.href !== '/#team' || team.length);
+const contact = site.emails.contact;
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <a class="footer__logo" href="/">
+        <span class="footer__logo-eth">ETHIndia</span>
+        <span class="footer__logo-sub">Institutional</span>
+      </a>
+      <p class="meta">
+        {site.tagline}. <a href="https://ethindia.co">ethindia.co</a>
+      </p>
+    </div>
+
+    <nav class="footer__links" aria-label="Footer">
+      <ul>
+        {nav.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+      <ul>
+        {site.socials.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+        <li>{contact.includes('[TODO') ? <T text={contact} as="span" /> : <a href={`mailto:${contact}`}>{contact}</a>}</li>
+        <li><a href="/privacy">Privacy</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="wrap footer__legal">
+    <p class="meta">{site.license}</p>
+    <p class="meta">© {year} {site.name}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--paper);
+    border-top: 1px solid var(--border);
+    padding-block: clamp(40px, 6vw, 72px) 28px;
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+  }
+
+  .footer__logo { display: flex; align-items: baseline; gap: 8px; text-decoration: none; }
+  .footer__logo-eth { font-weight: 600; font-size: 18px; }
+  .footer__logo-sub { font-weight: 500; font-size: 18px; color: var(--ink-2); }
+  .footer__brand p { margin-top: 10px; }
+
+  .footer__links { display: flex; flex-wrap: wrap; gap: clamp(32px, 6vw, 80px); }
+  .footer__links ul { display: grid; gap: 8px; align-content: start; }
+  .footer__links a { font-size: 15px; text-decoration: none; color: var(--ink-2); }
+  .footer__links a:hover { color: var(--ink); text-decoration: underline; }
+
+  .footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    justify-content: space-between;
+    margin-top: clamp(36px, 5vw, 64px);
+    padding-top: 20px;
+    border-top: 1px solid color-mix(in srgb, var(--rule) 40%, transparent);
+  }
+</style>

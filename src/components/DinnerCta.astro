@@ -1,0 +1,27 @@
+---
+// Dinner call to action, driven by site.json → dinnerStatus: "soon" | "open" | "closed".
+import site from '../content/site.json';
+
+const status = site.dinnerStatus as 'soon' | 'open' | 'closed';
+---
+
+<div class="dinner-cta">
+  {status === 'open' && <a class="btn" href="/dinner">Request an invite</a>}
+  {status === 'soon' && (
+    <>
+      <span class="btn" aria-disabled="true">Invite requests open soon</span>
+      <a class="dinner-cta__notify" href="/#subscribe">Get notified when they open</a>
+    </>
+  )}
+  {status === 'closed' && <span class="btn" aria-disabled="true">Invite requests are closed</span>}
+</div>
+
+<style>
+  .dinner-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+  .dinner-cta__notify {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 15px;
+  }
+</style>

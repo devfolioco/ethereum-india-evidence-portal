@@ -1,0 +1,518 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/hero/Hero.astro';
+import T from '../components/T.astro';
+import DinnerCta from '../components/DinnerCta.astro';
+import site from '../content/site.json';
+import home from '../content/home.json';
+import focus from '../content/focus.json';
+import stats from '../content/stats.json';
+import segments from '../content/segments.json';
+import faq from '../content/faq.json';
+import team from '../content/team.json';
+import supporters from '../content/supporters.json';
+
+const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
+
+const allUpdates = (await getCollection('updates')).sort((a, b) => +b.data.date - +a.data.date);
+const updates = await Promise.all(
+  allUpdates.slice(0, 3).map(async (u) => ({ ...u, Content: (await render(u)).Content }))
+);
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtDate = (d: Date) =>
+  `${String(d.getUTCDate()).padStart(2, '0')} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+
+const initials = (name: string) =>
+  name.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+
+type Person = { name: string; role: string; bio?: string; photo?: string };
+type Logo = { name: string; logo: string; href?: string; line?: string };
+const people = team as Person[];
+const anchors = supporters.anchors as Logo[];
+const ecosystem = supporters.ecosystem as Logo[];
+const ECOSYSTEM_VISIBLE = 18; // three rows of six
+---
+
+<Base>
+  <Hero />
+
+  <!-- 3. Why India: the case in sourced figures -->
+  <section class="section" id="why-india" aria-labelledby="why-india-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="why-india-title">{home.whyIndia.title}</h2>
+        <T text={home.whyIndia.intro} />
+      </div>
+      <dl class="facts">
+        {stats.map((s) => (
+          <div class="facts__row">
+            <dt class="facts__value px">{s.value}</dt>
+            <dd class="facts__label">{s.label}</dd>
+            {!s.source.includes('[TODO') && <dd class="facts__source meta">{s.source}</dd>}
+          </div>
+        ))}
+      </dl>
+      {stats.some((s) => s.source.includes('[TODO')) && (
+        <div class="section__note">
+          <T text="[TODO: confirm each figure's source link and date with the report author]" />
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- 4–5. Why ETHIndia Institutional, and what it does -->
+  <section class="section" id="focus" aria-labelledby="why-us-title">
+    <div class="wrap">
+      <div class="split">
+        <h2 id="why-us-title">{home.whyUs.title}</h2>
+        <div class="split__body">
+          {home.whyUs.paragraphs.map((p) => <T text={p} />)}
+        </div>
+      </div>
+      <ul class="cols">
+        {focus.map((f) => (
+          <li>
+            <h3>{f.title}</h3>
+            <p class="cols__body">{f.body}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="section__note"><T text={home.whyUs.focusNote} /></div>
+    </div>
+  </section>
+
+  <!-- 6. The briefing -->
+  <section class="section" id="briefing" aria-labelledby="briefing-title">
+    <div class="wrap">
+      <div class="briefing">
+        <div class="briefing__intro">
+          <p class="label">{home.briefing.label}</p>
+          <h2 id="briefing-title" class="briefing__title">{home.briefing.title}</h2>
+          <T text={home.briefing.summary} />
+          <div class="btn-row">
+            <a class="btn" href={home.briefing.read.href}>{home.briefing.read.label}</a>
+            {home.briefing.pdf ? (
+              <a class="btn btn--secondary" href={home.briefing.pdf} download>Download PDF</a>
+            ) : (
+              <span class="todo">TODO: PDF file</span>
+            )}
+          </div>
+        </div>
+        <nav class="modules" aria-label="Briefing modules">
+          <ol>
+            {modules.map((m) => (
+              <li>
+                <a href={`/briefing/${m.data.letter}`}>
+                  <span class="modules__letter px" aria-hidden="true">{m.data.letter.toUpperCase()}</span>
+                  <span class="modules__title">{m.data.title}</span>
+                  <span class="modules__arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </div>
+      <div class="section__note"><T text={home.briefing.reportNote} /></div>
+    </div>
+  </section>
+
+  <!-- 7. Institutional dinner -->
+  <section class="dinner" id="dinner" aria-labelledby="dinner-title">
+    <div class="wrap dinner__inner">
+      <h2 id="dinner-title">{home.dinner.title}</h2>
+      <div class="dinner__body">
+        <ul class="dinner__details px">
+          <li>{site.dinner.date}</li>
+          <li>{site.dinner.time}</li>
+          <li>{site.dinner.place}</li>
+        </ul>
+        <p>{home.dinner.body}</p>
+        <DinnerCta />
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. Who we work with -->
+  <section class="section" aria-labelledby="segments-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="segments-title">{home.segments.title}</h2>
+      </div>
+      <ul class="cols">
+        {segments.map((s) => (
+          <li>
+            <h3 class="segments__name">{s.name}</h3>
+            {s.note && <p class="cols__body">{s.note}</p>}
+          </li>
+        ))}
+      </ul>
+      <div class="section__note"><T text={home.segments.note} /></div>
+    </div>
+  </section>
+
+  <!-- 9. Updates -->
+  {updates.length > 0 && (
+    <section class="section" id="updates" aria-labelledby="updates-title">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="updates-title">{home.updates.title}</h2>
+        </div>
+        <ol class="updates">
+          {updates.map(({ data, Content }) => (
+            <li class="updates__item">
+              <time class="px updates__date" datetime={data.date.toISOString().slice(0, 10)}>
+                {fmtDate(data.date)}
+              </time>
+              <div>
+                <h3>{data.title}</h3>
+                <div class="updates__body"><Content /></div>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )}
+
+  <!-- 10. Team (hidden until team.json has people) -->
+  {people.length > 0 && (
+    <section class="section" id="team" aria-labelledby="team-title">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="team-title">{home.team.title}</h2>
+        </div>
+        <ul class="people">
+          {people.map((p) => (
+            <li class="person">
+              {p.photo ? (
+                <img class="person__photo" src={p.photo} alt="" width="320" height="320" loading="lazy" />
+              ) : (
+                <span class="person__photo person__initials px" aria-hidden="true">{initials(p.name)}</span>
+              )}
+              <h3 class="person__name">{p.name}</h3>
+              <p class="meta">{p.role}</p>
+              {p.bio && <p class="person__bio">{p.bio}</p>}
+            </li>
+          ))}
+        </ul>
+        <div class="section__note">
+          <p class="meta">{home.team.note}</p>
+          <T text={site.emails.careers} />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- 11. Supporters (hidden until supporters.json has entries) -->
+  {(anchors.length > 0 || ecosystem.length > 0) && (
+    <section class="section" aria-labelledby="supporters-title">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="supporters-title">{home.supporters.title}</h2>
+        </div>
+        {anchors.length > 0 && (
+          <ul class="anchors">
+            {anchors.map((a) => (
+              <li>
+                <a href={a.href}><img src={a.logo} alt={a.name} loading="lazy" /></a>
+                {a.line && <p class="meta">{a.line}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+        {ecosystem.length > 0 && (
+          <>
+            <ul class="ecosystem">
+              {ecosystem.slice(0, ECOSYSTEM_VISIBLE).map((e) => (
+                <li><a href={e.href}><img src={e.logo} alt={e.name} loading="lazy" /></a></li>
+              ))}
+            </ul>
+            {ecosystem.length > ECOSYSTEM_VISIBLE && (
+              <details class="ecosystem__more">
+                <summary class="btn btn--secondary">Show all</summary>
+                <ul class="ecosystem">
+                  {ecosystem.slice(ECOSYSTEM_VISIBLE).map((e) => (
+                    <li><a href={e.href}><img src={e.logo} alt={e.name} loading="lazy" /></a></li>
+                  ))}
+                </ul>
+              </details>
+            )}
+          </>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- 12. FAQ -->
+  <section class="section" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="section__head">
+        <h2 id="faq-title">{home.faq.title}</h2>
+      </div>
+      <div class="faq">
+        {faq.map((item) => (
+          <details class="faq__item">
+            <summary>{item.q}</summary>
+            <div class="faq__answer"><T text={item.a} /></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. Stay informed -->
+  <section class="section" id="subscribe" aria-labelledby="subscribe-title">
+    <div class="wrap">
+      <div class="subscribe">
+        <h2 id="subscribe-title" class="subscribe__title">{home.newsletter.title}</h2>
+        <form class="subscribe__form" method="post" action={site.newsletterEndpoint || undefined}>
+          <div class="field">
+            <label for="subscribe-email">Work email</label>
+            <div class="field__row">
+              <input id="subscribe-email" name="email" type="email" autocomplete="email" required />
+              <button class="btn" type="submit" disabled={!site.newsletterEndpoint}>Subscribe</button>
+            </div>
+          </div>
+          <div class="consent">
+            <input id="subscribe-consent" name="consent" type="checkbox" required />
+            <label for="subscribe-consent">{home.newsletter.consent} <a href="/privacy">privacy policy</a>.</label>
+          </div>
+          {!site.newsletterEndpoint && (
+            <p class="todo">TODO: newsletter provider (Buttondown / Substack / Beehiiv). Set newsletterEndpoint in site.json.</p>
+          )}
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h3 { margin: 0; }
+
+  /* Plain columns separated by a top rule: focus areas, segments, people. */
+  .cols {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px clamp(20px, 3vw, 40px);
+  }
+  .cols > li { display: grid; align-content: start; gap: 8px; padding-top: 16px; border-top: 1px solid var(--ink); }
+  .cols__body { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+
+  /* 3. sourced figures */
+  .facts {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: clamp(24px, 5vw, 72px);
+    border-top: 1px solid var(--border);
+  }
+  .facts__row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid; /* figures share one column width */
+    row-gap: 4px;
+    align-items: baseline;
+    padding-block: clamp(16px, 2vw, 24px);
+    border-bottom: 1px solid var(--border);
+  }
+  .facts__value { white-space: nowrap; font-size: clamp(28px, 3vw, 40px); line-height: 1.1; letter-spacing: -0.02em; }
+  .facts__label { max-width: 46ch; font-size: clamp(17px, 1.4vw, 19px); }
+  .facts__source { grid-column: 2; }
+  .facts dd { margin: 0; }
+
+  .section__note { margin-top: 24px; max-width: var(--measure); }
+
+  .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
+
+  /* 4. two-column statement */
+  .split {
+    margin-bottom: clamp(40px, 5vw, 72px);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 80px);
+    align-items: start;
+  }
+  .split__body { display: grid; gap: 20px; }
+
+  /* 6. briefing panel */
+  .briefing {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(28px, 4vw, 64px);
+    padding: clamp(24px, 4vw, 56px);
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-card);
+  }
+  .briefing__intro { display: grid; align-content: start; gap: 20px; }
+  .briefing__intro .btn-row { margin-top: 8px; }
+  .briefing__title { font-size: clamp(28px, 3.2vw, 44px); }
+
+  .modules ol { border-top: 1px solid var(--border); }
+  .modules li { border-bottom: 1px solid var(--border); }
+  .modules a {
+    display: grid;
+    grid-template-columns: 2.2em 1fr auto;
+    align-items: center;
+    gap: 12px;
+    min-height: 52px;
+    padding-block: 10px;
+    text-decoration: none;
+  }
+  .modules a:hover .modules__title { text-decoration: underline; }
+  .modules__letter { font-size: 20px; }
+  .modules__title { font-size: 17px; line-height: 1.35; }
+  .modules__arrow { transition: transform 160ms var(--ease); }
+  .modules a:hover .modules__arrow { transform: translateX(4px); }
+
+  /* 7. dinner band — inverted */
+  .dinner {
+    --band-muted: #b9b5ab; /* 9:1 on --ink */
+    background: var(--ink);
+    color: var(--paper);
+    padding-block: clamp(56px, 8vw, 112px);
+  }
+  .dinner__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 80px);
+  }
+  .dinner__body { display: grid; gap: 24px; align-content: start; }
+  .dinner__details {
+    display: grid;
+    gap: 6px;
+    font-size: clamp(18px, 1.6vw, 22px);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .dinner :global(.btn) { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+  .dinner :global(.btn:hover) { background: var(--ink); color: var(--paper); }
+  .dinner :global(.btn[aria-disabled="true"]) {
+    background: transparent;
+    color: var(--band-muted);
+    border-color: var(--band-muted);
+  }
+  .dinner :global(:focus-visible) { outline-color: var(--paper); }
+  .dinner :global(a:not(.btn)) { color: var(--paper); }
+
+  /* 8. segments */
+  .segments__name { font-size: 18px; }
+
+  /* 9. updates */
+  .updates { border-top: 1px solid var(--border); max-width: 880px; }
+  .updates__item {
+    display: grid;
+    grid-template-columns: 9em 1fr;
+    gap: 8px 24px;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .updates__date { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); padding-top: 4px; }
+  .updates__body { margin-top: 6px; font-size: 16px; color: var(--ink-2); }
+
+  /* 10. team */
+  .people { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 32px 24px; }
+  .person { display: grid; gap: 6px; align-content: start; }
+  .person__photo {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    filter: grayscale(1);
+    border-radius: var(--radius-card);
+    margin-bottom: 10px;
+  }
+  .person__initials {
+    display: grid;
+    place-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-size: clamp(32px, 4vw, 48px);
+  }
+  .person__name { font-size: 18px; }
+  .person__bio { font-size: 15px; line-height: 1.5; }
+
+  /* 11. supporters */
+  .anchors { display: flex; flex-wrap: wrap; gap: 32px 56px; align-items: start; margin-bottom: 48px; }
+  .anchors img { height: 56px; width: auto; }
+  .anchors .meta { margin-top: 10px; max-width: 28ch; }
+  .ecosystem { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+  .ecosystem a {
+    display: grid;
+    place-items: center;
+    height: 72px;
+    padding: 14px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+  .ecosystem img { max-height: 32px; width: auto; filter: grayscale(1); }
+  .ecosystem__more { margin-top: 12px; }
+  .ecosystem__more summary { list-style: none; width: fit-content; margin-bottom: 12px; }
+  .ecosystem__more summary::-webkit-details-marker { display: none; }
+
+  /* 12. FAQ */
+  .faq { max-width: var(--measure); border-top: 1px solid var(--border); }
+  .faq__item { border-bottom: 1px solid var(--border); background: var(--paper); }
+  .faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 16px;
+    min-height: 44px;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary::after { content: "+"; font-family: var(--font-pixel); }
+  .faq__item[open] summary::after { content: "−"; }
+  .faq__answer { padding: 0 16px 20px; }
+
+  /* 13. newsletter */
+  .subscribe {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 80px);
+    align-items: start;
+  }
+  .subscribe__form { display: grid; gap: 16px; }
+  .field { display: grid; gap: 8px; }
+  .field label { font-size: 15px; font-weight: 500; }
+  .field__row { display: flex; gap: 10px; }
+  .field input {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 18px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    border-radius: var(--radius-pill);
+  }
+  .subscribe button[disabled] {
+    background: var(--surface);
+    color: var(--ink-2);
+    border-color: var(--border);
+    cursor: not-allowed;
+  }
+  .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+  .consent input { width: 20px; height: 20px; margin-top: 1px; flex: none; accent-color: var(--ink); }
+
+  @media (max-width: 1080px) {
+    .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ecosystem { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 860px) {
+    .split, .briefing, .dinner__inner, .subscribe { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .cols { grid-template-columns: 1fr; }
+    .facts { grid-template-columns: 1fr; }
+    .facts__source { grid-column: 1; }
+    .ecosystem { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .updates__item { grid-template-columns: 1fr; }
+    .field__row { flex-direction: column; }
+  }
+</style>

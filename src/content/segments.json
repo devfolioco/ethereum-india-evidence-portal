@@ -1,0 +1,10 @@
+[
+  { "name": "Commercial banks", "note": "" },
+  { "name": "Asset managers", "note": "" },
+  { "name": "Market infrastructure", "note": "Exchanges, depositories, clearing" },
+  { "name": "Regulators and public sector", "note": "" },
+  { "name": "NBFCs and fintechs", "note": "" },
+  { "name": "Insurers", "note": "" },
+  { "name": "Corporates and treasuries", "note": "" },
+  { "name": "GIFT City / IFSC entities", "note": "" }
+]

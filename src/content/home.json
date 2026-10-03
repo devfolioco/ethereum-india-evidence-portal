@@ -1,0 +1,50 @@
+{
+  "whyIndia": {
+    "title": "India is already tokenising. The question is on what rails.",
+    "intro": "[TODO: short intro, one or two sentences]"
+  },
+  "whyUs": {
+    "title": "A neutral front door to Ethereum, built in India.",
+    "paragraphs": [
+      "India's first tokenised bonds run on a closed ledger owned by the depositories. What comes next could be proprietary chains or public infrastructure. Institutions need someone who can explain the options without selling one.",
+      "ETHIndia has convened India's Ethereum builders since 2019 [TODO: verify year and add one proof point, e.g. hackathon scale]. ETHIndia Institutional brings that network to banks, market infrastructure and regulators."
+    ],
+    "focusNote": "[TODO: client to confirm the final list]"
+  },
+  "briefing": {
+    "label": "Report · 25 Sep 2026",
+    "title": "Tokenised settlement in India: what's live, what's legal, where Ethereum fits.",
+    "summary": "[TODO: two-line summary of the briefing]",
+    "read": {
+      "label": "Read the briefing",
+      "href": "/briefing"
+    },
+    "pdf": "",
+    "reportNote": "[TODO: confirm whether the ETHIndia Institutional Report is this briefing or a separate, later piece. If separate, add a ‘Coming soon’ card here.]"
+  },
+  "dinner": {
+    "title": "ETHIndia Institutional Dinner",
+    "body": "A closed-door dinner for senior people at Indian banks, asset managers, market infrastructure institutions and regulators, with researchers and builders. Seats are limited and each invitation is confirmed individually. The venue is shared with confirmed guests."
+  },
+  "segments": {
+    "title": "Across Indian finance",
+    "note": "[TODO: one line per segment on what they're exploring, or ship names only]"
+  },
+  "updates": {
+    "title": "Updates"
+  },
+  "team": {
+    "title": "People",
+    "note": "An ETHIndia initiative."
+  },
+  "supporters": {
+    "title": "Supported by"
+  },
+  "faq": {
+    "title": "Frequently asked questions"
+  },
+  "newsletter": {
+    "title": "Research and updates, in your inbox.",
+    "consent": "I agree to receive research and updates from ETHIndia Institutional and have read the"
+  }
+}

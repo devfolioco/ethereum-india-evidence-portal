@@ -1,0 +1,41 @@
+:root {
+  --paper: #ffffff;
+  --ink: #0a0a0a;
+  --grid: #e2e2e2;
+  --grid-size: 3.6vw;
+  --rule: #807b6f;
+  --ink-2: #4a4740;
+  --surface: #f6f5f2;
+  --border: #d6d6d6;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --gutter: clamp(20px, 5vw, 64px);
+  --nav-h: clamp(56px, 5vw, 80px);
+  --ticker-h: 32px;
+  --measure: 64ch;
+  --radius-pill: 999px;
+  --radius-card: 4px;
+
+  --font-sans: "Neue Montreal", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: "Matrix Sans", "Departure Mono", ui-monospace, monospace;
+}
+
+/* TODO: licensed font files from the ETHIndia/Devfolio team.
+   Drop Neue Montreal + Matrix Sans into /public/fonts, then uncomment,
+   and preload the two most-used weights in Base.astro.
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Medium.woff2") format("woff2");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Matrix Sans";
+  src: url("/fonts/MatrixSans-Regular.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+*/

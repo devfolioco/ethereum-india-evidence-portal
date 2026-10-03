@@ -1,0 +1,95 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import Nav from '../components/Nav.astro';
+import Ticker from '../components/Ticker.astro';
+import Footer from '../components/Footer.astro';
+import site from '../content/site.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.domain).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {/* TODO: generate /og/default.png (1200×630) in Phase 5. */}
+    <meta property="og:image" content={new URL('/og/default.png', site.domain).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="chrome" id="chrome">
+      <Nav />
+      <div class="chrome__ticker"><Ticker /></div>
+    </header>
+
+    <main id="main"><slot /></main>
+
+    <Footer />
+
+    <style is:global>
+      html { scroll-padding-top: calc(var(--nav-h) + 16px); }
+
+      .chrome {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        /* The ticker slides under the nav instead of changing height, so collapsing it
+           never moves the page (no layout shift, no scroll-anchoring feedback loop). */
+        pointer-events: none;
+      }
+      .chrome > * { pointer-events: auto; }
+      .chrome .nav { position: relative; z-index: 2; }
+
+      .chrome__ticker {
+        position: relative;
+        z-index: 1;
+        transition: transform 200ms var(--ease);
+      }
+      .chrome[data-compact] .chrome__ticker {
+        transform: translateY(-100%);
+        visibility: hidden;
+        transition: transform 200ms var(--ease), visibility 0s linear 200ms;
+      }
+    </style>
+
+    <script>
+      // Collapse the ticker while scrolling down; bring it back on scroll up.
+      const chrome = document.getElementById('chrome')!;
+      let lastY = window.scrollY;
+
+      addEventListener(
+        'scroll',
+        () => {
+          const y = window.scrollY;
+          if (y > lastY + 4 && y > 24) chrome.setAttribute('data-compact', '');
+          else if (y < lastY - 4) chrome.removeAttribute('data-compact');
+          lastY = y;
+        },
+        { passive: true }
+      );
+    </script>
+  </body>
+</html>

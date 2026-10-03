@@ -1,0 +1,20 @@
+---
+// Renders copy from content files. Any "[TODO: …]" becomes a visible placeholder;
+// a string that is only a TODO renders as a block placeholder.
+interface Props {
+  text: string;
+  as?: string;
+  class?: string;
+}
+const { text, as: Tag = 'p', class: cls } = Astro.props;
+const parts = text.split(/\[TODO:\s*([^\]]*)\]/);
+const onlyTodo = parts.length === 3 && !parts[0].trim() && !parts[2].trim();
+---
+
+{onlyTodo ? (
+  <p class:list={['todo', cls]}>TODO: {parts[1]}</p>
+) : (
+  <Tag class={cls}>
+    {parts.map((part, i) => (i % 2 ? <span class="todo todo--inline">TODO: {part}</span> : part))}
+  </Tag>
+)}
