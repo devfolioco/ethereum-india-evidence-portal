@@ -1,0 +1,76 @@
+---
+// Lets visitors pick one of the three palettes in tokens.css; the choice persists in localStorage.
+// Base.astro applies it before first paint (and honours ?palette=navy|light|dark).
+const options = [
+  ['navy', 'Navy + stone'],
+  ['light', 'All light'],
+  ['dark', 'All dark'],
+];
+---
+
+<div class="palette band" role="group" aria-label="Colour palette">
+  <span class="palette__label px" aria-hidden="true">Palette</span>
+  {options.map(([value, label]) => (
+    <button type="button" data-palette-option={value} aria-pressed="false">{label}</button>
+  ))}
+</div>
+
+<style>
+  .palette {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 6px 24px rgb(0 0 0 / 0.18);
+  }
+  .palette__label {
+    margin-right: 4px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+  }
+  .palette button {
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 14px;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+  }
+  .palette button:hover { background: var(--surface); }
+  .palette button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+  @media (max-width: 560px) {
+    .palette { left: 8px; right: 8px; bottom: 8px; justify-content: space-between; }
+    .palette__label { display: none; }
+    .palette button { flex: 1; min-height: 44px; padding-inline: 6px; }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-palette-option]')];
+
+  const sync = () => {
+    const current = root.dataset.palette || 'navy';
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.paletteOption === current)));
+  };
+
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      root.dataset.palette = b.dataset.paletteOption;
+      try { localStorage.setItem('palette', root.dataset.palette!); } catch {}
+      sync();
+      document.dispatchEvent(new Event('palettechange'));
+    })
+  );
+  sync();
+</script>

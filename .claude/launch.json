@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "eii", "runtimeExecutable": "npx", "runtimeArgs": ["astro", "dev"], "port": 4321 }
+    { "name": "eii", "runtimeExecutable": "npx", "runtimeArgs": ["astro", "dev"], "port": 4321 },
+    { "name": "eii-review", "runtimeExecutable": "npx", "runtimeArgs": ["astro", "preview", "--port", "4331"], "port": 4331 }
   ]
 }

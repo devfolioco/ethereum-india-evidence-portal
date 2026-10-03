@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import body from '../../content/briefing/_reconciliation.html?raw';
+import '../../styles/prose.css';
+---
+
+<Base
+  title="Reconciliation — ETHIndia Institutional briefing"
+  description="A cross-module audit of the briefing: where the modules disagree, which figures rest on weak sources, and where the evidence revised the working thesis."
+  type="article"
+>
+  <PageHead
+    title="Reconciliation"
+    lede="A cross-module audit: where the modules disagree, which figures rest on weak sources, and where the evidence revised the working thesis."
+    crumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Briefing', href: '/briefing' },
+      { label: 'Reconciliation', href: '/briefing/reconciliation' },
+    ]}
+  />
+
+  <section class="recon">
+    <div class="wrap">
+      <div class="panel recon__panel prose" set:html={body} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .recon { padding-block: clamp(32px, 4vw, 56px) clamp(56px, 8vw, 112px); }
+  .recon__panel { max-width: 880px; padding: clamp(22px, 4vw, 56px); }
+</style>

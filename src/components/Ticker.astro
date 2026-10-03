@@ -6,7 +6,7 @@ const items = site.ticker;
 const runs = [items, items];
 ---
 
-<div class="ticker" id="ticker">
+<div class="ticker band" id="ticker">
   <h2 class="visually-hidden">Announcements</h2>
   <button class="ticker__pause" type="button" data-ticker-pause aria-label="Pause announcements">
     <span aria-hidden="true" data-pause-glyph>❙❙</span>
@@ -33,8 +33,7 @@ const runs = [items, items];
     display: flex;
     align-items: stretch;
     height: var(--ticker-h);
-    background: var(--ink);
-    color: var(--paper);
+    border-bottom: 1px solid var(--border);
     font-family: var(--font-pixel);
     font-size: 13px;
     text-transform: uppercase;
@@ -57,19 +56,18 @@ const runs = [items, items];
   .ticker__item { display: flex; align-items: center; height: var(--ticker-h); }
   .ticker__item a { text-decoration: none; white-space: nowrap; }
   .ticker__item a:hover { text-decoration: underline; }
-  .ticker__sep { padding-inline: 1.5rem; opacity: 1; }
+  .ticker__sep { padding-inline: 1.5rem; color: var(--accent); }
 
   .ticker__pause {
     flex: none;
     width: 34px;
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--paper);
     border: 0;
-    border-right: 1px solid color-mix(in srgb, var(--paper) 30%, transparent);
+    border-right: 1px solid var(--border);
     font-size: 11px;
     cursor: pointer;
   }
-  .ticker__pause:focus-visible { outline: 2px solid var(--paper); outline-offset: -4px; }
+  .ticker__pause:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
 
   @keyframes ticker-scroll {
     from { transform: translateX(0); }

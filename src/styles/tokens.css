@@ -1,23 +1,143 @@
 :root {
-  --paper: #ffffff;
-  --ink: #0a0a0a;
-  --grid: #e2e2e2;
-  --grid-size: 3.6vw;
-  --rule: #807b6f;
-  --ink-2: #4a4740;
-  --surface: #f6f5f2;
-  --border: #d6d6d6;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --gutter: clamp(20px, 5vw, 64px);
   --nav-h: clamp(56px, 5vw, 80px);
   --ticker-h: 32px;
   --measure: 64ch;
+  --wrap: 1280px;
   --radius-pill: 999px;
   --radius-card: 4px;
 
   --font-sans: "Neue Montreal", "Inter Tight", ui-sans-serif, system-ui, sans-serif;
   --font-pixel: "Matrix Sans", "Departure Mono", ui-monospace, monospace;
 }
+
+/* ---------------------------------------------------------------------------
+   Colour. Three zones, each with the same semantic tokens:
+     page  (L-) — the default reading surface
+     deep  (D-) — nav, hero, footer           → class="deep"
+     band  (B-) — ticker, dinner band         → class="band"
+   Components only ever use the semantic names (--paper, --ink, …); a zone
+   class re-points them. Visitors pick a palette with PaletteSwitcher
+   (data-palette on <html>); navy is the default.
+   --------------------------------------------------------------------------- */
+
+/* Navy + stone (default): deep navy chrome, stone reading surfaces, brass accent. */
+:root,
+:root[data-palette="navy"] {
+  --L-scheme: light;
+  --L-paper: #f1eee6;
+  --L-panel: #f9f7f2;
+  --L-surface: #e8e3d7;
+  --L-ink: #13202f;
+  --L-ink-2: #4b5462;
+  --L-border: #d5cebf;
+  --L-rule: #8d8574;
+  --L-accent: #7a5a22;
+  --L-hairline: rgb(19 32 47 / 0.075);
+
+  --D-scheme: dark;
+  --D-paper: #0e1a2b;
+  --D-panel: #14233a;
+  --D-surface: #1a2c45;
+  --D-ink: #ede8dd;
+  --D-ink-2: #a9b2bf;
+  --D-border: #26384f;
+  --D-rule: #5a6a80;
+  --D-accent: #c9a866;
+  --D-hairline: rgb(237 232 221 / 0.06);
+
+  --B-scheme: dark;
+  --B-paper: #0e1a2b;
+  --B-panel: #14233a;
+  --B-surface: #1a2c45;
+  --B-ink: #ede8dd;
+  --B-ink-2: #a9b2bf;
+  --B-border: #2c3f58;
+  --B-rule: #5a6a80;
+  --B-accent: #c9a866;
+  --B-hairline: rgb(237 232 221 / 0.06);
+}
+
+/* All-light, tinted: stone everywhere, navy only for ticker + dinner band. */
+:root[data-palette="light"] {
+  --D-scheme: light;
+  --D-paper: #f1eee6;
+  --D-panel: #f9f7f2;
+  --D-surface: #e8e3d7;
+  --D-ink: #13202f;
+  --D-ink-2: #4b5462;
+  --D-border: #d5cebf;
+  --D-rule: #8d8574;
+  --D-accent: #7a5a22;
+  --D-hairline: rgb(19 32 47 / 0.075);
+}
+
+/* All-dark: navy-black throughout, lifted navy panels. */
+:root[data-palette="dark"] {
+  --L-scheme: dark;
+  --L-paper: #0b1420;
+  --L-panel: #111d2c;
+  --L-surface: #17263a;
+  --L-ink: #e9e5db;
+  --L-ink-2: #a7afba;
+  --L-border: #233349;
+  --L-rule: #56667c;
+  --L-accent: #c4a361;
+  --L-hairline: rgb(233 229 219 / 0.05);
+
+  --D-paper: #08101a;
+  --D-panel: #0f1a28;
+  --D-surface: #15233a;
+  --D-border: #1d2b3e;
+
+  --B-paper: #13233a;
+  --B-panel: #182a44;
+  --B-surface: #1d314d;
+  --B-border: #2c4060;
+}
+
+:root {
+  --scheme: var(--L-scheme);
+  --paper: var(--L-paper);
+  --panel: var(--L-panel);
+  --surface: var(--L-surface);
+  --ink: var(--L-ink);
+  --ink-2: var(--L-ink-2);
+  --border: var(--L-border);
+  --rule: var(--L-rule);
+  --accent: var(--L-accent);
+  --hairline: var(--L-hairline);
+}
+
+.deep {
+  --scheme: var(--D-scheme);
+  --paper: var(--D-paper);
+  --panel: var(--D-panel);
+  --surface: var(--D-surface);
+  --ink: var(--D-ink);
+  --ink-2: var(--D-ink-2);
+  --border: var(--D-border);
+  --rule: var(--D-rule);
+  --accent: var(--D-accent);
+  --hairline: var(--D-hairline);
+}
+
+.band {
+  --scheme: var(--B-scheme);
+  --paper: var(--B-paper);
+  --panel: var(--B-panel);
+  --surface: var(--B-surface);
+  --ink: var(--B-ink);
+  --ink-2: var(--B-ink-2);
+  --border: var(--B-border);
+  --rule: var(--B-rule);
+  --accent: var(--B-accent);
+  --hairline: var(--B-hairline);
+}
+
+:root, .deep, .band { color-scheme: var(--scheme); }
+.deep, .band { background-color: var(--paper); color: var(--ink); }
 
 /* TODO: licensed font files from the ETHIndia/Devfolio team.
    Drop Neue Montreal + Matrix Sans into /public/fonts, then uncomment,

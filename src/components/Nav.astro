@@ -4,9 +4,10 @@ import team from '../content/team.json';
 
 // The Team section is hidden while team.json is empty, so its link is too.
 const nav = site.nav.filter((l) => l.href !== '/#team' || team.length);
+const path = Astro.url.pathname;
 ---
 
-<nav class="nav" aria-label="Primary">
+<nav class="nav deep" aria-label="Primary">
   <div class="nav__inner">
     <a class="nav__logo" href="/">
       {/* TODO: /logo/ethindia-institutional.svg — Arko supplies the final mark. */}
@@ -20,7 +21,7 @@ const nav = site.nav.filter((l) => l.href !== '/#team' || team.length);
 
     <ul class="nav__links" id="nav-menu">
       {nav.map((link) => (
-        <li><a href={link.href} data-nav-link>{link.label}</a></li>
+        <li><a href={link.href} data-nav-link aria-current={!link.href.includes("#") && path.startsWith(link.href) ? "page" : undefined}>{link.label}</a></li>
       ))}
       <li class="nav__links-cta">
         <a class="btn" href={site.cta.href}>{site.cta.label}</a>
@@ -32,7 +33,7 @@ const nav = site.nav.filter((l) => l.href !== '/#team' || team.length);
 </nav>
 
 <style>
-  .nav { background: var(--paper); border-bottom: 1px solid var(--border); }
+  .nav { border-bottom: 1px solid var(--border); }
 
   .nav__inner {
     position: relative;
@@ -65,7 +66,7 @@ const nav = site.nav.filter((l) => l.href !== '/#team' || team.length);
     padding-block: 11px;
   }
   .nav__links a:hover { color: var(--ink); }
-  .nav__links a[aria-current="true"] { color: var(--ink); font-weight: 500; }
+  .nav__links a[aria-current] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 8px; }
   .nav__links-cta { display: none; }
 
   .nav__cta { padding-inline: 18px; }

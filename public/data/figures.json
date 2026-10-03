@@ -1,0 +1,2262 @@
+{
+  "meta": {
+    "generated": "2026-09-15",
+    "note": "Figures older than the staleness cutoff and not HISTORICAL or CURRENT are flagged STALE. The cutoff is derived as six months before meta.generated (see stalenessCutoff() in assets/ledger-core.js), so it moves with every rebuild instead of drifting. Set meta.staleness_cutoff explicitly only to override. Fuzzy vintages approximated: FYxx -> Mar 31 of that FY; 'Qn yyyy' -> quarter-end; bare year -> Dec 31; 'current'/statute -> CURRENT (never stale).",
+    "flag_legend": {
+      "WEAK_TIER": "Sole source is T4/T5 (or T3/T4 with no primary) - cannot stand alone for a volume/adoption/performance figure",
+      "STALE": "Older than staleness_cutoff, non-historical, non-evergreen - re-pull before external use",
+      "HISTORICAL": "Old but stable fact - do not amber-flag",
+      "CURRENT": "Evergreen statute/rate - never stale",
+      "CONFLICT": "Another module gave a different number for the same quantity - see reconciliation",
+      "UNVERIFIED": "T5-only, flagged in-text - source or remove before external use",
+      "DERIVED": "Conversion or price-inflated valuation, not a mobilisable/measured base",
+      "VAGUE": "Figure stated imprecisely by the source",
+      "DUP": "Duplicate of another row"
+    },
+    "tier_legend": {
+      "T1": "Primary - regulator/statute/filing/on-chain",
+      "T2": "Named data provider - RWA.xyz, DefiLlama, World Bank, etc.",
+      "T3": "Tier-1 financial press",
+      "T4": "Company blog / press release - promotional",
+      "T5": "Crypto media / aggregator - leads only"
+    }
+  },
+  "figures": [
+    {
+      "id": 1,
+      "module": "A",
+      "claim": "JPMorgan Kinexys daily volume",
+      "figure": ">5",
+      "unit": "$bn/day",
+      "as_of": "Dec 2025",
+      "as_of_sort": "2025-12-01",
+      "source": "JPMorgan (Arif Khan)",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 2,
+      "module": "A",
+      "claim": "Kinexys cumulative volume",
+      "figure": ">3",
+      "unit": "$tn",
+      "as_of": "Dec 2025",
+      "as_of_sort": "2025-12-01",
+      "source": "JPMorgan",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 3,
+      "module": "A",
+      "claim": "Kinexys average daily volume (later)",
+      "figure": "~7",
+      "unit": "$bn/day",
+      "as_of": "Apr 2026",
+      "as_of_sort": "2026-04-01",
+      "source": "American Banker / PYMNTS",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 4,
+      "module": "A",
+      "claim": "J.P. Morgan total payments per day",
+      "figure": ">10",
+      "unit": "$tn/day",
+      "as_of": "2025",
+      "as_of_sort": "2025-12-31",
+      "source": "American Banker",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 5,
+      "module": "A",
+      "claim": "BlackRock BUIDL AUM",
+      "figure": "1.7-2.9",
+      "unit": "$bn",
+      "as_of": "2025-26",
+      "as_of_sort": "2026-06-01",
+      "source": "RWA.xyz / Yahoo Finance",
+      "tier": "T2/T3",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 6,
+      "module": "A",
+      "claim": "BUIDL cumulative dividends",
+      "figure": "~100",
+      "unit": "$m",
+      "as_of": "Dec 2025",
+      "as_of_sort": "2025-12-30",
+      "source": "Messari",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 7,
+      "module": "A",
+      "claim": "BUIDL networks",
+      "figure": "9",
+      "unit": "chains",
+      "as_of": "Nov 2025",
+      "as_of_sort": "2025-11-14",
+      "source": "Securitize",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 8,
+      "module": "A",
+      "claim": "BENJI/FOBXX suite AUM",
+      "figure": "1.98",
+      "unit": "$bn",
+      "as_of": "29 Apr 2026",
+      "as_of_sort": "2026-04-29",
+      "source": "Stellar / Franklin",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 9,
+      "module": "A",
+      "claim": "FOBXX AUM",
+      "figure": "~742-828",
+      "unit": "$m",
+      "as_of": "Q1 2026",
+      "as_of_sort": "2026-03-31",
+      "source": "Stellar press",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 10,
+      "module": "A",
+      "claim": "BENJI 7-day effective yield",
+      "figure": "3.58",
+      "unit": "%",
+      "as_of": "8 Apr 2026",
+      "as_of_sort": "2026-04-08",
+      "source": "aggregator",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 11,
+      "module": "A",
+      "claim": "WisdomTree WTGXX AUM",
+      "figure": "~764.9",
+      "unit": "$m",
+      "as_of": "2026 (cut)",
+      "as_of_sort": "2026-06-01",
+      "source": "KuCoin / RWA.xyz",
+      "tier": "T5/T2",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 12,
+      "module": "A",
+      "claim": "Citi Token Services volume",
+      "figure": "billions since 2024",
+      "unit": "$",
+      "as_of": "2024-25",
+      "as_of_sort": "2025-06-01",
+      "source": "Citi",
+      "tier": "T1",
+      "flags": [
+        "VAGUE"
+      ]
+    },
+    {
+      "id": 13,
+      "module": "A",
+      "claim": "HSBC Gold Token traded value",
+      "figure": ">1",
+      "unit": "$bn",
+      "as_of": "2024-26",
+      "as_of_sort": "2026-01-01",
+      "source": "HSBC",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 14,
+      "module": "A",
+      "claim": "Broadridge DLR monthly settlement",
+      "figure": "8.0",
+      "unit": "$tn",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-31",
+      "source": "Broadridge",
+      "tier": "T1/T4",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 15,
+      "module": "A",
+      "claim": "Broadridge DLR average daily volume",
+      "figure": "~365",
+      "unit": "$bn/day",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-31",
+      "source": "Broadridge",
+      "tier": "T1/T4",
+      "flags": []
+    },
+    {
+      "id": 16,
+      "module": "A",
+      "claim": "Stablecoin total market cap",
+      "figure": "~316",
+      "unit": "$bn",
+      "as_of": "12 Jun 2026",
+      "as_of_sort": "2026-06-12",
+      "source": "DefiLlama",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 17,
+      "module": "A",
+      "claim": "USDT market cap / share",
+      "figure": "~187 / 59",
+      "unit": "$bn / %",
+      "as_of": "12 Jun 2026",
+      "as_of_sort": "2026-06-12",
+      "source": "DefiLlama",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 18,
+      "module": "A",
+      "claim": "USDC market cap / share",
+      "figure": "~75 / 24",
+      "unit": "$bn / %",
+      "as_of": "12 Jun 2026",
+      "as_of_sort": "2026-06-12",
+      "source": "DefiLlama",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 19,
+      "module": "A",
+      "claim": "PYUSD peak then contraction",
+      "figure": "~4.2 -> ~2.7-2.9",
+      "unit": "$bn",
+      "as_of": "Mar-mid 2026",
+      "as_of_sort": "2026-06-01",
+      "source": "DefiLlama / CoinDesk",
+      "tier": "T2/T3",
+      "flags": []
+    },
+    {
+      "id": 20,
+      "module": "A",
+      "claim": "Visa stablecoin settlement run-rate",
+      "figure": "7",
+      "unit": "$bn annualised",
+      "as_of": "Apr 2026",
+      "as_of_sort": "2026-04-29",
+      "source": "Visa",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 21,
+      "module": "A",
+      "claim": "Visa stablecoin settlement run-rate (earlier)",
+      "figure": "~3.5",
+      "unit": "$bn annualised",
+      "as_of": "30 Nov 2025",
+      "as_of_sort": "2025-11-30",
+      "source": "Visa",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 22,
+      "module": "A",
+      "claim": "Stripe/Bridge acquisition price",
+      "figure": "1.1",
+      "unit": "$bn",
+      "as_of": "closed Feb 2025",
+      "as_of_sort": "2025-02-01",
+      "source": "CoinDesk",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 23,
+      "module": "A",
+      "claim": "Tempo raise / valuation",
+      "figure": "500 at 5000",
+      "unit": "$m at $m val",
+      "as_of": "Oct 2025",
+      "as_of_sort": "2025-10-01",
+      "source": "Ledger Insights",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 24,
+      "module": "A",
+      "claim": "Ethereum tokenised RWA (absolute)",
+      "figure": "~17.3",
+      "unit": "$bn / 2,090 RWAs",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 25,
+      "module": "A",
+      "claim": "Total tokenised RWA ex-stablecoins",
+      "figure": "~33.5",
+      "unit": "$bn",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 26,
+      "module": "A",
+      "claim": "Ethereum share of tokenised RWA value",
+      "figure": "58-63 (34 low, 68 outlier)",
+      "unit": "%",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "yellow.com / The Block",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER",
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 27,
+      "module": "A",
+      "claim": "Tokenised Treasuries on Ethereum",
+      "figure": "~7.1 of ~34.67",
+      "unit": "$bn",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 28,
+      "module": "A",
+      "claim": "Tokenised equity: BNB Chain vs Ethereum",
+      "figure": "1.2 vs ~0.8",
+      "unit": "$bn",
+      "as_of": "31 Aug 2026",
+      "as_of_sort": "2026-08-31",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 29,
+      "module": "A",
+      "claim": "we.trade losses vs revenue",
+      "figure": ">8 loss on ~4 rev",
+      "unit": "$m",
+      "as_of": "2020",
+      "as_of_sort": "2020-12-31",
+      "source": "S&P Global / Ledger Insights",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 30,
+      "module": "A",
+      "claim": "Marco Polo cumulative losses",
+      "figure": "~85",
+      "unit": "$m",
+      "as_of": "by 2021",
+      "as_of_sort": "2021-12-31",
+      "source": "Ledger Insights / Irish Times",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 31,
+      "module": "A",
+      "claim": "ASX CHESS replacement write-off",
+      "figure": "245-255 (~US$165m)",
+      "unit": "A$m",
+      "as_of": "Nov 2022",
+      "as_of_sort": "2022-11-01",
+      "source": "Finextra / iTnews",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 32,
+      "module": "A",
+      "claim": "ASX CHESS software completion",
+      "figure": "~63",
+      "unit": "%",
+      "as_of": "2022",
+      "as_of_sort": "2022-11-01",
+      "source": "ASIC / press",
+      "tier": "T1/T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 33,
+      "module": "A",
+      "claim": "IBBIC investment",
+      "figure": "5/bank, ~90 total (~$10-12m)",
+      "unit": "Rs cr",
+      "as_of": "Jun 2021",
+      "as_of_sort": "2021-06-01",
+      "source": "Ledger Insights / ET",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 34,
+      "module": "A",
+      "claim": "IBBIC LC processing time reduction",
+      "figure": "~75 (8-9d -> 2-3d)",
+      "unit": "%",
+      "as_of": "n/a",
+      "as_of_sort": null,
+      "source": "crypto media",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER",
+        "UNVERIFIED"
+      ]
+    },
+    {
+      "id": 35,
+      "module": "B",
+      "claim": "SEBI DLT covenant system - issuers onboarded",
+      "figure": "4,291",
+      "unit": "issuers",
+      "as_of": "FY25",
+      "as_of_sort": "2025-03-31",
+      "source": "Cognizant case study",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 36,
+      "module": "B",
+      "claim": "SEBI DLT - secured ISINs mapped",
+      "figure": "6,368 (~90)",
+      "unit": "ISINs / %",
+      "as_of": "FY25",
+      "as_of_sort": "2025-03-31",
+      "source": "Cognizant",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 37,
+      "module": "B",
+      "claim": "SEBI DLT - trustee-approved ISINs",
+      "figure": "6,366 (>95)",
+      "unit": "ISINs / %",
+      "as_of": "FY25",
+      "as_of_sort": "2025-03-31",
+      "source": "Cognizant",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 38,
+      "module": "B",
+      "claim": "NSDL registered issuers",
+      "figure": "79,773 (6,287 listed)",
+      "unit": "issuers",
+      "as_of": "31 Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "NSDL RHP",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 39,
+      "module": "B",
+      "claim": "e-Rupee in circulation",
+      "figure": "1,016.5 (~$115m)",
+      "unit": "Rs cr",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "RBI Annual Report",
+      "tier": "T1",
+      "flags": [
+        "STALE",
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 40,
+      "module": "B",
+      "claim": "e-Rupee in circulation FY26 (declined)",
+      "figure": "771.7 (-24%)",
+      "unit": "Rs cr",
+      "as_of": "Mar 2026",
+      "as_of_sort": "2026-03-31",
+      "source": "RBI Annual Report FY26",
+      "tier": "T1",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 41,
+      "module": "B",
+      "claim": "e-Rupee retail users / banks",
+      "figure": "~6m / 17",
+      "unit": "users / banks",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "RBI Annual Report",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 42,
+      "module": "B",
+      "claim": "e-Rupee retail cumulative transactions",
+      "figure": "~120m / >28,000",
+      "unit": "txns / Rs cr",
+      "as_of": "5 Dec 2025",
+      "as_of_sort": "2025-12-05",
+      "source": "Dep. Governor speech",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 43,
+      "module": "B",
+      "claim": "e-Rupee users / transactions (mid-2026)",
+      "figure": "~12m / >175m / ~400",
+      "unit": "users / txns / Rs bn",
+      "as_of": "2 Jul 2026",
+      "as_of_sort": "2026-07-02",
+      "source": "Governor speech",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 44,
+      "module": "B",
+      "claim": "Binance FIU-IND penalty",
+      "figure": "18.82 (~$2.25m)",
+      "unit": "Rs cr",
+      "as_of": "Jun 2024",
+      "as_of_sort": "2024-06-01",
+      "source": "press",
+      "tier": "T3/T4",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 45,
+      "module": "B",
+      "claim": "VDA tax rate",
+      "figure": "30 + 4 cess",
+      "unit": "%",
+      "as_of": "current",
+      "as_of_sort": null,
+      "source": "Income-tax Act s.115BBH",
+      "tier": "T1",
+      "flags": [
+        "CURRENT"
+      ]
+    },
+    {
+      "id": 46,
+      "module": "B",
+      "claim": "VDA TDS",
+      "figure": "1 above 10k (50k specified)",
+      "unit": "% / Rs",
+      "as_of": "current",
+      "as_of_sort": null,
+      "source": "Income-tax Act s.194S",
+      "tier": "T1",
+      "flags": [
+        "CURRENT"
+      ]
+    },
+    {
+      "id": 47,
+      "module": "B",
+      "claim": "DPDP Act maximum penalty",
+      "figure": "250 per contravention",
+      "unit": "Rs cr",
+      "as_of": "2023",
+      "as_of_sort": null,
+      "source": "DPDP Act 2023 s.33",
+      "tier": "T1",
+      "flags": [
+        "CURRENT"
+      ]
+    },
+    {
+      "id": 48,
+      "module": "B",
+      "claim": "GST on crypto platform services",
+      "figure": "18",
+      "unit": "%",
+      "as_of": "~Jul 2025",
+      "as_of_sort": "2025-07-01",
+      "source": "advisory blogs",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER",
+        "UNVERIFIED"
+      ]
+    },
+    {
+      "id": 49,
+      "module": "B",
+      "claim": "GST rate deliberated (not enacted)",
+      "figure": "28",
+      "unit": "%",
+      "as_of": "2022",
+      "as_of_sort": "2022-12-31",
+      "source": "Business Standard",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 50,
+      "module": "B",
+      "claim": "GIFT City real-estate tokenisation deal",
+      "figure": "~7 / 150k min",
+      "unit": "$m / $",
+      "as_of": "n/a",
+      "as_of_sort": null,
+      "source": "CoinGeek",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER",
+        "UNVERIFIED"
+      ]
+    },
+    {
+      "id": 51,
+      "module": "B",
+      "claim": "IFSCA RWA tokenisation consultation paper",
+      "figure": "1",
+      "unit": "paper",
+      "as_of": "26 Feb 2025",
+      "as_of_sort": "2025-02-26",
+      "source": "IFSCA",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 52,
+      "module": "B",
+      "claim": "UK Digital Securities Sandbox duration",
+      "figure": "5 from 8 Jan 2024",
+      "unit": "years",
+      "as_of": "2024",
+      "as_of_sort": "2024-01-08",
+      "source": "Bank of England / FCA",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 53,
+      "module": "B",
+      "claim": "EU DLT Pilot Regime derogation cap",
+      "figure": "up to 6",
+      "unit": "years",
+      "as_of": "Reg 2022/858",
+      "as_of_sort": "2022-06-01",
+      "source": "EU Regulation 2022/858",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 54,
+      "module": "C",
+      "claim": "Corporate bonds outstanding",
+      "figure": "53.6 lakh",
+      "unit": "Rs cr",
+      "as_of": "FY25",
+      "as_of_sort": "2025-03-31",
+      "source": "RBI FSR / NITI Aayog",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 55,
+      "module": "C",
+      "claim": "Corporate bond fresh issuance",
+      "figure": "9.9 lakh",
+      "unit": "Rs cr",
+      "as_of": "FY25",
+      "as_of_sort": "2025-03-31",
+      "source": "NITI Aayog",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 56,
+      "module": "C",
+      "claim": "Corporate bond daily secondary turnover",
+      "figure": "7,645/day (3.8%/mo)",
+      "unit": "Rs cr",
+      "as_of": "FY25",
+      "as_of_sort": "2025-03-31",
+      "source": "RBI Annual Report / FSR",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 57,
+      "module": "C",
+      "claim": "G-sec annual settlement value",
+      "figure": "1,812 lakh",
+      "unit": "Rs cr",
+      "as_of": "2024",
+      "as_of_sort": "2024-12-31",
+      "source": "RBI Payment Systems Report",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 58,
+      "module": "C",
+      "claim": "CCIL weekly market repo",
+      "figure": "8.4 lakh/wk",
+      "unit": "Rs cr",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "CCIL",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 59,
+      "module": "C",
+      "claim": "RTGS annual settlement value",
+      "figure": "1,938 lakh (~7.75L/day)",
+      "unit": "Rs cr",
+      "as_of": "CY2024",
+      "as_of_sort": "2024-12-31",
+      "source": "RBI Payment Systems Report",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 60,
+      "module": "C",
+      "claim": "Inward remittances",
+      "figure": "129",
+      "unit": "US$bn",
+      "as_of": "2024",
+      "as_of_sort": "2024-12-31",
+      "source": "World Bank",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 61,
+      "module": "C",
+      "claim": "Remittances (RBI, FY25)",
+      "figure": "135.46",
+      "unit": "US$bn",
+      "as_of": "FY25",
+      "as_of_sort": "2025-03-31",
+      "source": "RBI / PIB",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 62,
+      "module": "C",
+      "claim": "Remittance cost to India (banks channel)",
+      "figure": "<6 (banks 12.66)",
+      "unit": "%",
+      "as_of": "Q1 2024",
+      "as_of_sort": "2024-03-31",
+      "source": "World Bank RPW Issue 49",
+      "tier": "T2",
+      "flags": [
+        "CONFLICT",
+        "STALE"
+      ]
+    },
+    {
+      "id": 63,
+      "module": "C",
+      "claim": "MSME credit gap",
+      "figure": "25 lakh",
+      "unit": "Rs cr",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "Deloitte",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 64,
+      "module": "C",
+      "claim": "MSMEs with formal credit access",
+      "figure": "14",
+      "unit": "%",
+      "as_of": "Jun 2026",
+      "as_of_sort": "2026-06-27",
+      "source": "Deloitte",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 65,
+      "module": "C",
+      "claim": "TReDS discounting",
+      "figure": "3.47 lakh",
+      "unit": "Rs cr",
+      "as_of": "FY26",
+      "as_of_sort": "2026-03-31",
+      "source": "PIB / Min. MSME",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 66,
+      "module": "C",
+      "claim": "Mutual fund AUM",
+      "figure": "65.74 lakh (May26: 81.58)",
+      "unit": "Rs cr",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "AMFI",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 67,
+      "module": "C",
+      "claim": "AIF commitments",
+      "figure": "13.49 lakh (Dec25: 15.74)",
+      "unit": "Rs cr",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "SEBI / IVCA-Crisil",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 68,
+      "module": "C",
+      "claim": "Private credit (AIF Cat II subset)",
+      "figure": "~1.95 lakh",
+      "unit": "Rs cr",
+      "as_of": "Dec 2024",
+      "as_of_sort": "2024-12-31",
+      "source": "Treelife / IBEF citing SEBI",
+      "tier": "T2/T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 69,
+      "module": "C",
+      "claim": "NPS + APY AUM",
+      "figure": "16.55 lakh",
+      "unit": "Rs cr",
+      "as_of": "29 Mar 2026",
+      "as_of_sort": "2026-03-29",
+      "source": "PFRDA",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 70,
+      "module": "C",
+      "claim": "EPFO corpus",
+      "figure": "~31.2 lakh",
+      "unit": "Rs cr",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-27",
+      "source": "Avendus / Business Today",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 71,
+      "module": "C",
+      "claim": "Trade finance covered vs required",
+      "figure": "28.5 of 284",
+      "unit": "% of US$bn",
+      "as_of": "2025",
+      "as_of_sort": "2025-12-31",
+      "source": "ADB / DGFT",
+      "tier": "T1/T2",
+      "flags": []
+    },
+    {
+      "id": 72,
+      "module": "C",
+      "claim": "Household gold (stock; MS valuation)",
+      "figure": "~25,000t (MS 34,600t / $3.79tn)",
+      "unit": "tonnes / $tn",
+      "as_of": "2024-25",
+      "as_of_sort": "2025-06-01",
+      "source": "WGC / HSBC; Morgan Stanley",
+      "tier": "T2/T3",
+      "flags": [
+        "DERIVED"
+      ]
+    },
+    {
+      "id": 73,
+      "module": "C",
+      "claim": "IEPF unclaimed dividend corpus",
+      "figure": "~5,262",
+      "unit": "Rs cr",
+      "as_of": "FY22",
+      "as_of_sort": "2022-03-31",
+      "source": "IEPFA",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 74,
+      "module": "C",
+      "claim": "IEPF refunded over two years",
+      "figure": "77.82 / 4.36cr shares / 75,417 claims",
+      "unit": "Rs cr",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-01",
+      "source": "IEPFA / Parliament",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 75,
+      "module": "C",
+      "claim": "PNB-Nirav Modi fraud",
+      "figure": "14,356.84 (~$2.1bn)",
+      "unit": "Rs cr",
+      "as_of": "reported May 2018",
+      "as_of_sort": "2018-05-18",
+      "source": "Wikipedia / Finowings",
+      "tier": "T5/T3",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 76,
+      "module": "C",
+      "claim": "eBG issuance time reduction (vendor)",
+      "figure": "3-5 days -> 2-4 hrs",
+      "unit": "time",
+      "as_of": "n/a",
+      "as_of_sort": null,
+      "source": "NeSL",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 77,
+      "module": "C",
+      "claim": "TREP daily average",
+      "figure": "~4.3 lakh",
+      "unit": "Rs cr",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-31",
+      "source": "CCIL",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 78,
+      "module": "C",
+      "claim": "e-Rupee-W pilot-week volume",
+      "figure": "287.5-572.5/day",
+      "unit": "Rs cr",
+      "as_of": "Nov 2022",
+      "as_of_sort": "2022-11-01",
+      "source": "CCIL / Business Standard",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 79,
+      "module": "C",
+      "claim": "FX rate used (Module C)",
+      "figure": "95.45",
+      "unit": "Rs/USD",
+      "as_of": "31 Aug 2026",
+      "as_of_sort": "2026-08-31",
+      "source": "CEIC / RBI",
+      "tier": "T2",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 80,
+      "module": "D",
+      "claim": "Ethereum uptime (no chain halt)",
+      "figure": "0 halts since 30 Jul 2015",
+      "unit": "halts",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "ethereumuptime.com",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 81,
+      "module": "D",
+      "claim": "Solana network outages",
+      "figure": ">=11 (2020-24)",
+      "unit": "outages",
+      "as_of": "2024",
+      "as_of_sort": "2024-02-06",
+      "source": "Helius / MEXC",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 82,
+      "module": "D",
+      "claim": "Ethereum average transaction fee",
+      "figure": "~0.16-0.22",
+      "unit": "$/tx",
+      "as_of": "Mar 2026",
+      "as_of_sort": "2026-03-01",
+      "source": "CoinLaw",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 83,
+      "module": "D",
+      "claim": "Ethereum economic finality",
+      "figure": "~12.8 (2 epochs)",
+      "unit": "minutes",
+      "as_of": "2026",
+      "as_of_sort": "2026-01-01",
+      "source": "ethereum.org",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 84,
+      "module": "D",
+      "claim": "Broadridge DLR monthly (Jan/Mar/Jun)",
+      "figure": "7.3 / 8.0 / 7.5",
+      "unit": "$tn",
+      "as_of": "2026",
+      "as_of_sort": "2026-06-01",
+      "source": "Broadridge",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 85,
+      "module": "D",
+      "claim": "Canton represented asset value",
+      "figure": "~344.8",
+      "unit": "$bn",
+      "as_of": "12 May 2026",
+      "as_of_sort": "2026-05-12",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 86,
+      "module": "D",
+      "claim": "Canton public TVL",
+      "figure": "~961",
+      "unit": "$k",
+      "as_of": "Jun 2026",
+      "as_of_sort": "2026-06-01",
+      "source": "DefiLlama",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 87,
+      "module": "D",
+      "claim": "Cross-chain bridge hacks 2022",
+      "figure": "2 / 13 hacks / 69",
+      "unit": "$bn / count / %",
+      "as_of": "2022",
+      "as_of_sort": "2022-08-02",
+      "source": "Chainalysis",
+      "tier": "T2",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 88,
+      "module": "D",
+      "claim": "Crypto theft total 2025",
+      "figure": ">3.4",
+      "unit": "$bn",
+      "as_of": "Dec 2025",
+      "as_of_sort": "2025-12-18",
+      "source": "Chainalysis",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 89,
+      "module": "D",
+      "claim": "DPRK-linked theft 2025",
+      "figure": "2.02",
+      "unit": "$bn",
+      "as_of": "Dec 2025",
+      "as_of_sort": "2025-12-18",
+      "source": "Chainalysis",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 90,
+      "module": "D",
+      "claim": "India share of global Web3 developers",
+      "figure": "15.2",
+      "unit": "%",
+      "as_of": "Mar 2026",
+      "as_of_sort": "2026-03-01",
+      "source": "Hashed Emergent",
+      "tier": "T3/T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 91,
+      "module": "D",
+      "claim": "India new-developer onboarding 2024",
+      "figure": "17 of 39,148",
+      "unit": "%",
+      "as_of": "2024",
+      "as_of_sort": "2024-12-31",
+      "source": "Electric Capital",
+      "tier": "T2",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 92,
+      "module": "D",
+      "claim": "UPI monthly volume (Module D)",
+      "figure": "24.51bn / 29.82 lakh",
+      "unit": "txns / Rs cr",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-31",
+      "source": "NPCI",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 93,
+      "module": "D",
+      "claim": "Arbitrum RWA value / holders",
+      "figure": "~0.85 / 10,713",
+      "unit": "$bn / holders",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 94,
+      "module": "D",
+      "claim": "ZKsync RWA value / holders",
+      "figure": "~0.96 / 266",
+      "unit": "$bn / holders",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 95,
+      "module": "D",
+      "claim": "Solana RWA value / holders",
+      "figure": "~4.1 / 357k",
+      "unit": "$bn / holders",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 96,
+      "module": "D",
+      "claim": "Solana share of tokenised-equity volume",
+      "figure": "97",
+      "unit": "%",
+      "as_of": "Q2 2026",
+      "as_of_sort": "2026-06-30",
+      "source": "Blockworks",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 97,
+      "module": "D",
+      "claim": "Avalanche RWA value",
+      "figure": "~1.7",
+      "unit": "$bn",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 98,
+      "module": "D",
+      "claim": "Stellar RWA value",
+      "figure": "~3.3",
+      "unit": "$bn",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-01",
+      "source": "RWA.xyz",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 99,
+      "module": "D",
+      "claim": "Digital Asset funding rounds",
+      "figure": "~135 (2025) / ~300 at ~2,000 (2026)",
+      "unit": "$m / val",
+      "as_of": "2025-26",
+      "as_of_sort": "2026-01-01",
+      "source": "CoinDesk",
+      "tier": "T3",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 100,
+      "module": "F",
+      "claim": "Bybit hack (ETH)",
+      "figure": "1.5",
+      "unit": "$bn",
+      "as_of": "Feb 2025",
+      "as_of_sort": "2025-02-01",
+      "source": "Chainalysis",
+      "tier": "T2",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 101,
+      "module": "F",
+      "claim": "Crypto scams / fraud 2025",
+      "figure": "~17 (>=14 on-chain)",
+      "unit": "$bn",
+      "as_of": "13 Jan 2026",
+      "as_of_sort": "2026-01-13",
+      "source": "Chainalysis",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 102,
+      "module": "F",
+      "claim": "Impersonation scam YoY growth",
+      "figure": "1,400",
+      "unit": "%",
+      "as_of": "2025",
+      "as_of_sort": "2025-12-31",
+      "source": "Chainalysis",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 103,
+      "module": "F",
+      "claim": "DeFi protocol losses 2025 (vs 2022)",
+      "figure": "680 (-74%)",
+      "unit": "$m",
+      "as_of": "Jan 2026",
+      "as_of_sort": "2026-01-01",
+      "source": "Immunefi",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 104,
+      "module": "F",
+      "claim": "Personal-wallet compromise 2025",
+      "figure": "158,000 / 713",
+      "unit": "cases / $m",
+      "as_of": "2025",
+      "as_of_sort": "2025-12-18",
+      "source": "Chainalysis",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 105,
+      "module": "F",
+      "claim": "Stablecoin market cap (Module E)",
+      "figure": "314.68 / 382 coins",
+      "unit": "$bn",
+      "as_of": "21 Jun 2026",
+      "as_of_sort": "2026-06-21",
+      "source": "DefiLlama",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 106,
+      "module": "F",
+      "claim": "Stablecoin market cap all-time high",
+      "figure": "322.4",
+      "unit": "$bn",
+      "as_of": "17 May 2026",
+      "as_of_sort": "2026-05-17",
+      "source": "DefiLlama",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 107,
+      "module": "F",
+      "claim": "On-chain insurance active coverage",
+      "figure": "130.2 (-20.2%), ~0.9% of losses",
+      "unit": "$m",
+      "as_of": "27 Aug 2026",
+      "as_of_sort": "2026-08-27",
+      "source": "CoinGecko",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 108,
+      "module": "F",
+      "claim": "Uninsured share of crypto holders",
+      "figure": "89 (11 insured)",
+      "unit": "%",
+      "as_of": "2024",
+      "as_of_sort": "2024-12-31",
+      "source": "GlobalData",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 109,
+      "module": "F",
+      "claim": "DeFi exploits count Q2 2026",
+      "figure": "99 (record)",
+      "unit": "exploits",
+      "as_of": "Q2 2026",
+      "as_of_sort": "2026-06-30",
+      "source": "DefiLlama",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 110,
+      "module": "F",
+      "claim": "Marsh crypto insurance facility",
+      "figure": "825 Lloyd's-backed",
+      "unit": "$m",
+      "as_of": "Mar 2024",
+      "as_of_sort": "2024-03-01",
+      "source": "Marsh",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 111,
+      "module": "F",
+      "claim": "FATF Rec.15 non/partial compliance",
+      "figure": "65 (43 partial, 22 non)",
+      "unit": "%",
+      "as_of": "Apr 2026",
+      "as_of_sort": "2026-04-01",
+      "source": "FATF",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 112,
+      "module": "F",
+      "claim": "Account Aggregator linked accounts",
+      "figure": "326.30m",
+      "unit": "cumulative",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-01",
+      "source": "Sahamati",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 113,
+      "module": "F",
+      "claim": "Account Aggregator fulfilled consents",
+      "figure": "538.32m",
+      "unit": "cumulative",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-01",
+      "source": "Sahamati",
+      "tier": "T2",
+      "flags": []
+    },
+    {
+      "id": 114,
+      "module": "F",
+      "claim": "AA enabled-to-linked conversion",
+      "figure": "<10 (284.6m of 2.88bn)",
+      "unit": "%",
+      "as_of": "Mar 2026",
+      "as_of_sort": "2026-03-01",
+      "source": "Sahamati / IMPRI",
+      "tier": "T2/T3",
+      "flags": []
+    },
+    {
+      "id": 115,
+      "module": "G",
+      "claim": "NSDL commenced operations",
+      "figure": "20 Nov 1996",
+      "unit": "date",
+      "as_of": "1996",
+      "as_of_sort": "1996-11-20",
+      "source": "Depositories Act / SEBI",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 116,
+      "module": "G",
+      "claim": "Demat mandatory for institutions",
+      "figure": "Jan 1998, 8 scrips",
+      "unit": "date",
+      "as_of": "1998",
+      "as_of_sort": "1998-01-01",
+      "source": "SEBI Annual Report 1998-99",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 117,
+      "module": "G",
+      "claim": "Demat mandatory for all investors",
+      "figure": "4 Jan 1999",
+      "unit": "date",
+      "as_of": "1999",
+      "as_of_sort": "1999-01-04",
+      "source": "SEBI Annual Report",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 118,
+      "module": "G",
+      "claim": "NSDL investor accounts",
+      "figure": "~5.0m (4,989,734)",
+      "unit": "accounts",
+      "as_of": "29 Feb 2004",
+      "as_of_sort": "2004-02-29",
+      "source": "NSDL Nest Update",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 119,
+      "module": "G",
+      "claim": "NSDL demat custody value",
+      "figure": "9,53,914 (~$108bn)",
+      "unit": "Rs cr",
+      "as_of": "Feb 2004",
+      "as_of_sort": "2004-02-29",
+      "source": "NSDL",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 120,
+      "module": "G",
+      "claim": "UPI participating banks",
+      "figure": "21 -> 741",
+      "unit": "banks",
+      "as_of": "2016 -> Jul 2026",
+      "as_of_sort": "2026-07-01",
+      "source": "PIB / NPCI",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 121,
+      "module": "G",
+      "claim": "UPI volume FY17 -> FY26",
+      "figure": "1.78cr -> 24,162cr",
+      "unit": "txns",
+      "as_of": "FY26",
+      "as_of_sort": "2026-03-31",
+      "source": "PIB",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 122,
+      "module": "G",
+      "claim": "UPI monthly (Aug 2026)",
+      "figure": "24.51bn / 29.82 lakh",
+      "unit": "txns / Rs cr",
+      "as_of": "Aug 2026",
+      "as_of_sort": "2026-08-31",
+      "source": "NPCI",
+      "tier": "T3",
+      "flags": []
+    },
+    {
+      "id": 123,
+      "module": "G",
+      "claim": "UPI zero-MDR incentive 2021-25",
+      "figure": "8,730 (~$986m)",
+      "unit": "Rs cr",
+      "as_of": "2021-25",
+      "as_of_sort": "2025-03-31",
+      "source": "Standing Committee 32nd Report",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 124,
+      "module": "G",
+      "claim": "UPI incentive FY24",
+      "figure": "3,631",
+      "unit": "Rs cr",
+      "as_of": "FY24",
+      "as_of_sort": "2024-03-31",
+      "source": "Ministry of Finance",
+      "tier": "T1",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 125,
+      "module": "G",
+      "claim": "UPI incentive cost-recovery",
+      "figure": "~11 of cost / ~14 of MDR",
+      "unit": "%",
+      "as_of": "Mar 2026",
+      "as_of_sort": "2026-03-12",
+      "source": "Standing Committee / DFS",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 126,
+      "module": "G",
+      "claim": "Aadhaar Sec 57 struck down",
+      "figure": "26 Sep 2018",
+      "unit": "date",
+      "as_of": "2018",
+      "as_of_sort": "2018-09-26",
+      "source": "Supreme Court",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 127,
+      "module": "G",
+      "claim": "AA linked / enabled (Module F)",
+      "figure": "326.30m / 538.32m",
+      "unit": "cumulative",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-01",
+      "source": "Sahamati",
+      "tier": "T2",
+      "flags": [
+        "DUP"
+      ]
+    },
+    {
+      "id": 128,
+      "module": "G",
+      "claim": "ONDC scale",
+      "figure": "1,200+ cities / 7L+ sellers",
+      "unit": "cities / sellers",
+      "as_of": "early 2025",
+      "as_of_sort": "2025-03-01",
+      "source": "Business Standard",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 129,
+      "module": "G",
+      "claim": "ONDC retail orders peak -> trough",
+      "figure": "6.5m (Oct24) -> 4.6m (Feb25)",
+      "unit": "orders/mo",
+      "as_of": "2024-25",
+      "as_of_sort": "2025-02-01",
+      "source": "Business Standard",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 130,
+      "module": "G",
+      "claim": "ONDC service fee",
+      "figure": "1.5/txn above 250",
+      "unit": "Rs",
+      "as_of": "Apr 2025",
+      "as_of_sort": "2025-04-01",
+      "source": "Policy Circle",
+      "tier": "T3",
+      "flags": [
+        "STALE"
+      ]
+    },
+    {
+      "id": 131,
+      "module": "G",
+      "claim": "RTGS live",
+      "figure": "26 Mar 2004",
+      "unit": "date",
+      "as_of": "2004",
+      "as_of_sort": "2004-03-26",
+      "source": "BIS / RBI",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 132,
+      "module": "G",
+      "claim": "NEFT launch",
+      "figure": "Nov 2005",
+      "unit": "date",
+      "as_of": "2005",
+      "as_of_sort": "2005-11-01",
+      "source": "RBI",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 133,
+      "module": "G",
+      "claim": "NACH replaced ECS",
+      "figure": "1 May 2016",
+      "unit": "date",
+      "as_of": "2016",
+      "as_of_sort": "2016-05-01",
+      "source": "NPCI",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 134,
+      "module": "G",
+      "claim": "Sibos 2025 attendance",
+      "figure": ">12,500 / 168 countries",
+      "unit": "attendees",
+      "as_of": "Oct 2025",
+      "as_of_sort": "2025-10-01",
+      "source": "SWIFT / Sibos",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 135,
+      "module": "G",
+      "claim": "Point Zero Forum 2025",
+      "figure": ">2,000 / 60 countries / ~1/3 public",
+      "unit": "participants",
+      "as_of": "May 2025",
+      "as_of_sort": "2025-05-05",
+      "source": "Point Zero Forum / GDF",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 136,
+      "module": "G",
+      "claim": "Token2049 Singapore 2025",
+      "figure": "~25,000 / ~7,000 cos",
+      "unit": "attendees",
+      "as_of": "Oct 2025",
+      "as_of_sort": "2025-10-01",
+      "source": "Token2049",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 137,
+      "module": "G",
+      "claim": "Devconnect 2025 attendance",
+      "figure": "14,000+ / 130+ countries",
+      "unit": "attendees",
+      "as_of": "Nov 2025",
+      "as_of_sort": "2025-11-17",
+      "source": "Ethereum Foundation",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 138,
+      "module": "G",
+      "claim": "Global Fintech Fest 2024",
+      "figure": ">80,000 / 120 central bankers",
+      "unit": "participants",
+      "as_of": "2024",
+      "as_of_sort": "2024-08-01",
+      "source": "GFF / Business Standard",
+      "tier": "T4/T3",
+      "flags": [
+        "WEAK_TIER",
+        "STALE"
+      ]
+    },
+    {
+      "id": 139,
+      "module": "C",
+      "claim": "FX rate (Modules A/B convention)",
+      "figure": "88",
+      "unit": "Rs/USD",
+      "as_of": "late Aug 2026",
+      "as_of_sort": "2026-08-25",
+      "source": "RBI reference (approx)",
+      "tier": "T2",
+      "flags": [
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 140,
+      "module": "E",
+      "claim": "Railgun shielded volume, 2025",
+      "figure": "~1.6",
+      "unit": "$bn",
+      "as_of": "Oct 2025",
+      "as_of_sort": "2025-10-21",
+      "source": "DL News",
+      "tier": "T3",
+      "flags": [
+        "WEAK_TIER",
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 141,
+      "module": "E",
+      "claim": "Railgun cumulative shielded volume since 2021 launch",
+      "figure": "~4",
+      "unit": "$bn",
+      "as_of": "Oct 2025",
+      "as_of_sort": "2025-10-21",
+      "source": "DL News",
+      "tier": "T3",
+      "flags": [
+        "WEAK_TIER",
+        "CONFLICT"
+      ]
+    },
+    {
+      "id": 142,
+      "module": "E",
+      "claim": "Enterprise privacy solutions rated generally available (of 7 profiled)",
+      "figure": "1",
+      "unit": "solutions",
+      "as_of": "Apr 2026",
+      "as_of_sort": "2026-04-01",
+      "source": "EEA Privacy WG, State of Privacy on Ethereum for Enterprise v1",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 143,
+      "module": "E",
+      "claim": "Enterprise privacy solutions still at pilot stage (of 7 profiled)",
+      "figure": "5",
+      "unit": "solutions",
+      "as_of": "Apr 2026",
+      "as_of_sort": "2026-04-01",
+      "source": "EEA Privacy WG, State of Privacy on Ethereum for Enterprise v1",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 144,
+      "module": "E",
+      "claim": "Named fund managers with privacy-wrapped tokenised MMFs live via Archax on Silent Data",
+      "figure": "4",
+      "unit": "managers (Aberdeen, BlackRock, Fidelity Intl, State Street)",
+      "as_of": "19 Feb 2026",
+      "as_of_sort": "2026-02-19",
+      "source": "Applied Blockchain / Archax release; Asset Servicing Times",
+      "tier": "T4/T3",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 145,
+      "module": "E",
+      "claim": "Aztec Ignition mainnet activation (validators in queue at launch)",
+      "figure": "500",
+      "unit": "validators",
+      "as_of": "20 Nov 2025",
+      "as_of_sort": "2025-11-20",
+      "source": "Aztec / The Block",
+      "tier": "T4/T3",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 146,
+      "module": "E",
+      "claim": "Aztec Alpha V5 transaction fee",
+      "figure": "<0.05",
+      "unit": "$/tx",
+      "as_of": "21 Jul 2026",
+      "as_of_sort": "2026-07-21",
+      "source": "Aztec (project-reported)",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "UNVERIFIED"
+      ]
+    },
+    {
+      "id": 147,
+      "module": "E",
+      "claim": "Aztec Alpha V5 private-transaction proving time on a consumer laptop",
+      "figure": "~2.5",
+      "unit": "seconds",
+      "as_of": "21 Jul 2026",
+      "as_of_sort": "2026-07-21",
+      "source": "Aztec (project-reported)",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER",
+        "UNVERIFIED"
+      ]
+    },
+    {
+      "id": 148,
+      "module": "E",
+      "claim": "SWIFT shared ledger (built on Linea) banks at initial use",
+      "figure": "17",
+      "unit": "banks",
+      "as_of": "9 Jul 2026",
+      "as_of_sort": "2026-07-09",
+      "source": "SWIFT press release",
+      "tier": "T1",
+      "flags": []
+    },
+    {
+      "id": 149,
+      "module": "E",
+      "claim": "SWIFT/Linea private-testnet pilot participants",
+      "figure": "12+",
+      "unit": "banks",
+      "as_of": "Sep 2025",
+      "as_of_sort": "2025-09-01",
+      "source": "EEA Privacy WG report",
+      "tier": "T1",
+      "flags": [
+        "VAGUE"
+      ]
+    },
+    {
+      "id": 150,
+      "module": "E",
+      "claim": "Kohaku wallet privacy SDK release (Ethereum Foundation)",
+      "figure": "1",
+      "unit": "release",
+      "as_of": "25 May 2026",
+      "as_of_sort": "2026-05-25",
+      "source": "Crypto Briefing / The Defiant",
+      "tier": "T5",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "id": 151,
+      "module": "E",
+      "claim": "EU AMLR (Reg. (EU) 2024/1624) application date; anonymous accounts and AEC handling barred for CASPs",
+      "figure": "2027-07-01",
+      "unit": "date",
+      "as_of": "1 Jul 2027",
+      "as_of_sort": "2027-07-01",
+      "source": "EUR-Lex",
+      "tier": "T1",
+      "flags": [
+        "CURRENT"
+      ]
+    },
+    {
+      "id": 152,
+      "module": "E",
+      "claim": "EU AMLR customer due diligence threshold for crypto transfers",
+      "figure": "1,000",
+      "unit": "EUR",
+      "as_of": "1 Jul 2027",
+      "as_of_sort": "2027-07-01",
+      "source": "EUR-Lex",
+      "tier": "T1",
+      "flags": [
+        "CURRENT"
+      ]
+    },
+    {
+      "id": 153,
+      "module": "E",
+      "claim": "FIU-IND 2026 AML/CFT guidelines: permitted AEC deposit/withdrawal flows for reporting entities",
+      "figure": "0",
+      "unit": "permitted flows",
+      "as_of": "2026",
+      "as_of_sort": "2026-01-01",
+      "source": "Law-firm summary of FIU-IND guidelines; primary circular not located",
+      "tier": "T3",
+      "flags": [
+        "UNVERIFIED"
+      ]
+    },
+    {
+      "id": 154,
+      "module": "E",
+      "claim": "Tornado Cash removed from the OFAC sanctions list",
+      "figure": "1",
+      "unit": "delisting",
+      "as_of": "Mar 2025",
+      "as_of_sort": "2025-03-21",
+      "source": "US Treasury / OFAC",
+      "tier": "T1",
+      "flags": [
+        "HISTORICAL"
+      ]
+    },
+    {
+      "id": 155,
+      "module": "E",
+      "claim": "US v. Storm: counts convicted at trial, of three charged",
+      "figure": "1",
+      "unit": "counts",
+      "as_of": "6 Aug 2025",
+      "as_of_sort": "2025-08-06",
+      "source": "SDNY verdict; DOJ retrial sought ~Oct 2026",
+      "tier": "T3",
+      "flags": [
+        "WEAK_TIER"
+      ]
+    },
+    {
+      "module": "B",
+      "claim": "Demat 2.0 tokenised corporate bond pilot: total raised",
+      "figure": "1,025",
+      "unit": "Rs cr",
+      "as_of": "10 Sep 2026",
+      "as_of_sort": "2026-09-10",
+      "source": "SEBI PR 56/2026",
+      "tier": "T1",
+      "flags": [],
+      "id": 156
+    },
+    {
+      "module": "B",
+      "claim": "REC tokenised bond issuance (first under Demat 2.0)",
+      "figure": "500",
+      "unit": "Rs cr",
+      "as_of": "7 Sep 2026",
+      "as_of_sort": "2026-09-07",
+      "source": "SEBI PR 56/2026; Business Standard",
+      "tier": "T1",
+      "flags": [],
+      "id": 157
+    },
+    {
+      "module": "B",
+      "claim": "REC tokenised bond: bid book",
+      "figure": "796",
+      "unit": "Rs cr",
+      "as_of": "7 Sep 2026",
+      "as_of_sort": "2026-09-07",
+      "source": "Business Standard",
+      "tier": "T3",
+      "flags": [],
+      "id": 158
+    },
+    {
+      "module": "B",
+      "claim": "REC tokenised bond: coupon",
+      "figure": "7.30",
+      "unit": "% p.a.",
+      "as_of": "7 Sep 2026",
+      "as_of_sort": "2026-09-07",
+      "source": "Business Standard",
+      "tier": "T3",
+      "flags": [],
+      "id": 159
+    },
+    {
+      "module": "B",
+      "claim": "L&T tokenised bond issuance",
+      "figure": "500",
+      "unit": "Rs cr",
+      "as_of": "9 Sep 2026",
+      "as_of_sort": "2026-09-09",
+      "source": "Business Standard",
+      "tier": "T3",
+      "flags": [],
+      "id": 160
+    },
+    {
+      "module": "B",
+      "claim": "IIFL Finance tokenised bond issuance",
+      "figure": "25",
+      "unit": "Rs cr",
+      "as_of": "9 Sep 2026",
+      "as_of_sort": "2026-09-09",
+      "source": "Business Standard; The Block",
+      "tier": "T3",
+      "flags": [],
+      "id": 161
+    },
+    {
+      "module": "B",
+      "claim": "RBI UMI: cumulative tokenised certificate-of-deposit transactions",
+      "figure": "248",
+      "unit": "transactions",
+      "as_of": "9 Sep 2026",
+      "as_of_sort": "2026-09-09",
+      "source": "P Vasudevan, ED RBI, at GFF 2026 (Medianama)",
+      "tier": "T3",
+      "flags": [],
+      "id": 162
+    },
+    {
+      "module": "B",
+      "claim": "RBI UMI: cumulative tokenised certificate-of-deposit value",
+      "figure": "~17,000",
+      "unit": "Rs cr",
+      "as_of": "9 Sep 2026",
+      "as_of_sort": "2026-09-09",
+      "source": "P Vasudevan, ED RBI, at GFF 2026 (Medianama)",
+      "tier": "T3",
+      "flags": [
+        "VAGUE"
+      ],
+      "id": 163
+    },
+    {
+      "module": "C",
+      "claim": "Maharashtra DELTA Act: claimed dormant land value",
+      "figure": "~50 lakh",
+      "unit": "Rs cr",
+      "as_of": "9 Sep 2026",
+      "as_of_sort": "2026-09-09",
+      "source": "CM Fadnavis at GFF 2026 (Business Today)",
+      "tier": "T3",
+      "flags": [
+        "DERIVED"
+      ],
+      "id": 164
+    },
+    {
+      "module": "D",
+      "claim": "Daml contributor base",
+      "figure": "~200",
+      "unit": "contributors",
+      "as_of": "Jan 2026",
+      "as_of_sort": "2026-01-30",
+      "source": "EthSystems, Public rails vs private ledgers",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ],
+      "id": 165
+    },
+    {
+      "module": "D",
+      "claim": "Canton protocol-change threshold",
+      "figure": "2/3",
+      "unit": "Super Validator vote",
+      "as_of": "Jan 2026",
+      "as_of_sort": "2026-01-30",
+      "source": "EthSystems, Public rails vs private ledgers",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ],
+      "id": 166
+    },
+    {
+      "module": "D",
+      "claim": "Zenith (EVM layer on Canton) mainnet status",
+      "figure": "Not live; external_call() scheduled for Canton 3.6",
+      "unit": "status",
+      "as_of": "Jul 2026",
+      "as_of_sort": "2026-07-08",
+      "source": "Canton Network blog (Mar 2026); Canton Network Forum (Jul 2026)",
+      "tier": "T4",
+      "flags": [
+        "WEAK_TIER"
+      ],
+      "id": 167
+    }
+  ]
+}

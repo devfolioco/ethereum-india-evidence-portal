@@ -30,10 +30,20 @@
 
   if (root && canvas && ctx) {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const css = getComputedStyle(document.documentElement);
-    const ink = css.getPropertyValue('--ink').trim() || '#0a0a0a';
-    const paper = css.getPropertyValue('--paper').trim() || '#ffffff';
-    const pixelFont = css.getPropertyValue('--font-pixel').trim() || 'monospace';
+    // Colours come from the zone the map sits in, and are re-read when the palette changes.
+    let ink = '#13202f', paper = '#f1eee6', pixelFont = 'monospace';
+    let shadeLo = [19, 32, 47], shadeHi = [241, 238, 230]; // ETH mark: shadow → lit face
+    const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+    const luma = ([r, g, b]: number[]) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    const readColors = () => {
+      const css = getComputedStyle(root);
+      ink = css.getPropertyValue('--ink').trim() || ink;
+      paper = css.getPropertyValue('--paper').trim() || paper;
+      pixelFont = css.getPropertyValue('--font-pixel').trim() || pixelFont;
+      const [a, b] = [rgb(ink), rgb(paper)];
+      [shadeLo, shadeHi] = luma(a) < luma(b) ? [a, b] : [b, a];
+    };
+    readColors();
 
     // --- map geometry, in "map units": the map spans y ∈ [-1, 1] ---
     const { cols, rows, dots, mumbai } = data;
@@ -94,8 +104,8 @@
         const nv = view(f.nrm);
         if (nv[2] <= 0.02) continue; // back face
         const light = Math.max(0, nv[0] * LIGHT[0] + nv[1] * LIGHT[1] + nv[2] * LIGHT[2]);
-        const g = Math.round(20 + 175 * light ** 1.2);
-        ctx.fillStyle = `rgb(${g},${g},${g})`;
+        const s = 0.12 + 0.82 * light ** 1.1;
+        ctx.fillStyle = `rgb(${shadeLo.map((lo, c) => Math.round(lo + (shadeHi[c] - lo) * s)).join(',')})`;
         ctx.beginPath();
         f.v.forEach((p, j) => {
           const [x, y] = view(p);
@@ -195,6 +205,10 @@
       if (reduce) draw(1.6);
     };
     new ResizeObserver(resize).observe(canvas);
+    document.addEventListener('palettechange', () => {
+      readColors();
+      if (reduce) draw(1.6);
+    });
 
     if (!reduce) {
       let raf = 0;

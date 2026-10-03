@@ -37,9 +37,19 @@ Last result: **100/100/100/100 desktop and mobile, CLS 0.**
 |---|---|
 | 1 Foundation (tokens, base, layout, nav, ticker, footer, content files) | Done |
 | 2 Home page | Done, then distilled (see decisions) |
-| 3 `/briefing` + `/briefing/[module]`, port content, keep old portal URLs | **Next.** Not started. Nav/briefing links currently 404. |
-| 4 `/dinner` page + invite form + newsletter wiring | Not started. `/dinner` 404s. |
-| 5 Polish: section-entry motion, motifs, OG image, sitemap, robots, 404, privacy page | Not started |
+| 3 Briefing: overview, modules A–G (3 reading tiers), Figure Ledger, Reconciliation, old-URL redirects in `vercel.json` | Done (3 Oct) |
+| 4 `/dinner` + invite form (live only when `dinnerStatus` is "open" and `inviteFormEndpoint` is set), `/privacy` | Done; endpoints and privacy copy still TODO |
+| 5 Polish: section-entry motion, OG image, `sitemap.xml`, `robots.txt`, 404 | Done; motifs wait on files |
+
+## 3 Oct session: colour and background
+
+- **Graph paper replaced** with faint column hairlines (`body::before` in base.css) on the 1280px content grid: 4 columns, 2 at ≤1080px, edges only at ≤560px. User chose this. `body` has no background on purpose (it would cover the hairlines); `html` carries the colour.
+- **Three palettes, visitor-selectable** (user decided to keep the picker). `tokens.css` holds three palettes (navy + stone default, all light, all dark) on zone tokens: page (`L-`), `.deep` (nav, hero, page heads, footer), `.band` (ticker, dinner band). Components use only semantic names: `--paper --panel --surface --ink --ink-2 --border --rule --accent --hairline`.
+- **`PaletteSwitcher`** (bottom-left pill) and the `?palette=navy|light|dark` URL param are permanent. Navy is the default and what the OG image uses.
+- **Briefing content** ported from the old portal into `src/content/briefing`: `<letter>.md` (metadata and summary bullets) and `<letter>.html` (the three tiers, links rewritten). `_overview*.html` and `_reconciliation.html` likewise. `public/data/figures.json` drives the Figure Ledger. Edit the HTML files directly to change module text.
+- Home page stats now link to their Figure Ledger rows; sources came from the portal ledger.
+- Not ported: the old portal's per-module "copy for an LLM" textareas. `llms.txt` and `figures.json` cover that use.
+- Astro 7 allows one `astro dev` per project, so the `eii-review` launch config runs `astro preview` on 4331 (run `npm run build` first).
 
 ## File map
 

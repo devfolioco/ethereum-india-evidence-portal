@@ -8,7 +8,7 @@ const parts = hero.title.split(/\[(.)\]/);
 const plainTitle = parts.join('');
 ---
 
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero deep" aria-labelledby="hero-title">
   <div class="wrap hero__grid">
     <div class="hero__copy">
       <p class="label">{hero.eyebrow}</p>
@@ -33,7 +33,7 @@ const plainTitle = parts.join('');
 </section>
 
 <style>
-  .hero { padding-block: clamp(32px, 5vw, 72px); }
+  .hero { padding-block: clamp(32px, 5vw, 72px); border-bottom: 1px solid var(--border); }
 
   .hero__grid {
     display: grid;

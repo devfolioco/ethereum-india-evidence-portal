@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+---
+
+<Base title="Page not found — ETHIndia Institutional" description="This page does not exist." noindex>
+  <PageHead
+    title="This page isn't here."
+    lede="It may have moved when the briefing came to its new home. Everything that was on the old portal is still on this site."
+  >
+    <div class="nf-actions">
+      <a class="btn" href="/briefing">Go to the briefing</a>
+      <a class="btn btn--secondary" href="/">Home</a>
+    </div>
+  </PageHead>
+</Base>
+
+<style>
+  .nf-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+</style>

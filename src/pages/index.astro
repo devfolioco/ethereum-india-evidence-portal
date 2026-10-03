@@ -50,15 +50,10 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
           <div class="facts__row">
             <dt class="facts__value px">{s.value}</dt>
             <dd class="facts__label">{s.label}</dd>
-            {!s.source.includes('[TODO') && <dd class="facts__source meta">{s.source}</dd>}
+            <dd class="facts__source meta"><a href={s.href}>{s.source}</a></dd>
           </div>
         ))}
       </dl>
-      {stats.some((s) => s.source.includes('[TODO')) && (
-        <div class="section__note">
-          <T text="[TODO: confirm each figure's source link and date with the report author]" />
-        </div>
-      )}
     </div>
   </section>
 
@@ -98,6 +93,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
             ) : (
               <span class="todo">TODO: PDF file</span>
             )}
+            <a class="briefing__ledger" href={home.briefing.ledger.href}>{home.briefing.ledger.label} <span aria-hidden="true">→</span></a>
           </div>
         </div>
         <nav class="modules" aria-label="Briefing modules">
@@ -119,7 +115,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
   </section>
 
   <!-- 7. Institutional dinner -->
-  <section class="dinner" id="dinner" aria-labelledby="dinner-title">
+  <section class="dinner band" id="dinner" aria-labelledby="dinner-title">
     <div class="wrap dinner__inner">
       <h2 id="dinner-title">{home.dinner.title}</h2>
       <div class="dinner__body">
@@ -298,6 +294,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
     gap: 32px clamp(20px, 3vw, 40px);
   }
   .cols > li { display: grid; align-content: start; gap: 8px; padding-top: 16px; border-top: 1px solid var(--ink); }
+  .cols > li > h3 { font-size: 20px; }
   .cols__body { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
 
   /* 3. sourced figures */
@@ -341,10 +338,11 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: clamp(28px, 4vw, 64px);
     padding: clamp(24px, 4vw, 56px);
-    background: var(--paper);
-    border: 1px solid var(--ink);
+    background: var(--panel);
+    border: 1px solid var(--border);
     border-radius: var(--radius-card);
   }
+  .briefing__ledger { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; font-weight: 500; }
   .briefing__intro { display: grid; align-content: start; gap: 20px; }
   .briefing__intro .btn-row { margin-top: 8px; }
   .briefing__title { font-size: clamp(28px, 3.2vw, 44px); }
@@ -367,12 +365,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
   .modules a:hover .modules__arrow { transform: translateX(4px); }
 
   /* 7. dinner band — inverted */
-  .dinner {
-    --band-muted: #b9b5ab; /* 9:1 on --ink */
-    background: var(--ink);
-    color: var(--paper);
-    padding-block: clamp(56px, 8vw, 112px);
-  }
+  .dinner { padding-block: clamp(56px, 8vw, 112px); }
   .dinner__inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -386,15 +379,6 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
-  .dinner :global(.btn) { background: var(--paper); color: var(--ink); border-color: var(--paper); }
-  .dinner :global(.btn:hover) { background: var(--ink); color: var(--paper); }
-  .dinner :global(.btn[aria-disabled="true"]) {
-    background: transparent;
-    color: var(--band-muted);
-    border-color: var(--band-muted);
-  }
-  .dinner :global(:focus-visible) { outline-color: var(--paper); }
-  .dinner :global(a:not(.btn)) { color: var(--paper); }
 
   /* 8. segments */
   .segments__name { font-size: 18px; }
@@ -442,7 +426,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
     place-items: center;
     height: 72px;
     padding: 14px;
-    background: var(--paper);
+    background: var(--panel);
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
   }
@@ -453,7 +437,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
 
   /* 12. FAQ */
   .faq { max-width: var(--measure); border-top: 1px solid var(--border); }
-  .faq__item { border-bottom: 1px solid var(--border); background: var(--paper); }
+  .faq__item { border-bottom: 1px solid var(--border); background: var(--panel); }
   .faq__item summary {
     display: flex;
     justify-content: space-between;
@@ -477,26 +461,10 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
     align-items: start;
   }
   .subscribe__form { display: grid; gap: 16px; }
-  .field { display: grid; gap: 8px; }
-  .field label { font-size: 15px; font-weight: 500; }
   .field__row { display: flex; gap: 10px; }
-  .field input {
-    flex: 1;
-    min-width: 0;
-    min-height: 44px;
-    padding: 10px 18px;
-    background: var(--paper);
-    border: 1px solid var(--ink);
-    border-radius: var(--radius-pill);
-  }
-  .subscribe button[disabled] {
-    background: var(--surface);
-    color: var(--ink-2);
-    border-color: var(--border);
-    cursor: not-allowed;
-  }
+  .field__row input { flex: 1; min-width: 0; }
   .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
-  .consent input { width: 20px; height: 20px; margin-top: 1px; flex: none; accent-color: var(--ink); }
+  .consent input { width: 20px; height: 20px; margin-top: 1px; flex: none; accent-color: var(--accent); }
 
   @media (max-width: 1080px) {
     .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }

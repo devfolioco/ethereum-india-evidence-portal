@@ -1,21 +1,40 @@
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
 
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; background-color: var(--paper); }
 
 body {
   font-family: var(--font-sans);
   font-size: 18px;
   line-height: 1.6;
   color: var(--ink);
-  background-color: var(--paper);
-  background-image:
-    linear-gradient(to right, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-  background-size: var(--grid-size) var(--grid-size);
+  /* No body background: it would paint over the hairline layer. html carries the colour. */
+  caret-color: var(--accent);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
+
+/* Column hairlines: faint verticals on the content grid (4 columns, 2 on tablet,
+   edges only on phones), fixed to the viewport so they read as the page's ruling,
+   not a pattern. Solid zones (.deep, .band, panels) sit on top of them. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 var(--gutter);
+  z-index: -1;
+  max-width: calc(var(--wrap) - 2 * var(--gutter));
+  margin-inline: auto;
+  border-right: 1px solid var(--hairline);
+  background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px);
+  background-size: 25% 100%;
+  pointer-events: none;
+}
+@media (max-width: 1080px) { body::before { background-size: 50% 100%; } }
+@media (max-width: 560px) { body::before { background-size: 100% 100%; } }
+
+::selection { background: var(--accent); color: var(--paper); }
+
+html { scrollbar-color: var(--rule) var(--paper); }
 
 button, input, select, textarea { font: inherit; color: inherit; }
 img, svg, video { display: block; max-width: 100%; height: auto; }
@@ -32,7 +51,7 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; 
 h1, h2, h3, h4 { font-weight: 500; text-wrap: balance; }
 
 h1, .h1 {
-  font-size: clamp(44px, 7vw, 104px);
+  font-size: clamp(44px, 7vw, 96px);
   line-height: 0.95;
   letter-spacing: -0.02em;
 }
@@ -43,7 +62,7 @@ h2, .h2 {
 }
 h3, .h3 { font-size: clamp(22px, 2vw, 24px); font-weight: 600; line-height: 1.25; }
 
-p { max-width: var(--measure); }
+p { max-width: var(--measure); text-wrap: pretty; }
 
 /* --- shared primitives --- */
 
@@ -58,23 +77,23 @@ p { max-width: var(--measure); }
   line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--ink-2);
+  color: var(--accent);
 }
 
 .meta { font-size: 14px; color: var(--ink-2); }
 
 .wrap {
   width: 100%;
-  max-width: 1280px;
+  max-width: var(--wrap);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
 .section { padding-block: clamp(56px, 8vw, 112px); }
-.section + .section { border-top: 1px solid color-mix(in srgb, var(--rule) 40%, transparent); }
+.section + .section { border-top: 1px solid var(--border); }
 
 .panel {
-  background: var(--paper);
+  background: var(--panel);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
 }
@@ -97,18 +116,19 @@ p { max-width: var(--measure); }
   cursor: pointer;
   transition: background 160ms var(--ease), color 160ms var(--ease);
 }
-.btn:hover { background: var(--paper); color: var(--ink); }
+.btn:hover { background: transparent; color: var(--ink); }
 
 .btn--secondary { background: transparent; color: var(--ink); }
 .btn--secondary:hover { background: var(--ink); color: var(--paper); }
 
-.btn[aria-disabled="true"] {
-  background: var(--surface);
+.btn[aria-disabled="true"],
+.btn:disabled {
+  background: transparent;
   color: var(--ink-2);
   border-color: var(--border);
-  cursor: default;
-  pointer-events: none;
+  cursor: not-allowed;
 }
+.btn[aria-disabled="true"] { pointer-events: none; cursor: default; }
 
 .skip-link {
   position: absolute;
@@ -146,15 +166,6 @@ p { max-width: var(--measure); }
   color: var(--ink-2);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 .todo--inline {
   display: inline;
   padding: 2px 6px;
@@ -164,3 +175,40 @@ p { max-width: var(--measure); }
 }
 
 .section__head { display: grid; gap: 16px; margin-bottom: clamp(32px, 4vw, 56px); }
+
+/* Form fields (newsletter, dinner invite) */
+.field { display: grid; gap: 8px; }
+.field label { font-size: 15px; font-weight: 500; }
+.field input,
+.field textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 16px;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-card);
+  transition: border-color 160ms var(--ease);
+}
+.field textarea { min-height: 120px; resize: vertical; line-height: 1.5; }
+.field input:hover, .field textarea:hover { border-color: var(--ink-2); }
+.field input:focus-visible, .field textarea:focus-visible { border-color: var(--ink); outline-offset: 1px; }
+.field input:disabled, .field textarea:disabled { background: var(--surface); color: var(--ink-2); cursor: not-allowed; }
+.field__hint { font-size: 14px; color: var(--ink-2); }
+
+/* Section entry: below-the-fold sections rise in once (Base.astro adds data-reveal). */
+[data-reveal] { opacity: 0; transform: translateY(12px); }
+[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+  transition: opacity 300ms var(--ease), transform 300ms var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] { opacity: 1; transform: none; }
+}

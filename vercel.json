@@ -1,0 +1,64 @@
+{
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/briefing.html",
+      "destination": "/briefing",
+      "permanent": true
+    },
+    {
+      "source": "/research.html",
+      "destination": "/briefing",
+      "permanent": true
+    },
+    {
+      "source": "/ledger.html",
+      "destination": "/briefing/ledger",
+      "permanent": true
+    },
+    {
+      "source": "/reconciliation.html",
+      "destination": "/briefing/reconciliation",
+      "permanent": true
+    },
+    {
+      "source": "/what-shipped.html",
+      "destination": "/briefing/a",
+      "permanent": true
+    },
+    {
+      "source": "/whats-legal-in-india.html",
+      "destination": "/briefing/b",
+      "permanent": true
+    },
+    {
+      "source": "/where-the-value-is.html",
+      "destination": "/briefing/c",
+      "permanent": true
+    },
+    {
+      "source": "/ethereum-vs-alternatives.html",
+      "destination": "/briefing/d",
+      "permanent": true
+    },
+    {
+      "source": "/the-privacy-question.html",
+      "destination": "/briefing/e",
+      "permanent": true
+    },
+    {
+      "source": "/the-objections.html",
+      "destination": "/briefing/f",
+      "permanent": true
+    },
+    {
+      "source": "/how-adoption-happens.html",
+      "destination": "/briefing/g",
+      "permanent": true
+    }
+  ]
+}

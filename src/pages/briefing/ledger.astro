@@ -1,0 +1,212 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import ledger from '../../../public/data/figures.json';
+import '../../styles/prose.css';
+
+type Row = {
+  id: number;
+  module: string;
+  claim: string;
+  figure: string;
+  unit: string;
+  as_of: string;
+  as_of_sort: string;
+  source: string;
+  tier: string;
+  flags: string[];
+};
+
+const { meta } = ledger;
+const rows = (ledger.figures as Row[]).slice().sort((a, b) => a.id - b.id);
+
+// Same rule as the old portal: stale = older than six months before the ledger was generated,
+// unless the figure is a historical fact or an evergreen statute/rate.
+const cutoff = new Date(meta.generated);
+cutoff.setMonth(cutoff.getMonth() - 6);
+const flagsOf = (r: Row) => {
+  const evergreen = r.flags.includes('HISTORICAL') || r.flags.includes('CURRENT');
+  const stale = !evergreen && r.as_of_sort && new Date(r.as_of_sort) < cutoff;
+  return stale && !r.flags.includes('STALE') ? ['STALE', ...r.flags] : r.flags;
+};
+const weak = (tier: string) => /T4|T5/.test(tier) && !/T1|T2/.test(tier);
+
+const modules = [...new Set(rows.map((r) => r.module))].sort();
+const tiers = ['T1', 'T2', 'T3', 'T4', 'T5'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const g = new Date(meta.generated);
+const generated = `${g.getUTCDate()} ${MONTHS[g.getUTCMonth()]} ${g.getUTCFullYear()}`;
+---
+
+<Base
+  title="Figure Ledger — ETHIndia Institutional briefing"
+  description="Every quantitative claim in the ETHIndia Institutional briefing, with its source, its as-of date and a rating of how strong the source is."
+>
+  <PageHead
+    title="Figure Ledger"
+    lede={`Every quantitative claim in this briefing, with its source tier and "as of" date. ${rows.length} figures, generated ${generated}.`}
+    crumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Briefing', href: '/briefing' },
+      { label: 'Figure Ledger', href: '/briefing/ledger' },
+    ]}
+  >
+    <p><a href="/data/figures.json">Download the ledger as JSON</a> <span class="meta">(data/figures.json)</span></p>
+  </PageHead>
+
+  <section class="ledger" aria-label="Figures">
+    <div class="wrap">
+      <details class="legend panel">
+        <summary>Legend: source tiers and flags</summary>
+        <div class="legend__grid">
+          <div>
+            <h2 class="legend__title">Source tiers</h2>
+            <dl>
+              {Object.entries(meta.tier_legend).map(([k, v]) => (<><dt class="px">{k}</dt><dd>{v}</dd></>))}
+            </dl>
+          </div>
+          <div>
+            <h2 class="legend__title">Flags</h2>
+            <dl>
+              {Object.entries(meta.flag_legend).map(([k, v]) => (<><dt class="px">{k}</dt><dd>{v}</dd></>))}
+            </dl>
+          </div>
+        </div>
+      </details>
+
+      <form class="filters" data-filters hidden>
+        <div class="filters__field">
+          <label for="f-module">Module</label>
+          <select id="f-module" name="module">
+            <option value="">All modules</option>
+            {modules.map((m) => <option value={m}>Module {m}</option>)}
+          </select>
+        </div>
+        <div class="filters__field">
+          <label for="f-tier">Tier</label>
+          <select id="f-tier" name="tier">
+            <option value="">All tiers</option>
+            {tiers.map((t) => <option value={t}>{t}</option>)}
+          </select>
+        </div>
+        <p class="meta filters__count" aria-live="polite" data-count>Showing {rows.length} of {rows.length}</p>
+      </form>
+
+      <div class="table-scroll ledger__scroll" tabindex="0" role="region" aria-label="Figure Ledger table, scrolls horizontally">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Module</th>
+              <th scope="col">Claim</th>
+              <th scope="col">Figure</th>
+              <th scope="col">Unit</th>
+              <th scope="col">As of</th>
+              <th scope="col">Source</th>
+              <th scope="col">Tier</th>
+              <th scope="col">Flags</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr id={`fig-${r.id}`} data-module={r.module} data-tier={r.tier}>
+                <td class="px">{r.id}</td>
+                <td><a href={`/briefing/${r.module.toLowerCase()}`}>{r.module}</a></td>
+                <td class="col-claim">{r.claim}</td>
+                <td class="col-figure">{r.figure}</td>
+                <td>{r.unit}</td>
+                <td class="nowrap">{r.as_of}</td>
+                <td class="col-source">{r.source}</td>
+                <td><span class:list={['tier-chip', { 'is-weak': weak(r.tier) }]}>{r.tier}</span></td>
+                <td><div class="col-flags">{flagsOf(r).map((f) => <span class="flag">{f}</span>)}</div></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ledger { padding-block: clamp(32px, 4vw, 56px) clamp(56px, 8vw, 112px); }
+
+  .legend { margin-bottom: 24px; }
+  .legend summary { min-height: 44px; padding: 12px 18px; font-weight: 500; cursor: pointer; }
+  .legend__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 48px; padding: 4px 18px 20px; }
+  .legend__title { font-size: 18px; font-weight: 600; margin-bottom: 10px; }
+  .legend dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; font-size: 15px; line-height: 1.45; }
+  .legend dt { font-size: 14px; color: var(--accent); }
+  .legend dd { margin: 0; color: var(--ink-2); }
+
+  .filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px 24px; margin-bottom: 16px; }
+  .filters[hidden] { display: none; }
+  .filters__field { display: grid; gap: 6px; }
+  .filters__field label { font-size: 14px; font-weight: 500; }
+  .filters select {
+    min-height: 44px;
+    min-width: 170px;
+    padding: 8px 12px;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-card);
+  }
+  .filters__count { margin-left: auto; padding-bottom: 12px; }
+
+  .ledger__scroll { max-height: min(78vh, 1100px); }
+  .data-table { min-width: 1080px; }
+  .data-table td { font-size: 15px; }
+  .data-table .col-claim { min-width: 240px; }
+  .data-table .col-figure { font-weight: 600; min-width: 90px; }
+  .data-table .col-source { min-width: 200px; color: var(--ink-2); }
+  .data-table .nowrap { white-space: nowrap; }
+  .data-table tbody tr:target { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+  .data-table tbody tr:target td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+  .data-table tbody tr[hidden] { display: none; }
+
+  .col-flags { display: flex; flex-wrap: wrap; gap: 4px; min-width: 150px; }
+  .flag {
+    padding: 0 5px;
+    font-family: var(--font-pixel);
+    font-size: 13px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: var(--ink-2);
+    background: var(--surface);
+    border-radius: 3px;
+  }
+
+  @media (max-width: 720px) {
+    .legend__grid { grid-template-columns: 1fr; }
+    .filters__count { margin-left: 0; padding-bottom: 0; width: 100%; }
+    .filters select { min-width: 0; width: 100%; }
+    .filters__field { flex: 1; }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-filters]');
+  const rows = [...document.querySelectorAll<HTMLTableRowElement>('.data-table tbody tr')];
+  const count = document.querySelector('[data-count]');
+
+  if (form && count) {
+    form.hidden = false;
+    const apply = () => {
+      const module = (form.elements.namedItem('module') as HTMLSelectElement).value;
+      const tier = (form.elements.namedItem('tier') as HTMLSelectElement).value;
+      let shown = 0;
+      for (const r of rows) {
+        const show = (!module || r.dataset.module === module) && (!tier || r.dataset.tier!.includes(tier));
+        r.hidden = !show;
+        if (show) shown++;
+      }
+      count.textContent = `Showing ${shown} of ${rows.length}`;
+    };
+    form.addEventListener('change', apply);
+    form.addEventListener('submit', (e) => e.preventDefault());
+  }
+
+  // Bring a linked row (#fig-N) into view inside the scrolling table.
+  const target = location.hash && document.getElementById(location.hash.slice(1));
+  if (target instanceof HTMLTableRowElement) target.scrollIntoView({ block: 'center' });
+</script>

@@ -1,0 +1,268 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import '../../styles/prose.css';
+
+const bodies = import.meta.glob<string>('../../content/briefing/[a-g].html', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+export async function getStaticPaths() {
+  const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
+  return modules.map((m, i) => ({
+    params: { module: m.data.letter },
+    props: { module: m, modules, prev: modules[i - 1], next: modules[i + 1] },
+  }));
+}
+
+const { module: m, modules, prev, next } = Astro.props;
+const L = m.data.letter.toUpperCase();
+const body = bodies[`../../content/briefing/${m.data.letter}.html`];
+
+const tiers = [
+  ['30s', '30 seconds'],
+  ['5min', '5 minutes'],
+  ['full', 'Full report'],
+];
+---
+
+<Base title={`${m.data.title} — Module ${L} — ETHIndia Institutional briefing`} description={m.data.description} type="article">
+  <PageHead
+    title={m.data.heading}
+    lede={m.data.question}
+    crumbs={[
+      { label: 'Home', href: '/' },
+      { label: 'Briefing', href: '/briefing' },
+      { label: `Module ${L}`, href: `/briefing/${m.data.letter}` },
+    ]}
+  />
+
+  <div class="wrap reader">
+    <aside class="reader__aside">
+      <nav class="toc" aria-label="Briefing modules">
+        <p class="toc__count meta">Module {m.data.order} of {modules.length}</p>
+        <ol class="toc__list">
+          {modules.map((x) => (
+            <li>
+              <a href={`/briefing/${x.data.letter}`} aria-current={x.id === m.id ? 'page' : undefined}>
+                <span class="toc__letter px" aria-hidden="true">{x.data.letter.toUpperCase()}</span>
+                <span>{x.data.title}</span>
+              </a>
+              {x.id === m.id && <span class="toc__progress" aria-hidden="true"></span>}
+            </li>
+          ))}
+        </ol>
+        <ul class="toc__ref">
+          <li><a href="/briefing">Briefing overview</a></li>
+          <li><a href="/briefing/ledger">Figure Ledger</a></li>
+          <li><a href="/briefing/reconciliation">Reconciliation</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <article class="reader__main" aria-labelledby="page-title">
+      <div class="tiers" role="tablist" aria-label="Reading depth" hidden>
+        {tiers.map(([id, label]) => (
+          <button type="button" role="tab" id={`tab-${id}`} aria-controls={`tier-${id}`} aria-selected="false" tabindex="-1" data-tier-tab={id}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      <div class="panel reader__panel prose" set:html={body} />
+
+      <nav class="pager" aria-label="Previous and next module">
+        {prev ? (
+          <a class="pager__link" href={`/briefing/${prev.data.letter}`} rel="prev">
+            <span class="meta">← Module {prev.data.letter.toUpperCase()}</span>
+            <span class="pager__title">{prev.data.title}</span>
+          </a>
+        ) : (
+          <a class="pager__link" href="/briefing">
+            <span class="meta">← Overview</span>
+            <span class="pager__title">The briefing</span>
+          </a>
+        )}
+        {next ? (
+          <a class="pager__link pager__link--next" href={`/briefing/${next.data.letter}`} rel="next">
+            <span class="meta">Module {next.data.letter.toUpperCase()} →</span>
+            <span class="pager__title">{next.data.title}</span>
+          </a>
+        ) : (
+          <a class="pager__link pager__link--next" href="/briefing/reconciliation">
+            <span class="meta">Reference →</span>
+            <span class="pager__title">Reconciliation</span>
+          </a>
+        )}
+      </nav>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .reader {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 64px);
+    padding-block: clamp(32px, 4vw, 56px) clamp(56px, 8vw, 112px);
+  }
+
+  /* Sticky A–G navigation; the current module shows reading progress. */
+  .reader__aside { position: relative; }
+  .toc { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 14px; }
+  .toc__count { color: var(--accent); }
+  .toc__list { border-top: 1px solid var(--border); }
+  .toc__list li { position: relative; border-bottom: 1px solid var(--border); }
+  .toc__list a {
+    display: grid;
+    grid-template-columns: 1.6em 1fr;
+    align-items: baseline;
+    min-height: 44px;
+    padding-block: 10px;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--ink-2);
+    text-decoration: none;
+  }
+  .toc__list a:hover { color: var(--ink); }
+  .toc__list a[aria-current] { color: var(--ink); font-weight: 500; }
+  .toc__letter { color: var(--rule); }
+  .toc__list a[aria-current] .toc__letter { color: var(--accent); }
+  .toc__progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--accent);
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  @supports (animation-timeline: scroll()) {
+    .toc__progress { animation: read-progress linear both; animation-timeline: scroll(root); }
+  }
+  @keyframes read-progress { to { transform: scaleX(1); } }
+
+  .toc__ref { display: grid; gap: 2px; font-size: 15px; }
+  .toc__ref a { display: inline-flex; align-items: center; min-height: 36px; color: var(--ink-2); }
+  .toc__ref a:hover { color: var(--ink); }
+
+  /* Reading depth tabs */
+  .tiers {
+    display: flex;
+    gap: 4px;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 16px;
+    padding: 4px;
+    background: var(--surface);
+    border-radius: var(--radius-pill);
+  }
+  .tiers[hidden] { display: none; }
+  .tiers button {
+    min-height: 40px;
+    padding: 8px 18px;
+    font-size: 15px;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-pill);
+    color: var(--ink-2);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tiers button:hover { color: var(--ink); }
+  .tiers button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+
+  .reader__panel { padding: clamp(22px, 4vw, 56px); }
+  .reader__panel :global(.tier + .tier) { margin-top: 3em; padding-top: 2em; border-top: 1px solid var(--border); }
+  .reader__panel :global(.tier[hidden]) { display: none; }
+  .reader__panel :global(.tier:focus-visible) { outline-offset: clamp(10px, 2vw, 22px); }
+  .reader__panel.is-tabbed :global(.tier) { margin-top: 0; padding-top: 0; border-top: 0; }
+  .reader__panel :global(.tier > h2:first-child) { margin-top: 0; }
+  .reader__panel :global(.tier > * + *) { margin-top: 1.1em; }
+  .reader__panel :global(.tier > h3) { margin-top: 2.2em; }
+
+  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+  .pager__link {
+    display: grid;
+    gap: 4px;
+    padding: 18px 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--panel);
+    text-decoration: none;
+    transition: border-color 160ms var(--ease);
+  }
+  .pager__link:hover { border-color: var(--ink); }
+  .pager__link--next { text-align: right; }
+  .pager__title { font-size: 18px; font-weight: 500; }
+
+  @media (max-width: 960px) {
+    .reader { grid-template-columns: minmax(0, 1fr); }
+    .toc { position: static; }
+    .toc__list { display: flex; overflow-x: auto; border: 0; gap: 4px; }
+    .toc__list li { border: 0; flex: none; }
+    .toc__list a { grid-template-columns: auto; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-pill); }
+    .toc__list a span:not(.toc__letter) { display: none; }
+    .toc__list a .toc__letter { color: inherit; }
+    .toc__list a[aria-current] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+    .toc__progress, .toc__ref { display: none; }
+  }
+
+  @media (max-width: 560px) {
+    .tiers { width: 100%; }
+    .tiers button { flex: 1; padding-inline: 8px; }
+    .pager { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  // Reading-depth tabs. Without JS all three tiers show in sequence, each under its own heading.
+  const tablist = document.querySelector<HTMLElement>('.tiers');
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-tier-tab]')];
+  const panels = [...document.querySelectorAll<HTMLElement>('.reader__panel .tier')];
+
+  if (tablist && tabs.length && panels.length === tabs.length) {
+    const select = (id: string, focus = false) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.tierTab === id;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panels.forEach((p) => {
+        p.hidden = p.dataset.tier !== id;
+        p.setAttribute('role', 'tabpanel');
+        p.setAttribute('aria-labelledby', `tab-${p.dataset.tier}`);
+        p.tabIndex = 0;
+      });
+      try { localStorage.setItem('briefing-tier', id); } catch {}
+    };
+
+    const ids = tabs.map((t) => t.dataset.tierTab!);
+    let initial = ids[0];
+    try {
+      const saved = localStorage.getItem('briefing-tier');
+      if (saved && ids.includes(saved)) initial = saved;
+    } catch {}
+    const fromHash = location.hash.match(/^#tier-(.+)$/)?.[1];
+    if (fromHash && ids.includes(fromHash)) initial = fromHash;
+
+    tablist.hidden = false;
+    panels[0].parentElement?.classList.add('is-tabbed');
+    select(initial);
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t.dataset.tierTab!));
+      t.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (step) select(ids[(i + step + ids.length) % ids.length], true);
+        if (e.key === 'Home') select(ids[0], true);
+        if (e.key === 'End') select(ids[ids.length - 1], true);
+      });
+    });
+  }
+</script>

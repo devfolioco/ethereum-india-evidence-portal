@@ -9,7 +9,7 @@ const contact = site.emails.contact;
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer">
+<footer class="footer deep">
   <div class="wrap footer__inner">
     <div class="footer__brand">
       <a class="footer__logo" href="/">
@@ -41,8 +41,6 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
-    background: var(--paper);
-    border-top: 1px solid var(--border);
     padding-block: clamp(40px, 6vw, 72px) 28px;
   }
 
@@ -70,6 +68,6 @@ const year = new Date().getFullYear();
     justify-content: space-between;
     margin-top: clamp(36px, 5vw, 64px);
     padding-top: 20px;
-    border-top: 1px solid color-mix(in srgb, var(--rule) 40%, transparent);
+    border-top: 1px solid var(--border);
   }
 </style>
