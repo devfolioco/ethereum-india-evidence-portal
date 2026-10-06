@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import PageHead from '../../components/PageHead.astro';
 import CopyForLlm from '../../components/CopyForLlm.astro';
 import '../../styles/prose.css';
 
@@ -13,14 +12,10 @@ const bodies = import.meta.glob<string>('../../content/briefing/[a-g].html', {
 
 export async function getStaticPaths() {
   const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
-  return modules.map((m, i) => ({
-    params: { module: m.data.letter },
-    props: { module: m, modules, prev: modules[i - 1], next: modules[i + 1] },
-  }));
+  return modules.map((m) => ({ params: { module: m.data.letter }, props: { module: m } }));
 }
 
-const { module: m, modules, prev, next } = Astro.props;
-const L = m.data.letter.toUpperCase();
+const { module: m } = Astro.props;
 const body = bodies[`../../content/briefing/${m.data.letter}.html`];
 
 const tiers = [
@@ -30,133 +25,49 @@ const tiers = [
 ];
 ---
 
-<Base title={`${m.data.title} — Module ${L} — ETHIndia Institutional briefing`} description={m.data.description} type="article">
-  <PageHead
-    title={m.data.heading}
-    lede={m.data.question}
-    crumbs={[
-      { label: 'Home', href: '/' },
-      { label: 'Briefing', href: '/briefing' },
-      { label: `Module ${L}`, href: `/briefing/${m.data.letter}` },
-    ]}
-  />
+<Base
+  chrome="portal"
+  tab={m.data.title}
+  current={m.data.letter}
+  title={`${m.data.title} — Ethereum/India Institutional Briefing`}
+  description={m.data.description}
+  type="article"
+>
+  <article aria-labelledby="page-title">
+    <header class="tab-header">
+      <h1 id="page-title">{m.data.heading}</h1>
+      <p class="question"><strong class="label">Question:</strong> {m.data.question}</p>
+    </header>
 
-  <div class="wrap reader">
-    <aside class="reader__aside">
-      <nav class="toc" aria-label="Briefing modules">
-        <p class="toc__count meta">Module {m.data.order} of {modules.length}</p>
-        <ol class="toc__list">
-          {modules.map((x) => (
-            <li>
-              <a href={`/briefing/${x.data.letter}`} aria-current={x.id === m.id ? 'page' : undefined}>
-                <span class="toc__letter px" aria-hidden="true">{x.data.letter.toUpperCase()}</span>
-                <span>{x.data.title}</span>
-              </a>
-              {x.id === m.id && <span class="toc__progress" aria-hidden="true"></span>}
-            </li>
-          ))}
-        </ol>
-        <ul class="toc__ref">
-          <li><a href="/briefing">Briefing overview</a></li>
-          <li><a href="/briefing/ledger">Figure Ledger</a></li>
-          <li><a href="/briefing/reconciliation">Reconciliation</a></li>
-        </ul>
-      </nav>
-    </aside>
+    <div class="tiers" role="tablist" aria-label="Reading depth" hidden>
+      {tiers.map(([id, label]) => (
+        <button type="button" role="tab" id={`tab-${id}`} aria-controls={`tier-${id}`} aria-selected="false" tabindex="-1" data-tier-tab={id}>
+          {label}
+        </button>
+      ))}
+    </div>
 
-    <article class="reader__main" aria-labelledby="page-title">
-      <div class="tiers" role="tablist" aria-label="Reading depth" hidden>
-        {tiers.map(([id, label]) => (
-          <button type="button" role="tab" id={`tab-${id}`} aria-controls={`tier-${id}`} aria-selected="false" tabindex="-1" data-tier-tab={id}>
-            {label}
-          </button>
-        ))}
-      </div>
+    <CopyForLlm
+      summary="Full report — copy for an LLM"
+      label="Full report markdown, with source provenance"
+      src={`/llm/module-${m.data.letter}.md`}
+      rows={6}
+    />
 
-      <div class="panel reader__panel prose" set:html={body} />
-
-      <CopyForLlm
-        summary="Full report — copy for an LLM"
-        label={`Module ${L} full report, with source provenance`}
-        src={`/llm/module-${m.data.letter}.md`}
-        rows={6}
-      />
-
-      <nav class="pager" aria-label="Previous and next module">
-        {prev ? (
-          <a class="pager__link" href={`/briefing/${prev.data.letter}`} rel="prev">
-            <span class="meta">← Module {prev.data.letter.toUpperCase()}</span>
-            <span class="pager__title">{prev.data.title}</span>
-          </a>
-        ) : (
-          <a class="pager__link" href="/briefing">
-            <span class="meta">← Overview</span>
-            <span class="pager__title">The briefing</span>
-          </a>
-        )}
-        {next ? (
-          <a class="pager__link pager__link--next" href={`/briefing/${next.data.letter}`} rel="next">
-            <span class="meta">Module {next.data.letter.toUpperCase()} →</span>
-            <span class="pager__title">{next.data.title}</span>
-          </a>
-        ) : (
-          <a class="pager__link pager__link--next" href="/briefing/reconciliation">
-            <span class="meta">Reference →</span>
-            <span class="pager__title">Reconciliation</span>
-          </a>
-        )}
-      </nav>
-    </article>
-  </div>
+    <div class="panel reader__panel prose" set:html={body} />
+  </article>
 </Base>
 
 <style>
-  .reader {
-    display: grid;
-    grid-template-columns: 240px minmax(0, 1fr);
-    gap: clamp(28px, 4vw, 64px);
-    padding-block: clamp(32px, 4vw, 56px) clamp(56px, 8vw, 112px);
+  .tab-header { display: grid; gap: 18px; margin-bottom: 28px; }
+  .tab-header h1 { font-size: clamp(32px, 4vw, 56px); line-height: 1.04; max-width: 22ch; }
+  .question {
+    max-width: 68ch;
+    padding: 16px 20px;
+    font-size: clamp(17px, 1.4vw, 19px);
+    background: var(--surface);
+    border-radius: var(--radius-card);
   }
-
-  /* Sticky A–G navigation; the current module shows reading progress. */
-  .reader__aside { position: relative; }
-  .toc { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 14px; }
-  .toc__count { color: var(--accent); }
-  .toc__list { border-top: 1px solid var(--border); }
-  .toc__list li { position: relative; border-bottom: 1px solid var(--border); }
-  .toc__list a {
-    display: grid;
-    grid-template-columns: 1.6em 1fr;
-    align-items: baseline;
-    min-height: 44px;
-    padding-block: 10px;
-    font-size: 15px;
-    line-height: 1.35;
-    color: var(--ink-2);
-    text-decoration: none;
-  }
-  .toc__list a:hover { color: var(--ink); }
-  .toc__list a[aria-current] { color: var(--ink); font-weight: 500; }
-  .toc__letter { color: var(--rule); }
-  .toc__list a[aria-current] .toc__letter { color: var(--accent); }
-  .toc__progress {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 2px;
-    background: var(--accent);
-    transform-origin: left;
-    transform: scaleX(0);
-  }
-  @supports (animation-timeline: scroll()) {
-    .toc__progress { animation: read-progress linear both; animation-timeline: scroll(root); }
-  }
-  @keyframes read-progress { to { transform: scaleX(1); } }
-
-  .toc__ref { display: grid; gap: 2px; font-size: 15px; }
-  .toc__ref a { display: inline-flex; align-items: center; min-height: 36px; color: var(--ink-2); }
-  .toc__ref a:hover { color: var(--ink); }
 
   /* Reading depth tabs */
   .tiers {
@@ -184,6 +95,8 @@ const tiers = [
   .tiers button:hover { color: var(--ink); }
   .tiers button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
 
+  article > :global(.copy) { margin-bottom: 16px; max-width: 880px; }
+
   .reader__panel { padding: clamp(22px, 4vw, 56px); }
   .reader__panel :global(.tier + .tier) { margin-top: 3em; padding-top: 2em; border-top: 1px solid var(--border); }
   .reader__panel :global(.tier[hidden]) { display: none; }
@@ -193,38 +106,9 @@ const tiers = [
   .reader__panel :global(.tier > * + *) { margin-top: 1.1em; }
   .reader__panel :global(.tier > h3) { margin-top: 2.2em; }
 
-  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
-  .reader__main > :global(.copy) { margin-top: 16px; }
-  .pager__link {
-    display: grid;
-    gap: 4px;
-    padding: 18px 20px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    background: var(--panel);
-    text-decoration: none;
-    transition: border-color 160ms var(--ease);
-  }
-  .pager__link:hover { border-color: var(--ink); }
-  .pager__link--next { text-align: right; }
-  .pager__title { font-size: 18px; font-weight: 500; }
-
-  @media (max-width: 960px) {
-    .reader { grid-template-columns: minmax(0, 1fr); }
-    .toc { position: static; }
-    .toc__list { display: flex; overflow-x: auto; border: 0; gap: 4px; }
-    .toc__list li { border: 0; flex: none; }
-    .toc__list a { grid-template-columns: auto; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-pill); }
-    .toc__list a span:not(.toc__letter) { display: none; }
-    .toc__list a .toc__letter { color: inherit; }
-    .toc__list a[aria-current] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
-    .toc__progress, .toc__ref { display: none; }
-  }
-
   @media (max-width: 560px) {
     .tiers { width: 100%; }
     .tiers button { flex: 1; padding-inline: 8px; }
-    .pager { grid-template-columns: 1fr; }
   }
 </style>
 

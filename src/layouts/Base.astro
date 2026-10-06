@@ -2,19 +2,34 @@
 import '../styles/tokens.css';
 import '../styles/base.css';
 import Nav from '../components/Nav.astro';
-import Ticker from '../components/Ticker.astro';
 import Footer from '../components/Footer.astro';
+import PortalShell from '../components/PortalShell.astro';
 import PaletteSwitcher from '../components/PaletteSwitcher.astro';
 import site from '../content/site.json';
 
+// chrome mirrors the old portal's three page families:
+//   landing   — top bar + sections footer (home)
+//   narrative — no bar, hero with a back link, "full briefing" footer (briefing overview)
+//   portal    — header + module sidebar (modules, ledger, reconciliation)
 interface Props {
   title?: string;
   description?: string;
   type?: 'website' | 'article';
   noindex?: boolean;
+  chrome?: 'landing' | 'narrative' | 'portal';
+  tab?: string;
+  current?: string;
 }
 
-const { title = site.title, description = site.description, type = 'website', noindex = false } = Astro.props;
+const {
+  title = site.title,
+  description = site.description,
+  type = 'website',
+  noindex = false,
+  chrome = 'landing',
+  tab = '',
+  current = '',
+} = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.domain).href;
 const ogImage = new URL('/og/default.png', site.domain).href;
 ---
@@ -51,61 +66,28 @@ const ogImage = new URL('/og/default.png', site.domain).href;
     </script>
   </head>
 
-  <body>
+  <body data-chrome={chrome}>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <header class="chrome" id="chrome">
-      <Nav />
-      <div class="chrome__ticker"><Ticker /></div>
-    </header>
-
-    <main id="main"><slot /></main>
-
-    <Footer />
+    {chrome === 'portal' ? (
+      <PortalShell tab={tab} current={current}><slot /></PortalShell>
+    ) : (
+      <>
+        {chrome === 'landing' && (
+          <header class="chrome"><Nav /></header>
+        )}
+        <main id="main"><slot /></main>
+        <Footer variant={chrome} />
+      </>
+    )}
     <PaletteSwitcher />
 
     <style is:global>
       html { scroll-padding-top: calc(var(--nav-h) + 16px); }
-
-      .chrome {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        /* The ticker slides under the nav instead of changing height, so collapsing it
-           never moves the page (no layout shift, no scroll-anchoring feedback loop). */
-        pointer-events: none;
-      }
-      .chrome > * { pointer-events: auto; }
-      .chrome .nav { position: relative; z-index: 2; }
-
-      .chrome__ticker {
-        position: relative;
-        z-index: 1;
-        transition: transform 200ms var(--ease);
-      }
-      .chrome[data-compact] .chrome__ticker {
-        transform: translateY(-100%);
-        visibility: hidden;
-        transition: transform 200ms var(--ease), visibility 0s linear 200ms;
-      }
+      .chrome { position: sticky; top: 0; z-index: 50; }
     </style>
 
     <script>
-      // Collapse the ticker while scrolling down; bring it back on scroll up.
-      const chrome = document.getElementById('chrome')!;
-      let lastY = window.scrollY;
-
-      addEventListener(
-        'scroll',
-        () => {
-          const y = window.scrollY;
-          if (y > lastY + 4 && y > 24) chrome.setAttribute('data-compact', '');
-          else if (y < lastY - 4) chrome.removeAttribute('data-compact');
-          lastY = y;
-        },
-        { passive: true }
-      );
-
       // Section entry: only sections that start below the fold animate, so nothing
       // already on screen ever blinks, and a missed observer leaves content visible.
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {

@@ -2,7 +2,7 @@
 letter: e
 order: 5
 title: "The privacy question"
-heading: "What Is Actually Moving on Privacy, and What Is Not"
+heading: "Module E — What Is Actually Moving on Privacy, and What Is Not"
 question: "Confidentiality is the criterion on which institutions rejected public Ethereum. What has changed on the protocol, wallet, layer-2 and standards layers since, and does any of it change that decision?"
 description: "Institutions rejected public Ethereum on confidentiality. What has changed in protocol, wallets, layer-2s and standards since, and whether it changes that call."
 legacy: the-privacy-question

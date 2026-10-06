@@ -2,7 +2,7 @@
 letter: c
 order: 3
 title: "Where the value is"
-heading: "Where the Value Actually Is"
+heading: "Module C — Where the Value Actually Is"
 question: "Which specific processes inside Indian financial institutions are expensive, slow, or capital-inefficient enough that a distributed-settlement or tokenisation primitive would produce a measurable improvement, how large is each in rupee terms, and who owns the budget?"
 description: "Which processes in Indian financial institutions are costly or slow enough for tokenised settlement to help, sized in rupees, with the budget owner for each."
 legacy: where-the-value-is

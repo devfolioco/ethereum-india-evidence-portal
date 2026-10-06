@@ -2,7 +2,7 @@
 letter: f
 order: 6
 title: "The objections"
-heading: "The Objection Bank"
+heading: "Module F — The Objection Bank"
 question: "What are the strongest objections an informed Indian institutional or regulatory audience will raise, in their strongest form, and what is the honest evidence-based response to each?"
 description: "The strongest objections Indian institutions and regulators raise to tokenised settlement on Ethereum, each in its strongest form, with the evidence in reply."
 legacy: the-objections

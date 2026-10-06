@@ -1,0 +1,119 @@
+---
+import { getCollection } from 'astro:content';
+
+// The old portal's frame for modules, Figure Ledger and Reconciliation:
+// a header naming the portal and the current tab, and a sidebar of sections.
+interface Props { tab: string; current: string }
+const { tab, current } = Astro.props;
+const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
+const here = (key: string) => (current === key ? 'page' : undefined);
+---
+
+<input type="checkbox" id="nav-toggle-checkbox" class="portal__check" aria-hidden="true" tabindex="-1" />
+<header class="portal__head deep">
+  <label for="nav-toggle-checkbox" class="portal__toggle" aria-label="Toggle navigation"><span class="portal__bars" aria-hidden="true"></span></label>
+  <div class="portal__title">
+    <span class="portal__name">Ethereum/India Institutional Briefing</span>
+    <span class="portal__tab">{tab}</span>
+  </div>
+</header>
+
+<div class="portal wrap">
+  <nav class="portal__nav" aria-label="Portal sections">
+    <a class="portal__back" href="/"><span aria-hidden="true">←</span> ETHIndia Institutions</a>
+    <a href="/briefing" aria-current={here('overview')}>Briefing overview</a>
+    <div role="group" aria-labelledby="nav-group-modules">
+      <p class="portal__group meta" id="nav-group-modules">Modules</p>
+      {modules.map((m) => (
+        <a href={`/briefing/${m.data.letter}`} aria-current={here(m.data.letter)} aria-label={`Module ${m.data.letter.toUpperCase()}, ${m.data.title}`}>
+          <span class="portal__letter px" aria-hidden="true">{m.data.letter.toUpperCase()}</span>{m.data.title}
+        </a>
+      ))}
+    </div>
+    <div role="group" aria-labelledby="nav-group-reference">
+      <p class="portal__group meta" id="nav-group-reference">Reference</p>
+      <a href="/briefing/ledger" aria-current={here('ledger')}>Figure Ledger</a>
+      <a href="/briefing/reconciliation" aria-current={here('reconciliation')}>Reconciliation</a>
+    </div>
+  </nav>
+
+  <main id="main" class="portal__main"><slot /></main>
+</div>
+
+<style>
+  .portal__check { position: absolute; opacity: 0; pointer-events: none; }
+
+  .portal__head {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 56px;
+    padding-inline: max(var(--gutter), calc((100vw - var(--wrap)) / 2 + var(--gutter)));
+    border-bottom: 1px solid var(--border);
+  }
+  .portal__title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding-block: 8px; }
+  .portal__name { font-size: 15px; color: var(--ink-2); }
+  .portal__tab { font-family: var(--font-pixel); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .portal__toggle { display: none; }
+
+  .portal {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 64px);
+    padding-block: clamp(28px, 4vw, 56px) clamp(56px, 8vw, 112px);
+  }
+
+  .portal__nav {
+    position: sticky;
+    top: 80px;
+    align-self: start;
+    display: grid;
+    gap: 2px;
+    max-height: calc(100vh - 96px);
+    overflow-y: auto;
+    font-size: 15px;
+  }
+  .portal__nav a {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    min-height: 44px;
+    padding: 10px 0;
+    line-height: 1.35;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .portal__nav a:hover { color: var(--ink); }
+  .portal__nav a[aria-current] { color: var(--ink); font-weight: 500; box-shadow: -10px 0 0 -8px var(--accent), -2px 0 0 0 var(--accent); }
+  .portal__back { color: var(--ink) !important; font-weight: 500; }
+  .portal__back span { margin-right: 8px; }
+  .portal__group { margin-top: 18px; padding-bottom: 6px; border-bottom: 1px solid var(--ink); text-transform: uppercase; letter-spacing: 0.08em; }
+  .portal__letter { width: 1.8em; color: var(--accent); }
+
+  .portal__main { min-width: 0; }
+
+  @media (max-width: 960px) {
+    .portal { grid-template-columns: minmax(0, 1fr); }
+    .portal__toggle {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      cursor: pointer;
+    }
+    .portal__bars, .portal__bars::before, .portal__bars::after { display: block; width: 18px; height: 1.5px; background: var(--ink); }
+    .portal__bars { position: relative; }
+    .portal__bars::before, .portal__bars::after { content: ""; position: absolute; left: 0; }
+    .portal__bars::before { transform: translateY(-5px); }
+    .portal__bars::after { transform: translateY(5px); }
+    .portal__check:focus-visible ~ .portal__head .portal__toggle { outline: 2px solid var(--ink); outline-offset: 3px; }
+    .portal__nav { display: none; position: static; max-height: none; padding: 8px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-card); }
+    .portal__check:checked ~ .portal .portal__nav { display: grid; }
+  }
+</style>

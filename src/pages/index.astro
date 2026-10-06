@@ -1,517 +1,210 @@
 ---
-import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/hero/Hero.astro';
-import T from '../components/T.astro';
-import DinnerCta from '../components/DinnerCta.astro';
-import site from '../content/site.json';
 import home from '../content/home.json';
-import focus from '../content/focus.json';
-import stats from '../content/stats.json';
-import segments from '../content/segments.json';
-import faq from '../content/faq.json';
-import team from '../content/team.json';
-import supporters from '../content/supporters.json';
+import '../styles/prose.css';
 
-const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
-
-const allUpdates = (await getCollection('updates')).sort((a, b) => +b.data.date - +a.data.date);
-const updates = await Promise.all(
-  allUpdates.slice(0, 3).map(async (u) => ({ ...u, Content: (await render(u)).Content }))
-);
-
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const fmtDate = (d: Date) =>
-  `${String(d.getUTCDate()).padStart(2, '0')} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
-
-const initials = (name: string) =>
-  name.split(/\s+/).map((w) => w[0]).slice(0, 2).join('').toUpperCase();
-
-type Person = { name: string; role: string; bio?: string; photo?: string };
-type Logo = { name: string; logo: string; href?: string; line?: string };
-const people = team as Person[];
-const anchors = supporters.anchors as Logo[];
-const ecosystem = supporters.ecosystem as Logo[];
-const ECOSYSTEM_VISIBLE = 18; // three rows of six
+const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
 ---
 
 <Base>
   <Hero />
 
-  <!-- 3. Why India: the case in sourced figures -->
   <section class="section" id="why-india" aria-labelledby="why-india-title">
     <div class="wrap">
       <div class="section__head">
-        <h2 id="why-india-title">{home.whyIndia.title}</h2>
-        <T text={home.whyIndia.intro} />
+        <p class="label">{whyIndia.eyebrow}</p>
+        <h2 id="why-india-title">{whyIndia.title}</h2>
       </div>
-      <ol class="points">
-        {stats.map((p) => (
+      <ul class="points">
+        {whyIndia.points.map((p) => (
           <li class="point">
-            <ul class="point__figures">
-              {p.figures.map((f) => (
-                <li>
-                  <span class="point__value px">{f.value}</span>
-                  <span class="meta">{f.caption}</span>
-                </li>
-              ))}
-            </ul>
-            <div class="point__text">
-              <h3>{p.headline}</h3>
-              <p>{p.body}</p>
-              <ul class="point__sources meta">
-                {p.figures.map((f) => <li><a href={f.href}>{f.source}</a></li>)}
-              </ul>
-            </div>
+            <h3>{p.title}</h3>
+            <p set:html={p.html} />
           </li>
         ))}
-      </ol>
+      </ul>
     </div>
   </section>
 
-  <!-- Where Ethereum fits -->
   <section class="section" id="ethereum" aria-labelledby="ethereum-title">
     <div class="wrap">
       <div class="split">
-        <div>
-          <p class="label">{home.ethereum.label}</p>
-          <h2 id="ethereum-title">{home.ethereum.title}</h2>
+        <div class="section__head">
+          <p class="label">{ethereum.eyebrow}</p>
+          <h2 id="ethereum-title">{ethereum.title}</h2>
         </div>
         <div class="split__body">
-          {home.ethereum.paragraphs.map((t) => <p>{t}</p>)}
+          {ethereum.paragraphs.map((t) => <p>{t}</p>)}
           <p class="deeper">
-            {home.ethereum.links.map((l) => <a href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+            {ethereum.links.map((l) => <a href={l.href}>{l.label}<span aria-hidden="true"> →</span></a>)}
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 4–5. Why ETHIndia Institutional, and what it does -->
-  <section class="section" id="focus" aria-labelledby="why-us-title">
-    <div class="wrap">
-      <div class="split">
-        <h2 id="why-us-title">{home.whyUs.title}</h2>
-        <div class="split__body">
-          {home.whyUs.paragraphs.map((p) => <T text={p} />)}
-        </div>
-      </div>
-      <ul class="cols cols--3">
-        {focus.map((f) => (
-          <li>
-            <h3>{f.title}</h3>
-            <p class="cols__body">{f.body}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-
-  <!-- 6. The briefing -->
-  <section class="section" id="briefing" aria-labelledby="briefing-title">
-    <div class="wrap">
-      <div class="briefing">
-        <div class="briefing__intro">
-          <p class="label">{home.briefing.label}</p>
-          <h2 id="briefing-title" class="briefing__title">{home.briefing.title}</h2>
-          <T text={home.briefing.summary} />
-          <div class="btn-row">
-            <a class="btn" href={home.briefing.read.href}>{home.briefing.read.label}</a>
-            {home.briefing.pdf ? (
-              <a class="btn btn--secondary" href={home.briefing.pdf} download>Download PDF</a>
-            ) : (
-              <span class="todo">TODO: PDF file</span>
-            )}
-            <a class="briefing__ledger" href={home.briefing.ledger.href}>{home.briefing.ledger.label} <span aria-hidden="true">→</span></a>
-          </div>
-        </div>
-        <nav class="modules" aria-label="Briefing modules">
-          <ol>
-            {modules.map((m) => (
-              <li>
-                <a href={`/briefing/${m.data.letter}`}>
-                  <span class="modules__letter px" aria-hidden="true">{m.data.letter.toUpperCase()}</span>
-                  <span class="modules__title">{m.data.title}</span>
-                  <span class="modules__arrow" aria-hidden="true">→</span>
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-      </div>
-      <div class="section__note"><T text={home.briefing.reportNote} /></div>
-    </div>
-  </section>
-
-  <!-- 7. Institutional dinner -->
-  <section class="dinner band" id="dinner" aria-labelledby="dinner-title">
-    <div class="wrap dinner__inner">
-      <h2 id="dinner-title">{home.dinner.title}</h2>
-      <div class="dinner__body">
-        <ul class="dinner__details px">
-          <li>{site.dinner.date}</li>
-          <li>{site.dinner.time}</li>
-          <li>{site.dinner.place}</li>
-        </ul>
-        <p>{home.dinner.body}</p>
-        <DinnerCta />
-      </div>
-    </div>
-  </section>
-
-  <!-- 8. Who we work with -->
-  <section class="section" aria-labelledby="segments-title">
+  <section class="section" id="expect" aria-labelledby="expect-title">
     <div class="wrap">
       <div class="section__head">
-        <h2 id="segments-title">{home.segments.title}</h2>
+        <p class="label">{expect.eyebrow}</p>
+        <h2 id="expect-title">{expect.title}</h2>
       </div>
       <ul class="cols">
-        {segments.map((s) => (
+        {expect.items.map((item) => (
           <li>
-            <h3 class="segments__name">{s.name}</h3>
-            {s.note && <p class="cols__body">{s.note}</p>}
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
           </li>
         ))}
       </ul>
-      <div class="section__note"><T text={home.segments.note} /></div>
     </div>
   </section>
 
-  <!-- 9. Updates -->
-  {updates.length > 0 && (
-    <section class="section" id="updates" aria-labelledby="updates-title">
-      <div class="wrap">
-        <div class="section__head">
-          <h2 id="updates-title">{home.updates.title}</h2>
-        </div>
-        <ol class="updates">
-          {updates.map(({ data, Content }) => (
-            <li class="updates__item">
-              <time class="px updates__date" datetime={data.date.toISOString().slice(0, 10)}>
-                {fmtDate(data.date)}
-              </time>
-              <div>
-                {data.kind && <p class="label updates__kind">{data.kind}</p>}
-                <h3>{data.link ? <a href={data.link}>{data.title}</a> : data.title}</h3>
-                <div class="updates__body"><Content /></div>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  )}
-
-  <!-- 10. Team (hidden until team.json has people) -->
-  {people.length > 0 && (
-    <section class="section" id="team" aria-labelledby="team-title">
-      <div class="wrap">
-        <div class="section__head">
-          <h2 id="team-title">{home.team.title}</h2>
-        </div>
-        <ul class="people">
-          {people.map((p) => (
-            <li class="person">
-              {p.photo ? (
-                <img class="person__photo" src={p.photo} alt="" width="320" height="320" loading="lazy" />
-              ) : (
-                <span class="person__photo person__initials px" aria-hidden="true">{initials(p.name)}</span>
-              )}
-              <h3 class="person__name">{p.name}</h3>
-              <p class="meta">{p.role}</p>
-              {p.bio && <p class="person__bio">{p.bio}</p>}
-            </li>
-          ))}
-        </ul>
-        <div class="section__note">
-          <p class="meta">{home.team.note}</p>
-          <T text={site.emails.careers} />
-        </div>
-      </div>
-    </section>
-  )}
-
-  <!-- 11. Supporters (hidden until supporters.json has entries) -->
-  {(anchors.length > 0 || ecosystem.length > 0) && (
-    <section class="section" aria-labelledby="supporters-title">
-      <div class="wrap">
-        <div class="section__head">
-          <h2 id="supporters-title">{home.supporters.title}</h2>
-        </div>
-        {anchors.length > 0 && (
-          <ul class="anchors">
-            {anchors.map((a) => (
-              <li>
-                <a href={a.href}><img src={a.logo} alt={a.name} loading="lazy" /></a>
-                {a.line && <p class="meta">{a.line}</p>}
-              </li>
-            ))}
-          </ul>
-        )}
-        {ecosystem.length > 0 && (
-          <>
-            <ul class="ecosystem">
-              {ecosystem.slice(0, ECOSYSTEM_VISIBLE).map((e) => (
-                <li><a href={e.href}><img src={e.logo} alt={e.name} loading="lazy" /></a></li>
-              ))}
-            </ul>
-            {ecosystem.length > ECOSYSTEM_VISIBLE && (
-              <details class="ecosystem__more">
-                <summary class="btn btn--secondary">Show all</summary>
-                <ul class="ecosystem">
-                  {ecosystem.slice(ECOSYSTEM_VISIBLE).map((e) => (
-                    <li><a href={e.href}><img src={e.logo} alt={e.name} loading="lazy" /></a></li>
-                  ))}
-                </ul>
-              </details>
-            )}
-          </>
-        )}
-      </div>
-    </section>
-  )}
-
-  <!-- 12. FAQ -->
-  <section class="section" id="faq" aria-labelledby="faq-title">
+  <section class="section" id="briefing" aria-labelledby="briefing-title">
     <div class="wrap">
       <div class="section__head">
-        <h2 id="faq-title">{home.faq.title}</h2>
+        <p class="label">{briefing.eyebrow}</p>
+        <h2 id="briefing-title">{briefing.title}</h2>
       </div>
-      <div class="faq">
-        {faq.map((item) => (
-          <details class="faq__item">
-            <summary>{item.q}</summary>
-            <div class="faq__answer"><T text={item.a} /></div>
-          </details>
-        ))}
+      <article class="report">
+        <p class="report__date meta"><time datetime={briefing.iso}>{briefing.date}</time></p>
+        <h3 class="report__title"><a href="/briefing">{briefing.reportTitle}</a></h3>
+        <p class="report__sub">{briefing.sub}</p>
+        <p class="report__summary">{briefing.summary}</p>
+        <div class="report__actions">
+          <a class="btn" href="/briefing">{briefing.read}<span aria-hidden="true"> →</span></a>
+          <a class="report__ledger" href="/briefing/ledger">{briefing.ledger}</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="dinner band" id="dinner" aria-labelledby="dinner-title">
+    <div class="wrap dinner__inner">
+      <div class="dinner__text">
+        <p class="label">{dinner.eyebrow}</p>
+        <h2 id="dinner-title">{dinner.title}</h2>
+        <p>{dinner.body}</p>
+      </div>
+      <div class="dinner__card">
+        <p class="dinner__when px"><time datetime={dinner.iso}>{dinner.when}</time></p>
+        <p class="dinner__where">{dinner.where}</p>
+        <p class="label">{dinner.access}</p>
+        <span class="btn" aria-disabled="true">{dinner.pending}</span>
       </div>
     </div>
   </section>
 
-  <!-- 13. Stay informed -->
-  <section class="section" id="subscribe" aria-labelledby="subscribe-title">
+  <section class="section" id="updates" aria-labelledby="updates-title">
     <div class="wrap">
-      <div class="subscribe">
-        <h2 id="subscribe-title" class="subscribe__title">{home.newsletter.title}</h2>
-        <form class="subscribe__form" method="post" action={site.newsletterEndpoint || undefined}>
-          <div class="field">
-            <label for="subscribe-email">Work email</label>
-            <div class="field__row">
-              <input id="subscribe-email" name="email" type="email" autocomplete="email" required />
-              <button class="btn" type="submit" disabled={!site.newsletterEndpoint}>Subscribe</button>
-            </div>
-          </div>
-          <div class="consent">
-            <input id="subscribe-consent" name="consent" type="checkbox" required />
-            <label for="subscribe-consent">{home.newsletter.consent} <a href="/privacy">privacy policy</a>.</label>
-          </div>
-          {!site.newsletterEndpoint && (
-            <p class="todo">TODO: newsletter provider (Buttondown / Substack / Beehiiv). Set newsletterEndpoint in site.json.</p>
-          )}
-        </form>
+      <div class="section__head">
+        <p class="label">{updates.eyebrow}</p>
+        <h2 id="updates-title">{updates.title}</h2>
       </div>
+      <ol class="updates">
+        {updates.items.map((u) => (
+          <li class="updates__item">
+            <p class="updates__meta">
+              <span class="label">{u.type}</span>
+              <time class="meta" datetime={u.iso}>{u.date}</time>
+            </p>
+            <div>
+              <h3><a href={u.href}>{u.title}</a></h3>
+              <p class="updates__summary">{u.summary}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 </Base>
 
 <style>
   h3 { margin: 0; }
+  .section__head { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 48px); }
+  .split .section__head { margin-bottom: 0; align-content: start; }
 
-  /* Plain columns separated by a top rule: focus areas, segments, people. */
-  .cols {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 32px clamp(20px, 3vw, 40px);
-  }
-  .cols--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .cols > li { display: grid; align-content: start; gap: 8px; padding-top: 16px; border-top: 1px solid var(--ink); }
-  .cols > li > h3 { font-size: 20px; }
-  .cols__body { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
-
-  /* 3. four sourced points: figures left, the claim and its sources right */
+  /* Why India: four claims, each a rule-separated row */
   .points { border-top: 1px solid var(--border); }
   .point {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 16px clamp(24px, 5vw, 72px);
+    gap: 8px clamp(24px, 5vw, 72px);
     padding-block: clamp(20px, 2.4vw, 32px);
     border-bottom: 1px solid var(--border);
   }
-  .point__figures { display: grid; gap: 14px; align-content: start; }
-  .point__figures li { display: grid; gap: 2px; }
-  .point__value { font-size: clamp(28px, 3vw, 40px); line-height: 1.1; letter-spacing: -0.02em; overflow-wrap: anywhere; }
-  .point__text { display: grid; gap: 10px; align-content: start; max-width: 56ch; }
-  .point__text h3 { font-size: clamp(20px, 1.8vw, 24px); }
-  .point__text p { font-size: clamp(17px, 1.4vw, 19px); }
-  .point__sources { display: grid; gap: 2px; margin-top: 4px; }
-  .point__sources a { display: inline-flex; align-items: center; min-height: 28px; }
+  .point h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; }
+  .point p { max-width: 52ch; font-size: clamp(17px, 1.4vw, 19px); }
 
+  /* Where Ethereum fits */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(24px, 5vw, 72px);
+    align-items: start;
+  }
+  .split__body { display: grid; gap: 20px; max-width: 56ch; font-size: clamp(17px, 1.4vw, 19px); }
   .deeper { display: flex; flex-wrap: wrap; gap: 4px 28px; }
   .deeper a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
 
-  .section__note { margin-top: 24px; max-width: var(--measure); }
+  /* On this site */
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px clamp(20px, 3vw, 40px); }
+  .cols > li { display: grid; align-content: start; gap: 8px; padding-top: 16px; border-top: 1px solid var(--ink); }
+  .cols h3 { font-size: 20px; }
+  .cols p { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
 
-  .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 28px; }
-
-  /* 4. two-column statement */
-  .split {
-    margin-bottom: clamp(40px, 5vw, 72px);
+  /* Briefing */
+  .report {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(24px, 5vw, 80px);
-    align-items: start;
-  }
-  .split__body { display: grid; gap: 20px; }
-
-  /* 6. briefing panel */
-  .briefing {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    gap: clamp(28px, 4vw, 64px);
-    padding: clamp(24px, 4vw, 56px);
+    gap: 14px;
+    max-width: 820px;
+    padding: clamp(24px, 4vw, 48px);
     background: var(--panel);
     border: 1px solid var(--border);
     border-radius: var(--radius-card);
   }
-  .briefing__ledger { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; font-weight: 500; }
-  .briefing__intro { display: grid; align-content: start; gap: 20px; }
-  .briefing__intro .btn-row { margin-top: 8px; }
-  .briefing__title { font-size: clamp(28px, 3.2vw, 44px); }
+  .report__title { font-size: clamp(28px, 3.2vw, 44px); line-height: 1.1; font-weight: 500; }
+  .report__title a { text-decoration: none; }
+  .report__title a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+  .report__sub { font-size: clamp(18px, 1.6vw, 22px); color: var(--ink-2); }
+  .report__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 10px; }
+  .report__ledger { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; font-weight: 500; }
 
-  .modules ol { border-top: 1px solid var(--border); }
-  .modules li { border-bottom: 1px solid var(--border); }
-  .modules a {
-    display: grid;
-    grid-template-columns: 2.2em 1fr auto;
-    align-items: center;
-    gap: 12px;
-    min-height: 52px;
-    padding-block: 10px;
-    text-decoration: none;
-  }
-  .modules a:hover .modules__title { text-decoration: underline; }
-  .modules__letter { font-size: 20px; }
-  .modules__title { font-size: 17px; line-height: 1.35; }
-  .modules__arrow { transition: transform 160ms var(--ease); }
-  .modules a:hover .modules__arrow { transform: translateX(4px); }
-
-  /* 7. dinner band — inverted */
+  /* Dinner band */
   .dinner { padding-block: clamp(56px, 8vw, 112px); }
   .dinner__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     gap: clamp(24px, 5vw, 80px);
+    align-items: start;
   }
-  .dinner__body { display: grid; gap: 24px; align-content: start; }
-  .dinner__details {
-    display: grid;
-    gap: 6px;
-    font-size: clamp(18px, 1.6vw, 22px);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
+  .dinner__text { display: grid; gap: 18px; }
+  .dinner__text p:last-child { max-width: 52ch; }
+  .dinner__card { display: grid; gap: 12px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--border); background: var(--panel); }
+  .dinner__when { font-size: clamp(20px, 2vw, 26px); text-transform: uppercase; letter-spacing: 0.04em; }
+  .dinner__card .btn { justify-self: start; margin-top: 6px; }
 
-  /* 8. segments */
-  .segments__name { font-size: 18px; }
-
-  /* 9. updates */
+  /* Updates */
   .updates { border-top: 1px solid var(--border); max-width: 880px; }
   .updates__item {
     display: grid;
-    grid-template-columns: 9em 1fr;
+    grid-template-columns: 11em 1fr;
     gap: 8px 24px;
     padding-block: 20px;
     border-bottom: 1px solid var(--border);
   }
-  .updates__kind { color: var(--accent); margin-bottom: 4px; }
-  .updates__date { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); padding-top: 4px; }
-  .updates__body { margin-top: 6px; font-size: 16px; color: var(--ink-2); }
-
-  /* 10. team */
-  .people { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 32px 24px; }
-  .person { display: grid; gap: 6px; align-content: start; }
-  .person__photo {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    filter: grayscale(1);
-    border-radius: var(--radius-card);
-    margin-bottom: 10px;
-  }
-  .person__initials {
-    display: grid;
-    place-items: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    font-size: clamp(32px, 4vw, 48px);
-  }
-  .person__name { font-size: 18px; }
-  .person__bio { font-size: 15px; line-height: 1.5; }
-
-  /* 11. supporters */
-  .anchors { display: flex; flex-wrap: wrap; gap: 32px 56px; align-items: start; margin-bottom: 48px; }
-  .anchors img { height: 56px; width: auto; }
-  .anchors .meta { margin-top: 10px; max-width: 28ch; }
-  .ecosystem { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-  .ecosystem a {
-    display: grid;
-    place-items: center;
-    height: 72px;
-    padding: 14px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-  }
-  .ecosystem img { max-height: 32px; width: auto; filter: grayscale(1); }
-  .ecosystem__more { margin-top: 12px; }
-  .ecosystem__more summary { list-style: none; width: fit-content; margin-bottom: 12px; }
-  .ecosystem__more summary::-webkit-details-marker { display: none; }
-
-  /* 12. FAQ */
-  .faq { max-width: var(--measure); border-top: 1px solid var(--border); }
-  .faq__item { border-bottom: 1px solid var(--border); background: var(--panel); }
-  .faq__item summary {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 18px 16px;
-    min-height: 44px;
-    font-weight: 500;
-    cursor: pointer;
-    list-style: none;
-  }
-  .faq__item summary::-webkit-details-marker { display: none; }
-  .faq__item summary::after { content: "+"; font-family: var(--font-pixel); }
-  .faq__item[open] summary::after { content: "−"; }
-  .faq__answer { padding: 0 16px 20px; }
-
-  /* 13. newsletter */
-  .subscribe {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(24px, 5vw, 80px);
-    align-items: start;
-  }
-  .subscribe__form { display: grid; gap: 16px; }
-  .field__row { display: flex; gap: 10px; }
-  .field__row input { flex: 1; min-width: 0; }
-  .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
-  .consent input { width: 20px; height: 20px; margin-top: 1px; flex: none; accent-color: var(--accent); }
-
-  @media (max-width: 1080px) {
-    .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .ecosystem { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
+  .updates__meta { display: grid; gap: 2px; align-content: start; }
+  .updates h3 { font-size: 22px; font-weight: 500; }
+  .updates h3 a { text-decoration: none; }
+  .updates h3 a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
+  .updates__summary { margin-top: 6px; color: var(--ink-2); font-size: 16px; }
 
   @media (max-width: 860px) {
-    .point { grid-template-columns: 1fr; }
-    .split, .briefing, .dinner__inner, .subscribe { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 560px) {
+    .point, .split, .dinner__inner { grid-template-columns: 1fr; }
     .cols { grid-template-columns: 1fr; }
-    .ecosystem { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
     .updates__item { grid-template-columns: 1fr; }
-    .field__row { flex-direction: column; }
   }
 </style>

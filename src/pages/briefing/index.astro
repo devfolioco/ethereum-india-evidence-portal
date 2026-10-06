@@ -1,165 +1,174 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import PageHead from '../../components/PageHead.astro';
-import CopyForLlm from '../../components/CopyForLlm.astro';
-import home from '../../content/home.json';
-import lede from '../../content/briefing/_overview-lede.html?raw';
-import scenes from '../../content/briefing/_overview.html?raw';
+import overview from '../../content/briefing/_overview.html?raw';
 import '../../styles/prose.css';
 
-const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
-const llmPrompt = "Please fetch {{BASE_URL}}llms.txt first. It indexes the pages of \"Ethereum and Distributed Settlement Infrastructure in Indian Institutional Finance\": seven module reports, a Figure Ledger carrying a source tier and date on every claim, and a Reconciliation page. Then read the briefing overview at {{BASE_URL}}briefing and open whichever module pages look most relevant.\nBefore you answer, use what you already know about me from memory and our past conversations: what I work on, what I follow, what I have asked you before. If you know nothing about me, ask me that first.\nThen give me a handful of bullet points about Ethereum's institutional potential in India that I'm least likely to already know, each with a line on why it is new or useful for me specifically.";
-const citeUrl = 'institutions.ethindia.co/briefing';
+// The whole page body is the old portal's, verbatim; only zone and button classes are mapped
+// onto this site's design system.
+const html = overview
+  .replace('<header class="hero" id="hero">', '<header class="hero deep" id="hero">')
+  .replaceAll('btn btn-primary', 'btn')
+  .replaceAll('btn btn-ghost', 'btn btn--secondary');
 ---
 
 <Base
-  title="Tokenised settlement in India — ETHIndia Institutional briefing"
-  description="A seven-module briefing drawn from published sources: what is live, what Indian law permits, and where Ethereum fits in India's tokenised finance."
+  chrome="narrative"
+  title="Tokenised settlement in India: what's live, what's legal, where Ethereum fits"
+  description="Where distributed-ledger settlement stands in Indian institutional finance: what is live, what Indian law permits, where public Ethereum fits, in seven modules."
   type="article"
 >
-  <PageHead
-    title="India has already decided to tokenise. What will it run on?"
-    lede="The answer decides who can build here."
-    crumbs={[{ label: 'Home', href: '/' }, { label: 'Briefing', href: '/briefing' }]}
-  >
-    <p class="meta brief-date">{home.briefing.label}</p>
-    <div class="brief-actions">
-      <a class="btn" href="#the-mandate">Start reading</a>
-      <a class="btn btn--secondary" href="#modules">Jump to the modules</a>
-      {home.briefing.pdf ? (
-        <a class="btn btn--secondary" href={home.briefing.pdf} download>Download PDF</a>
-      ) : (
-        <span class="todo">TODO: PDF file</span>
-      )}
-    </div>
-  </PageHead>
-
-  <section class="brief-lede" aria-label="Introduction">
-    <div class="wrap">
-      <div class="prose brief-lede__text" set:html={lede} />
-      <div class="brief-lede__llm">
-        <CopyForLlm
-          summary="Copy a personalized prompt — explore this briefing with your own LLM"
-          label="Personalized prompt for exploring this briefing"
-          hint="Paste this into ChatGPT, Claude, Gemini, or any LLM that can fetch a URL. With JavaScript on, the box below already has this site's real address in it. Reading without JavaScript? Swap {{BASE_URL}} for this site's address before you paste."
-          text={llmPrompt}
-          rows={9}
-        />
-      </div>
-    </div>
-  </section>
-
-  <div class="wrap brief-scenes" set:html={scenes} />
-
-  <section class="section modules-index" id="modules" aria-labelledby="modules-title">
-    <div class="wrap">
-      <div class="section__head">
-        <h2 id="modules-title">Seven modules, each with its sources.</h2>
-        <p>
-          A seven-module briefing, drawn from published sources, on where distributed-ledger settlement and
-          tokenisation stand for Indian institutional finance, built for readers who have seen several blockchain
-          pitches this year and were unconvinced by all of them. Each module reads at three depths: 30 seconds,
-          5 minutes, or the full report.
-        </p>
-      </div>
-      <ol class="mods">
-        {modules.map((m) => (
-          <li class="mods__item">
-            <a class="mods__head" href={`/briefing/${m.data.letter}`}>
-              <span class="mods__letter px" aria-hidden="true">{m.data.letter.toUpperCase()}</span>
-              <span class="mods__title">
-                <span class="visually-hidden">Module {m.data.letter.toUpperCase()}: </span>{m.data.title}
-              </span>
-              <span class="mods__arrow" aria-hidden="true">→</span>
-            </a>
-            {m.data.summary.length > 0 && (
-              <ul class="mods__summary">
-                {m.data.summary.map((s) => <li>{s}</li>)}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="reference-title">
-    <div class="wrap reference">
-      <div>
-        <h2 id="reference-title" class="reference__title">Reference</h2>
-        <ul class="reference__list">
-          <li>
-            <a href="/briefing/ledger">Figure Ledger</a>
-            <span class="meta">Every quantitative claim with its source, date and source tier.</span>
-          </li>
-          <li>
-            <a href="/briefing/reconciliation">Reconciliation</a>
-            <span class="meta">Where the modules disagree, which figures rest on weak sources, and what changed the thesis.</span>
-          </li>
-          <li>
-            <a href="/data/figures.json">Ledger data (JSON)</a>
-            <span class="meta">For your own analysis, or to give an LLM the full sourced dataset.</span>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h2 class="reference__title">How to cite</h2>
-        <p class="cite">
-          ETHIndia Institutional, <cite>Tokenised settlement in India: what's live, what's legal, where Ethereum fits</cite>,
-          25 September 2026. {citeUrl}. Prose and data CC BY 4.0.
-        </p>
-        <p class="meta">When quoting a figure, cite its Figure Ledger row (for example {citeUrl}/ledger#fig-54) with its tier and date.</p>
-      </div>
-    </div>
-  </section>
+  <div class="narr" set:html={html} />
 </Base>
 
-<style>
-  .brief-date { color: var(--accent); }
-  .brief-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 8px; }
+<script>
+  import { copyText, flash } from '../../scripts/clipboard';
 
-  .brief-lede { padding-block: clamp(40px, 6vw, 80px); }
-  .brief-lede__text { font-size: clamp(19px, 1.6vw, 22px); line-height: 1.55; max-width: 62ch; }
+  // --- "Explore with your own LLM" prompt: real address in, one-click copy ---
+  document.querySelectorAll<HTMLDetailsElement>('.landing-prompt-details').forEach((details) => {
+    const textarea = details.querySelector<HTMLTextAreaElement>('.copy-textarea');
+    const summary = details.querySelector<HTMLElement>('.landing-prompt-summary');
+    if (!textarea) return;
+    textarea.value = textarea.value.split('{{BASE_URL}}').join(location.origin + '/');
 
-  .brief-lede__llm { margin-top: 32px; max-width: 62ch; }
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn--secondary copy-btn';
+    btn.textContent = 'Copy to clipboard';
+    btn.addEventListener('click', async () => flash(btn, (await copyText(textarea.value)) ? 'Copied' : 'Copy failed'));
+    textarea.before(btn);
 
-  .brief-scenes { display: grid; }
+    summary?.addEventListener('click', async () => {
+      if (details.open) return; // copy only on the click that opens it
+      const ok = await copyText(textarea.value);
+      flash(summary, ok ? 'Copied — go paste it into your LLM' : 'Copy failed — use the box below');
+    });
+  });
 
-  .modules-index { border-top: 1px solid var(--border); }
-  .mods { border-top: 1px solid var(--ink); }
-  .mods__item {
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 8px clamp(24px, 4vw, 64px);
-    padding-block: 22px;
-    border-bottom: 1px solid var(--border);
-  }
-  .mods__head {
-    display: grid;
-    grid-template-columns: 2em 1fr auto;
-    align-items: baseline;
-    gap: 12px;
-    align-self: start;
-    min-height: 44px;
-    text-decoration: none;
-  }
-  .mods__letter { font-size: 22px; color: var(--accent); }
-  .mods__title { font-size: clamp(20px, 1.8vw, 24px); font-weight: 500; line-height: 1.25; }
-  .mods__head:hover .mods__title { text-decoration: underline; text-decoration-thickness: 1px; }
-  .mods__arrow { transition: transform 160ms var(--ease); }
-  .mods__head:hover .mods__arrow { transform: translateX(4px); }
-  .mods__summary { display: grid; gap: 6px; padding-left: 1.1em; list-style: square; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
-  .mods__summary li::marker { color: var(--rule); }
+  // --- Split sort: collapse the two columns into one shuffled grid and let the reader call each item.
+  // Every item and status line is already in the served HTML; this only adds the guessing.
+  document.querySelectorAll<HTMLElement>('[data-widget="split-sort"]').forEach((widget) => {
+    const cols = [...widget.querySelectorAll<HTMLElement>('.sort-col')];
+    if (cols.length !== 2) return;
 
-  .reference { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 5vw, 80px); }
-  .reference__title { font-size: clamp(24px, 2.4vw, 32px); margin-bottom: 20px; }
-  .reference__list { display: grid; border-top: 1px solid var(--border); }
-  .reference__list li { display: grid; gap: 2px; padding-block: 14px; border-bottom: 1px solid var(--border); }
-  .reference__list a { font-weight: 500; }
-  .cite { padding: 18px 20px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-card); font-size: 16px; margin-bottom: 12px; }
+    const sides = cols.map((col) => ({
+      id: col.dataset.side!,
+      label: col.querySelector('.sort-col-label')!.textContent!,
+      sub: col.querySelector('.sort-col-sub')!.textContent!,
+    }));
+    const items = [...widget.querySelectorAll<HTMLElement>('.sort-item')].map((el) => ({
+      el,
+      side: el.dataset.side!,
+      placed: null as string | null,
+    }));
+    if (!items.length) return;
+    widget.classList.add('is-enhanced');
 
-  @media (max-width: 860px) {
-    .mods__item, .reference { grid-template-columns: 1fr; }
-  }
-</style>
+    const legend = document.createElement('ul');
+    legend.className = 'sort-legend';
+    sides.forEach((side) => {
+      const li = document.createElement('li');
+      li.dataset.side = side.id;
+      li.innerHTML = '<strong></strong><span></span>';
+      li.querySelector('strong')!.textContent = side.label;
+      li.querySelector('span')!.textContent = side.sub;
+      legend.appendChild(li);
+    });
+
+    const grid = document.createElement('ul');
+    grid.className = 'sort-list sort-grid';
+
+    const controls = document.createElement('div');
+    controls.className = 'sort-controls';
+    const score = document.createElement('p');
+    score.className = 'sort-score';
+    score.setAttribute('role', 'status');
+    const reveal = document.createElement('button');
+    reveal.type = 'button';
+    reveal.className = 'btn btn--secondary';
+    reveal.textContent = 'Show me the answers';
+    controls.append(score, reveal);
+
+    widget.querySelector('.sort-prompt')!.after(legend, controls, grid);
+    cols.forEach((col) => col.remove());
+
+    const sideLabel = (item: (typeof items)[number]) => sides.find((s) => s.id === item.side)!.label;
+    let revealed = false;
+
+    const update = () => {
+      const guessed = items.filter((i) => i.placed !== null);
+      const right = guessed.filter((i) => i.placed === i.side);
+      const left = items.length - guessed.length;
+      if (!left) {
+        score.textContent = `${right.length} of ${items.length} right. The status line on each card is the real answer.`;
+        reveal.remove();
+      } else if (revealed) {
+        score.textContent = 'The status line on each card is the real answer.';
+      } else {
+        score.textContent = guessed.length ? `${right.length} of ${guessed.length} right — ${left} to go` : '';
+      }
+    };
+
+    const resolve = (item: (typeof items)[number], guess: string) => {
+      if (item.placed !== null || revealed) return;
+      item.placed = guess;
+      item.el.classList.remove('is-pending');
+      item.el.dataset.side = item.side;
+      const verdict = document.createElement('p');
+      verdict.className = 'sort-verdict';
+      if (guess === item.side) {
+        item.el.classList.add('is-right');
+        verdict.textContent = 'Right — ' + sideLabel(item);
+      } else {
+        item.el.classList.add('is-wrong');
+        verdict.textContent = 'Actually — ' + sideLabel(item);
+      }
+      item.el.querySelector('.sort-actions')!.replaceWith(verdict);
+      update();
+    };
+
+    items
+      .slice()
+      .sort(() => Math.random() - 0.5)
+      .forEach((item) => {
+        item.el.classList.add('is-pending');
+        item.el.removeAttribute('data-side');
+        const actions = document.createElement('div');
+        actions.className = 'sort-actions';
+        sides.forEach((side) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'sort-btn';
+          b.textContent = side.label;
+          b.addEventListener('click', () => resolve(item, side.id));
+          actions.appendChild(b);
+        });
+        item.el.appendChild(actions);
+        grid.appendChild(item.el);
+      });
+
+    // Showing is a toggle over the cards not yet guessed; hiding puts them back in play.
+    reveal.addEventListener('click', () => {
+      revealed = !revealed;
+      items
+        .filter((i) => i.placed === null)
+        .forEach((i) => {
+          i.el.classList.toggle('is-pending', !revealed);
+          i.el.querySelector<HTMLElement>('.sort-actions')!.hidden = revealed;
+          if (revealed) {
+            i.el.dataset.side = i.side;
+            const v = document.createElement('p');
+            v.className = 'sort-verdict is-shown';
+            v.textContent = sideLabel(i);
+            i.el.appendChild(v);
+          } else {
+            i.el.removeAttribute('data-side');
+            i.el.querySelector('.sort-verdict.is-shown')?.remove();
+          }
+        });
+      reveal.textContent = revealed ? 'Hide the answers' : 'Show me the answers';
+      update();
+    });
+
+    update();
+  });
+</script>

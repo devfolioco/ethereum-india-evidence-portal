@@ -2,7 +2,7 @@
 letter: b
 order: 2
 title: "What's legal in India"
-heading: "India's Actual Perimeter"
+heading: "Module B — India's Actual Perimeter"
 question: "What is legally and practically permitted in India today for tokenised instruments, distributed settlement and blockchain registries, by whom and under whose authority, and where is the gap between that perimeter and what the global precedents would require?"
 description: "What RBI, SEBI and IFSCA permit in India today for tokenised instruments, distributed settlement and blockchain registries, and where the legal gaps remain."
 legacy: whats-legal-in-india

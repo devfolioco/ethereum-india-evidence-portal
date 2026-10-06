@@ -1,72 +1,53 @@
 ---
-import site from '../content/site.json';
-import team from '../content/team.json';
-import T from './T.astro';
+import { getCollection } from 'astro:content';
 
-const nav = site.nav.filter((l) => l.href !== '/#team' || team.length);
-const contact = site.emails.contact;
+// landing   — "Tokenised settlement in India" list + ETHIndia initiative note
+// narrative — "The full briefing" list + licence note
+interface Props { variant?: 'landing' | 'narrative' | 'portal' }
+const { variant = 'landing' } = Astro.props;
 
-const year = new Date().getFullYear();
+const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
+const landing = variant === 'landing';
 ---
 
 <footer class="footer deep">
-  <div class="wrap footer__inner">
-    <div class="footer__brand">
-      <a class="footer__logo" href="/">
-        <span class="logo" aria-hidden="true"></span>
-        <span class="visually-hidden">ETHIndia Institutional, home</span>
-      </a>
-      <p class="meta">
-        {site.tagline}. <a href="https://ethindia.co">ethindia.co</a>
-      </p>
-    </div>
-
-    <nav class="footer__links" aria-label="Footer">
+  <div class="wrap">
+    <nav class="footer__nav" aria-label={landing ? 'The briefing' : 'The full briefing'}>
+      <h2 class="footer__title">{landing ? 'Tokenised settlement in India' : 'The full briefing'}</h2>
       <ul>
-        {nav.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
-      </ul>
-      <ul>
-        {site.socials.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
-        <li>{contact.includes('[TODO') ? <T text={contact} as="span" /> : <a href={`mailto:${contact}`}>{contact}</a>}</li>
-        <li><a href="/privacy">Privacy</a></li>
+        {landing && <li><a href="/briefing">Briefing overview</a></li>}
+        {modules.map((m) => (
+          <li>
+            <a href={`/briefing/${m.data.letter}`}>
+              <span class="footer__letter px" aria-hidden="true">{m.data.letter.toUpperCase()}</span>{m.data.title}
+            </a>
+          </li>
+        ))}
       </ul>
     </nav>
-  </div>
-
-  <div class="wrap footer__legal">
-    <p class="meta">{site.license}</p>
-    <p class="meta">© {year} {site.name}</p>
+    <p class="footer__note meta">
+      {landing ? <>An <a href="https://ethindia.co">ETHIndia</a> initiative. Prose and data CC BY 4.0. Code MIT.</> : <>Prose and data CC BY 4.0. Code MIT.</>}
+    </p>
   </div>
 </footer>
 
 <style>
-  .footer {
-    padding-block: clamp(40px, 6vw, 72px) 28px;
-  }
-
-  .footer__inner {
+  .footer { padding-block: clamp(40px, 6vw, 72px) 28px; }
+  .footer__title { font-size: 20px; font-weight: 500; margin-bottom: 14px; }
+  .footer__nav ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0 32px; }
+  .footer__nav a {
     display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    min-height: 44px;
+    padding-block: 10px;
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--border);
   }
-
-  .footer__logo { display: flex; align-items: center; width: fit-content; min-height: 44px; }
-  .footer__logo .logo { --logo-h: 40px; }
-  .footer__brand p { margin-top: 10px; }
-
-  .footer__links { display: flex; flex-wrap: wrap; gap: clamp(32px, 6vw, 80px); }
-  .footer__links ul { display: grid; gap: 8px; align-content: start; }
-  .footer__links a { font-size: 15px; text-decoration: none; color: var(--ink-2); }
-  .footer__links a:hover { color: var(--ink); text-decoration: underline; }
-
-  .footer__legal {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 24px;
-    justify-content: space-between;
-    margin-top: clamp(36px, 5vw, 64px);
-    padding-top: 20px;
-    border-top: 1px solid var(--border);
-  }
+  .footer__nav a:hover { color: var(--ink); }
+  .footer__letter { width: 1.2em; color: var(--accent); }
+  .footer__note { margin-top: clamp(28px, 4vw, 48px); }
+  .footer__note a { color: inherit; }
 </style>

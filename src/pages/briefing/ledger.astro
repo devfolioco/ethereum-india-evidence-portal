@@ -1,6 +1,5 @@
 ---
 import Base from '../../layouts/Base.astro';
-import PageHead from '../../components/PageHead.astro';
 import ledger from '../../../public/data/figures.json';
 import '../../styles/prose.css';
 
@@ -17,119 +16,143 @@ type Row = {
   flags: string[];
 };
 
+// Same rules as the old portal's ledger-core.js.
 const { meta } = ledger;
 const rows = (ledger.figures as Row[]).slice().sort((a, b) => a.id - b.id);
-
-// Same rule as the old portal: stale = older than six months before the ledger was generated,
-// unless the figure is a historical fact or an evergreen statute/rate.
-const cutoff = new Date(meta.generated);
-cutoff.setMonth(cutoff.getMonth() - 6);
-const flagsOf = (r: Row) => {
-  const evergreen = r.flags.includes('HISTORICAL') || r.flags.includes('CURRENT');
-  const stale = !evergreen && r.as_of_sort && new Date(r.as_of_sort) < cutoff;
-  return stale && !r.flags.includes('STALE') ? ['STALE', ...r.flags] : r.flags;
-};
-const weak = (tier: string) => /T4|T5/.test(tier) && !/T1|T2/.test(tier);
+const tierParts = (t: string) => t.match(/T[1-5]/g) ?? [];
+const worstTier = (t: string) => Math.max(0, ...tierParts(t).map((x) => Number(x[1])));
+const cutoff = (() => {
+  const d = new Date(meta.generated + 'T00:00:00Z');
+  d.setUTCMonth(d.getUTCMonth() - 6);
+  return d.toISOString().slice(0, 10);
+})();
+const isStale = (r: Row) =>
+  !!r.as_of_sort && !r.flags.includes('HISTORICAL') && !r.flags.includes('CURRENT') && r.as_of_sort < cutoff;
+const isWeak = (r: Row) => tierParts(r.tier).some((t) => t === 'T4' || t === 'T5');
+const citation = (r: Row) =>
+  `${r.claim}: ${r.figure} ${r.unit} (as of ${r.as_of}) — ${r.source} [${r.tier}]${r.flags.length ? ', ' + r.flags.join(', ') : ''}`;
 
 const modules = [...new Set(rows.map((r) => r.module))].sort();
 const tiers = ['T1', 'T2', 'T3', 'T4', 'T5'];
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const g = new Date(meta.generated);
-const generated = `${g.getUTCDate()} ${MONTHS[g.getUTCMonth()]} ${g.getUTCFullYear()}`;
 ---
 
 <Base
-  title="Figure Ledger — ETHIndia Institutional briefing"
-  description="Every quantitative claim in the ETHIndia Institutional briefing, with its source, its as-of date and a rating of how strong the source is."
+  chrome="portal"
+  tab="Figure Ledger"
+  current="ledger"
+  title="Figure Ledger — Ethereum/India Institutional Briefing"
+  description="Every quantitative claim in the briefing with its figure, unit, as-of date, source and tier (T1 to T5). Rows are deep-linkable; the full set is JSON."
 >
-  <PageHead
-    title="Figure Ledger"
-    lede={`Every quantitative claim in this briefing, with its source tier and "as of" date. ${rows.length} figures, generated ${generated}.`}
-    crumbs={[
-      { label: 'Home', href: '/' },
-      { label: 'Briefing', href: '/briefing' },
-      { label: 'Figure Ledger', href: '/briefing/ledger' },
-    ]}
-  >
-    <p><a href="/data/figures.json">Download the ledger as JSON</a> <span class="meta">(data/figures.json)</span></p>
-  </PageHead>
+  <header class="tab-header">
+    <h1>Figure Ledger</h1>
+    <p class="ledger-intro" data-intro>Every quantitative claim in this briefing, with its source tier and "as of" date.</p>
+    <p class="ledger-data-link"><a href="/data/figures.json">Download the ledger as JSON</a> <span class="meta">(data/figures.json)</span></p>
+  </header>
 
-  <section class="ledger" aria-label="Figures">
-    <div class="wrap">
-      <details class="legend panel">
-        <summary>Legend: source tiers and flags</summary>
-        <div class="legend__grid">
-          <div>
-            <h2 class="legend__title">Source tiers</h2>
-            <dl>
-              {Object.entries(meta.tier_legend).map(([k, v]) => (<><dt class="px">{k}</dt><dd>{v}</dd></>))}
-            </dl>
-          </div>
-          <div>
-            <h2 class="legend__title">Flags</h2>
-            <dl>
-              {Object.entries(meta.flag_legend).map(([k, v]) => (<><dt class="px">{k}</dt><dd>{v}</dd></>))}
-            </dl>
-          </div>
-        </div>
-      </details>
-
-      <form class="filters" data-filters hidden>
-        <div class="filters__field">
-          <label for="f-module">Module</label>
-          <select id="f-module" name="module">
-            <option value="">All modules</option>
-            {modules.map((m) => <option value={m}>Module {m}</option>)}
-          </select>
-        </div>
-        <div class="filters__field">
-          <label for="f-tier">Tier</label>
-          <select id="f-tier" name="tier">
-            <option value="">All tiers</option>
-            {tiers.map((t) => <option value={t}>{t}</option>)}
-          </select>
-        </div>
-        <p class="meta filters__count" aria-live="polite" data-count>Showing {rows.length} of {rows.length}</p>
-      </form>
-
-      <div class="table-scroll ledger__scroll" tabindex="0" role="region" aria-label="Figure Ledger table, scrolls horizontally">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Module</th>
-              <th scope="col">Claim</th>
-              <th scope="col">Figure</th>
-              <th scope="col">Unit</th>
-              <th scope="col">As of</th>
-              <th scope="col">Source</th>
-              <th scope="col">Tier</th>
-              <th scope="col">Flags</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr id={`fig-${r.id}`} data-module={r.module} data-tier={r.tier}>
-                <td class="px">{r.id}</td>
-                <td><a href={`/briefing/${r.module.toLowerCase()}`}>{r.module}</a></td>
-                <td class="col-claim">{r.claim}</td>
-                <td class="col-figure">{r.figure}</td>
-                <td>{r.unit}</td>
-                <td class="nowrap">{r.as_of}</td>
-                <td class="col-source">{r.source}</td>
-                <td><span class:list={['tier-chip', { 'is-weak': weak(r.tier) }]}>{r.tier}</span></td>
-                <td><div class="col-flags">{flagsOf(r).map((f) => <span class="flag">{f}</span>)}</div></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+  <details class="legend panel">
+    <summary>Legend: source tiers and flags</summary>
+    <div class="legend__grid">
+      <div>
+        <h2 class="legend__title">Source tiers</h2>
+        <dl>
+          {Object.entries(meta.tier_legend).map(([k, v]) => (<><dt class="px">{k}</dt><dd>{v}</dd></>))}
+        </dl>
+      </div>
+      <div>
+        <h2 class="legend__title">Flags</h2>
+        <dl>
+          {Object.entries(meta.flag_legend).map(([k, v]) => (<><dt class="px">{k}</dt><dd>{v}</dd></>))}
+        </dl>
       </div>
     </div>
-  </section>
+  </details>
+
+  <div class="controls" data-controls hidden>
+    <div class="filter-row">
+      <span class="filter-label" id="lbl-module">Module</span>
+      <div class="toggle-group" role="group" aria-labelledby="lbl-module" data-filter="module">
+        <button type="button" class="toggle-btn" data-value="all" aria-pressed="true">All</button>
+        {modules.map((m) => <button type="button" class="toggle-btn" data-value={m} aria-pressed="false">{m}</button>)}
+      </div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-label" id="lbl-tier">Tier</span>
+      <div class="toggle-group" role="group" aria-labelledby="lbl-tier" data-filter="tier">
+        <button type="button" class="toggle-btn" data-value="all" aria-pressed="true">All</button>
+        {tiers.map((t) => <button type="button" class="toggle-btn" data-value={t} aria-pressed="false">{t}</button>)}
+      </div>
+    </div>
+    <div class="filter-row">
+      <label class="flag-toggle"><input type="checkbox" data-flag="weak" /> Weak-tier only (T4/T5)</label>
+      <label class="flag-toggle"><input type="checkbox" data-flag="stale" /> Stale only</label>
+      <label class="flag-toggle"><input type="checkbox" data-flag="conflict" /> Conflicts only</label>
+    </div>
+    <div class="filter-row">
+      <input class="search" type="search" placeholder="Search claim or source…" aria-label="Search claim or source" data-search />
+    </div>
+  </div>
+
+  <p class="ledger-count meta" aria-live="polite" data-count>Showing {rows.length} of {rows.length}</p>
+
+  <div class="table-scroll ledger__scroll" tabindex="0" role="region" aria-label="Figure Ledger table, scrolls horizontally">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col" data-sort="id">ID</th>
+          <th scope="col" data-sort="module">Module</th>
+          <th scope="col">Claim</th>
+          <th scope="col">Figure</th>
+          <th scope="col">Unit</th>
+          <th scope="col" data-sort="asof">As of</th>
+          <th scope="col">Source</th>
+          <th scope="col" data-sort="tier">Tier</th>
+          <th scope="col">Flags</th>
+          <th scope="col"><span class="visually-hidden">Copy citation</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => {
+          const stale = isStale(r);
+          return (
+            <tr
+              id={`fig-${r.id}`}
+              class:list={[{ 'is-stale': stale, 'is-unverified': r.flags.includes('UNVERIFIED') }]}
+              data-id={r.id}
+              data-module={r.module}
+              data-tiers={tierParts(r.tier).join(' ')}
+              data-worst={worstTier(r.tier)}
+              data-asof={r.as_of_sort ?? ''}
+              data-weak={isWeak(r) ? '1' : ''}
+              data-stale={stale ? '1' : ''}
+              data-conflict={r.flags.includes('CONFLICT') ? '1' : ''}
+              data-text={(r.claim + ' ' + r.source).toLowerCase()}
+            >
+              <td class="px">{r.id}</td>
+              <td>{r.module}</td>
+              <td class="col-claim">{r.claim}</td>
+              <td class="col-figure">{r.figure}</td>
+              <td>{r.unit}</td>
+              <td class="nowrap">{r.as_of}</td>
+              <td class="col-source">{r.source}</td>
+              <td><span class:list={['tier-chip', { 'is-weak': worstTier(r.tier) >= 4 }]}>{r.tier}</span></td>
+              <td>
+                <div class="col-flags">
+                  {stale && <span class="flag">STALE</span>}
+                  {r.flags.filter((f) => f !== 'STALE').map((f) => <span class="flag">{f}</span>)}
+                </div>
+              </td>
+              <td><button type="button" class="btn btn--secondary copy-row" data-cite={citation(r)} aria-label={`Copy citation for figure ${r.id}`} hidden>Copy</button></td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
 </Base>
 
 <style>
-  .ledger { padding-block: clamp(32px, 4vw, 56px) clamp(56px, 8vw, 112px); }
+  .tab-header { display: grid; gap: 14px; margin-bottom: 24px; }
+  .tab-header h1 { font-size: clamp(32px, 4vw, 56px); line-height: 1.04; }
 
   .legend { margin-bottom: 24px; }
   .legend summary { min-height: 44px; padding: 12px 18px; font-weight: 500; cursor: pointer; }
@@ -139,22 +162,37 @@ const generated = `${g.getUTCDate()} ${MONTHS[g.getUTCMonth()]} ${g.getUTCFullYe
   .legend dt { font-size: 14px; color: var(--accent); }
   .legend dd { margin: 0; color: var(--ink-2); }
 
-  .filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px 24px; margin-bottom: 16px; }
-  .filters[hidden] { display: none; }
-  .filters__field { display: grid; gap: 6px; }
-  .filters__field label { font-size: 14px; font-weight: 500; }
-  .filters select {
+  .controls { display: grid; gap: 12px; margin-bottom: 16px; }
+  .controls[hidden] { display: none; }
+  .filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .filter-label { min-width: 4.5em; font-size: 14px; font-weight: 500; }
+  .toggle-group { display: flex; flex-wrap: wrap; gap: 4px; }
+  .toggle-btn {
+    min-width: 44px;
     min-height: 44px;
-    min-width: 170px;
-    padding: 8px 12px;
+    padding: 8px 14px;
+    font-size: 15px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+  }
+  .toggle-btn:hover { border-color: var(--ink); }
+  .toggle-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .flag-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; cursor: pointer; }
+  .flag-toggle input { width: 20px; height: 20px; accent-color: var(--accent); }
+  .search {
+    width: min(100%, 420px);
+    min-height: 44px;
+    padding: 8px 14px;
     background: var(--panel);
     border: 1px solid var(--rule);
     border-radius: var(--radius-card);
   }
-  .filters__count { margin-left: auto; padding-bottom: 12px; }
+  .ledger-count { margin-bottom: 10px; }
 
   .ledger__scroll { max-height: min(78vh, 1100px); }
-  .data-table { min-width: 1080px; }
+  .data-table { min-width: 1160px; }
   .data-table td { font-size: 15px; }
   .data-table .col-claim { min-width: 240px; }
   .data-table .col-figure { font-weight: 600; min-width: 90px; }
@@ -163,6 +201,11 @@ const generated = `${g.getUTCDate()} ${MONTHS[g.getUTCMonth()]} ${g.getUTCFullYe
   .data-table tbody tr:target { background: color-mix(in srgb, var(--accent) 14%, transparent); }
   .data-table tbody tr:target td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
   .data-table tbody tr[hidden] { display: none; }
+  .data-table tr.is-stale td:nth-child(6) { color: var(--accent); }
+  .data-table tr.is-unverified .col-claim { font-style: italic; }
+  .th-sort { display: inline-flex; align-items: center; min-height: 32px; padding: 0; font: inherit; font-weight: 600; background: none; border: 0; cursor: pointer; white-space: nowrap; }
+  .th-sort:hover { text-decoration: underline; }
+  .copy-row { min-height: 36px; padding: 4px 14px; font-size: 14px; }
 
   .col-flags { display: flex; flex-wrap: wrap; gap: 4px; min-width: 150px; }
   .flag {
@@ -178,33 +221,102 @@ const generated = `${g.getUTCDate()} ${MONTHS[g.getUTCMonth()]} ${g.getUTCFullYe
 
   @media (max-width: 720px) {
     .legend__grid { grid-template-columns: 1fr; }
-    .filters__count { margin-left: 0; padding-bottom: 0; width: 100%; }
-    .filters select { min-width: 0; width: 100%; }
-    .filters__field { flex: 1; }
   }
 </style>
 
 <script>
-  const form = document.querySelector<HTMLFormElement>('[data-filters]');
-  const rows = [...document.querySelectorAll<HTMLTableRowElement>('.data-table tbody tr')];
-  const count = document.querySelector('[data-count]');
+  import { copyText, flash } from '../../scripts/clipboard';
 
-  if (form && count) {
-    form.hidden = false;
-    const apply = () => {
-      const module = (form.elements.namedItem('module') as HTMLSelectElement).value;
-      const tier = (form.elements.namedItem('tier') as HTMLSelectElement).value;
-      let shown = 0;
-      for (const r of rows) {
-        const show = (!module || r.dataset.module === module) && (!tier || r.dataset.tier!.includes(tier));
-        r.hidden = !show;
-        if (show) shown++;
-      }
-      count.textContent = `Showing ${shown} of ${rows.length}`;
-    };
-    form.addEventListener('change', apply);
-    form.addEventListener('submit', (e) => e.preventDefault());
-  }
+  const controls = document.querySelector<HTMLElement>('[data-controls]')!;
+  const tbody = document.querySelector<HTMLTableSectionElement>('.data-table tbody')!;
+  const rows = [...tbody.rows];
+  const count = document.querySelector('[data-count]')!;
+  const state = { module: 'all', tier: 'all', weak: false, stale: false, conflict: false, search: '', key: 'id', dir: 1 };
+
+  controls.hidden = false;
+  document.querySelector('[data-intro]')!.textContent =
+    'Every quantitative claim in this briefing, with its source tier and "as of" date — filterable, searchable, and one click from a properly-attributed citation.';
+  rows.forEach((r) => (r.querySelector<HTMLElement>('.copy-row')!.hidden = false));
+
+  const apply = () => {
+    let shown = 0;
+    for (const r of rows) {
+      const d = r.dataset;
+      const show =
+        (state.module === 'all' || d.module === state.module) &&
+        (state.tier === 'all' || d.tiers!.split(' ').includes(state.tier)) &&
+        (!state.weak || d.weak) &&
+        (!state.stale || d.stale) &&
+        (!state.conflict || d.conflict) &&
+        (!state.search || d.text!.includes(state.search));
+      r.hidden = !show;
+      if (show) shown++;
+    }
+    count.textContent = `Showing ${shown} of ${rows.length}`;
+  };
+
+  const sortValue = (r: HTMLTableRowElement, key: string): number | string =>
+    key === 'id' ? Number(r.dataset.id) : key === 'module' ? r.dataset.module! : key === 'tier' ? Number(r.dataset.worst) : r.dataset.asof!;
+
+  const sort = () => {
+    [...rows]
+      .sort((a, b) => {
+        const av = sortValue(a, state.key);
+        const bv = sortValue(b, state.key);
+        return (av < bv ? -1 : av > bv ? 1 : Number(a.dataset.id) - Number(b.dataset.id)) * state.dir;
+      })
+      .forEach((r) => tbody.appendChild(r));
+  };
+
+  const heads = [...document.querySelectorAll<HTMLTableCellElement>('th[data-sort]')];
+  const labels = new Map(heads.map((th) => [th, th.textContent!]));
+  const paintHeads = () => {
+    heads.forEach((th) => {
+      const btn = th.querySelector('button')!;
+      btn.textContent = labels.get(th)! + (th.dataset.sort === state.key ? (state.dir === 1 ? ' ▲' : ' ▼') : '');
+      th.setAttribute('aria-sort', th.dataset.sort === state.key ? (state.dir === 1 ? 'ascending' : 'descending') : 'none');
+    });
+  };
+  heads.forEach((th) => {
+    th.textContent = '';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'th-sort';
+    btn.addEventListener('click', () => {
+      const key = th.dataset.sort!;
+      if (state.key === key) state.dir = -state.dir;
+      else { state.key = key; state.dir = 1; }
+      sort();
+      paintHeads();
+    });
+    th.appendChild(btn);
+  });
+  paintHeads();
+
+  controls.querySelectorAll<HTMLElement>('[data-filter]').forEach((group) => {
+    group.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button');
+      if (!btn) return;
+      state[group.dataset.filter as 'module' | 'tier'] = btn.dataset.value!;
+      group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      apply();
+    });
+  });
+  controls.querySelectorAll<HTMLInputElement>('[data-flag]').forEach((box) =>
+    box.addEventListener('change', () => {
+      state[box.dataset.flag as 'weak' | 'stale' | 'conflict'] = box.checked;
+      apply();
+    })
+  );
+  controls.querySelector<HTMLInputElement>('[data-search]')!.addEventListener('input', (e) => {
+    state.search = (e.target as HTMLInputElement).value.trim().toLowerCase();
+    apply();
+  });
+
+  tbody.addEventListener('click', async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('.copy-row');
+    if (btn) flash(btn, (await copyText(btn.dataset.cite!)) ? 'Copied' : 'Failed');
+  });
 
   // Bring a linked row (#fig-N) into view inside the scrolling table.
   const target = location.hash && document.getElementById(location.hash.slice(1));

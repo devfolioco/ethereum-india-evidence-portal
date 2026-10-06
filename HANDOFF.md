@@ -2,6 +2,16 @@
 
 Start a new chat with: "Read HANDOFF.md, ETHINDIA_INSTITUTIONAL_BUILD.md and PRODUCT.md, then continue from 'Next'."
 
+## Reskin rule (8 Oct) — read first
+
+The site is the old portal's content in this repo's styling. **Copy, nav, sections and page structure must match https://institutions.ethindia.co exactly**; only styling (tokens, palettes, hairlines, map hero, fonts) is ours. Nothing from the original build brief that the portal lacks is shown: no ticker, CTA button, FAQ, segments, team, supporters, newsletter, /dinner or /privacy pages. Verified by a two-way text diff of every portal page against `dist`: nothing missing; the only extras are UI controls (palette picker, ledger/LLM buttons).
+
+- Three page families, chosen by `<Base chrome=...>`: `landing` (home: logo + "Institutions" + 4 anchors, footer "Tokenised settlement in India"), `narrative` (briefing overview: back link, no nav, footer "The full briefing"), `portal` (modules, ledger, reconciliation: header + sidebar, `PortalShell.astro`).
+- Home copy is generated verbatim from the portal into `src/content/home.json`; overview and reconciliation HTML likewise (`src/content/briefing/_*.html`). Module headings/questions/descriptions in the `.md` files are the portal's.
+- Logo: the portal's ETHIndia wordmark (`EthindiaLogo.astro`) + "Institutions". The "ETHIndia Institutional" logo kit is no longer used in the nav (still in favicon/OG); the name is "ETHIndia Institutions" everywhere.
+- Ledger has the portal's controls (module/tier toggles, weak/stale/conflict, search, sortable columns, copy citation). The split-sort quiz on the overview is ported.
+- Older sections below describe the first build and are partly obsolete (ticker, dinner page, FAQ etc. are gone).
+
 ## Source documents (read these first)
 
 - `ETHINDIA_INSTITUTIONAL_BUILD.md` — the client brief: tokens, copy, page structure, accessibility rules, phases 1–5. Copy marked `[TODO]` is unknown; never invent claims, stats or names.

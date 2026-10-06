@@ -1,29 +1,26 @@
 ---
-import site from '../../content/site.json';
+import home from '../../content/home.json';
 import IndiaMap from './IndiaMap.astro';
 
-const { hero } = site;
-// "[x]" in the title marks a letter set in the pixel face (glyph swap).
-const parts = hero.title.split(/\[(.)\]/);
-const plainTitle = parts.join('');
+const { hero } = home;
+// Three letters are set in the pixel face (glyph swap); the text itself is the portal's, unchanged.
+const marked = hero.title
+  .replace('Ethereum', 'Eth[e]reum')
+  .replace('Institutional', 'Instit[u]tional')
+  .replace('India', '[I]ndia');
+const parts = marked.split(/\[(.)\]/);
 ---
 
 <section class="hero deep" aria-labelledby="hero-title">
   <div class="wrap hero__grid">
     <div class="hero__copy">
       <p class="label">{hero.eyebrow}</p>
-      <h1 id="hero-title" class="hero__title" aria-label={plainTitle}>
+      <h1 id="hero-title" class="hero__title" aria-label={hero.title}>
         <span aria-hidden="true">
           {parts.map((part, i) => (i % 2 ? <span class="px">{part}</span> : part))}
         </span>
       </h1>
       <p class="hero__sub">{hero.sub}</p>
-      <div class="hero__ctas">
-        <a class="btn" href={hero.primary.href}>{hero.primary.label}</a>
-        <a class="btn btn--secondary" href={hero.secondary.href}>
-          {hero.secondary.label} <span aria-hidden="true">→</span>
-        </a>
-      </div>
     </div>
 
     <div class="hero__art">
@@ -33,7 +30,7 @@ const plainTitle = parts.join('');
 </section>
 
 <style>
-  .hero { padding-block: clamp(32px, 5vw, 72px); border-bottom: 1px solid var(--border); }
+  .hero { padding-block: clamp(40px, 6vw, 88px); border-bottom: 1px solid var(--border); }
 
   .hero__grid {
     display: grid;
@@ -44,7 +41,6 @@ const plainTitle = parts.join('');
 
   .hero__title {
     margin-top: 20px;
-    /* Two-column hero: the brief's 7vw display size would overflow the copy column. */
     font-size: clamp(44px, 5.6vw, 92px);
   }
   .hero__title .px { letter-spacing: -0.04em; }
@@ -54,13 +50,6 @@ const plainTitle = parts.join('');
     max-width: 34em;
     font-size: clamp(18px, 1.5vw, 21px);
     color: var(--ink-2);
-  }
-
-  .hero__ctas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 36px;
   }
 
   .hero__art { max-width: 560px; justify-self: end; width: 100%; }

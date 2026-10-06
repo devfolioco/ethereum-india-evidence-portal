@@ -1,21 +1,20 @@
-# ETHIndia Institutional briefing: Tokenised settlement in India
+# Ethereum/India Institutional Briefing
 
 > A seven-module briefing, drawn from published sources, on Ethereum and distributed-settlement infrastructure for Indian institutional finance. Every claim carries a source and date; every quantitative figure carries a source tier (T1 primary … T5 crypto media/aggregator) in the Figure Ledger.
 
 ## Pages
-- [ETHIndia Institutional](https://institutions.ethindia.co/)
-- [Briefing overview](https://institutions.ethindia.co/briefing)
-- [A. What shipped](https://institutions.ethindia.co/briefing/a)
-- [B. What's legal in India](https://institutions.ethindia.co/briefing/b)
-- [C. Where the value is](https://institutions.ethindia.co/briefing/c)
-- [D. Ethereum vs alternatives](https://institutions.ethindia.co/briefing/d)
-- [E. The privacy question](https://institutions.ethindia.co/briefing/e)
-- [F. The objections](https://institutions.ethindia.co/briefing/f)
-- [G. How adoption happens](https://institutions.ethindia.co/briefing/g)
-- [Figure Ledger](https://institutions.ethindia.co/briefing/ledger)
-- [Reconciliation](https://institutions.ethindia.co/briefing/reconciliation)
+- [ETHIndia Institutions](index.html)
+- [Briefing overview](briefing.html)
+- [What shipped](what-shipped.html)
+- [What's legal in India](whats-legal-in-india.html)
+- [Where the value is](where-the-value-is.html)
+- [Ethereum vs alternatives](ethereum-vs-alternatives.html)
+- [The privacy question](the-privacy-question.html)
+- [The objections](the-objections.html)
+- [How adoption happens](how-adoption-happens.html)
+- [Figure Ledger](ledger.html)
+- [Reconciliation](reconciliation.html)
 
 ## Data
-- [Figure Ledger data (JSON)](https://institutions.ethindia.co/data/figures.json) — every quantitative claim with its claim, figure, unit, source, date, tier and flags.
-- Each Figure Ledger row is anchored as /briefing/ledger#fig-<ID>. Cite that anchor, with the row's tier and as-of date, when quoting a figure.
-- Each module page has three reading depths, anchored #tier-30s, #tier-5min and #tier-full.
+- [Figure Ledger data (JSON)](data/figures.json) — every quantitative claim with its claim, figure, unit, source, date, tier and flags.
+- Each Figure Ledger row is anchored as ledger.html#fig-<ID>. Cite that anchor, with the row's tier and as-of date, when quoting a figure.
