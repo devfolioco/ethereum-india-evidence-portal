@@ -152,8 +152,7 @@
   font-size: 16px;
 }
 .scene-limit-label { font-size: 15px; font-weight: 600; color: var(--ink); }
-.scene-deeper { display: grid; gap: 4px; }
-.scene-deeper a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+.scene-deeper { display: grid; gap: 14px; justify-items: start; }
 
 /* sort widget: static (two columns) without JS; a guessing grid with it */
 .sort-widget { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 8px; }

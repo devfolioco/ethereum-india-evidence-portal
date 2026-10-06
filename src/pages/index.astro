@@ -74,7 +74,7 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
         <p class="report__summary">{briefing.summary}</p>
         <div class="report__actions">
           <a class="btn" href="/briefing">{briefing.read}<span aria-hidden="true"> →</span></a>
-          <a class="report__ledger" href="/briefing/ledger">{briefing.ledger}</a>
+          <a class="rlink" href="/briefing/ledger">{briefing.ledger}</a>
         </div>
       </article>
     </div>
@@ -156,7 +156,7 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .split > :last-child { padding-left: var(--hair-pad); }
   .split__body { display: grid; gap: 20px; max-width: 56ch; font-size: clamp(18px, 1.5vw, 20px); line-height: 1.55; }
   .deeper { display: flex; flex-wrap: wrap; gap: 4px 28px; }
-  .deeper a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+  .deeper { align-items: center; padding-top: 4px; }
 
   /* On this site */
   .cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 0; }
@@ -178,8 +178,8 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .report__title a { text-decoration: none; }
   .report__title a:hover { text-decoration: underline; text-decoration-thickness: 1px; }
   .report__sub { font-size: clamp(18px, 1.6vw, 22px); color: var(--ink-2); }
-  .report__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 10px; }
-  .report__ledger { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; font-weight: 500; }
+  .report__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 12px; }
+  .report__actions .rlink { font-size: 15px; }
 
   /* Dinner band */
   .dinner { padding-block: clamp(56px, 8vw, 112px); }

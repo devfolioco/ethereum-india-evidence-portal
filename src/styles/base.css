@@ -116,37 +116,90 @@ p { max-width: var(--measure); text-wrap: pretty; }
   border-radius: var(--radius-card);
 }
 
+/* Buttons share the page's ledger language: square-cornered like the panels, with a brass
+   rule that draws along the bottom edge on hover (the same ruling motion as the page). */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 10px 22px;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 22px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
+  letter-spacing: 0.01em;
   text-decoration: none;
   border: 1px solid var(--ink);
-  border-radius: var(--radius-pill);
+  border-radius: 2px;
   background: var(--ink);
   color: var(--paper);
   cursor: pointer;
-  transition: background 160ms var(--ease), color 160ms var(--ease);
+  overflow: hidden;
+  transition: background-color 200ms var(--ease-out), border-color 200ms var(--ease-out), color 200ms var(--ease-out);
 }
-.btn:hover { background: transparent; color: var(--ink); }
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms var(--ease-out);
+}
+.btn:hover::after, .btn:focus-visible::after { transform: none; }
+.btn:hover { background: color-mix(in srgb, var(--ink) 88%, var(--paper)); }
+.btn:active { transform: translateY(1px); }
 
-.btn--secondary { background: transparent; color: var(--ink); }
-.btn--secondary:hover { background: var(--ink); color: var(--paper); }
+.btn--secondary { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn--secondary:hover { background: var(--surface); border-color: var(--ink); }
 
 .btn[aria-disabled="true"],
 .btn:disabled {
   background: transparent;
   color: var(--ink-2);
-  border-color: var(--border);
+  border: 1px dashed var(--rule);
   cursor: not-allowed;
 }
+.btn[aria-disabled="true"]::after, .btn:disabled::after { display: none; }
 .btn[aria-disabled="true"] { pointer-events: none; cursor: default; }
+
+/* Drawn arrow. Arrows in the content are aria-hidden text spans; this replaces the glyph
+   with an authored stroke that leans forward on hover. */
+:is(.btn, .rlink, .deeper a, .scene-deeper a) > span[aria-hidden="true"] {
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 10px;
+  margin-left: 8px;
+  font-size: 0;
+  background: currentColor;
+  -webkit-mask: var(--arrow) center / contain no-repeat;
+  mask: var(--arrow) center / contain no-repeat;
+  transition: transform 260ms var(--ease-out);
+}
+.btn > span[aria-hidden="true"] { margin-left: 0; }
+:is(.btn, .rlink, .deeper a, .scene-deeper a):hover > span[aria-hidden="true"] { transform: translateX(4px); }
+
+/* Ruled link: underlined by a quiet rule; on hover an ink rule draws over it from the left. */
+.rlink, .deeper a, .scene-deeper a, .ref-list a {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding-bottom: 3px;
+  font-weight: 500;
+  text-decoration: none;
+  background:
+    linear-gradient(currentColor, currentColor) left bottom / 0% 1px no-repeat,
+    linear-gradient(var(--rule), var(--rule)) left bottom / 100% 1px no-repeat;
+  transition: background-size 420ms var(--ease-out);
+}
+:is(.rlink, .deeper a, .scene-deeper a, .ref-list a):hover { background-size: 100% 1px, 100% 1px; }
+/* 44px touch target without moving the rule away from the words. */
+.rlink, .deeper a, .scene-deeper a, .ref-list a { position: relative; }
+:is(.rlink, .deeper a, .scene-deeper a, .ref-list a)::before { content: ""; position: absolute; inset: -11px -4px -8px; }
 
 .skip-link {
   position: absolute;
