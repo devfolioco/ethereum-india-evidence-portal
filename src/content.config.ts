@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 
 const updates = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/updates' }),
-  schema: z.object({ title: z.string(), date: z.date() }),
+  schema: z.object({ title: z.string(), date: z.date(), kind: z.enum(['Event', 'Report']).optional(), link: z.string().optional() }),
 });
 
 // Module metadata. Each module's body (its three reading tiers) is the sibling <letter>.html,

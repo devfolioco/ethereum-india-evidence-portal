@@ -6,10 +6,8 @@
   "whyUs": {
     "title": "A neutral front door to Ethereum, built in India.",
     "paragraphs": [
-      "India's first tokenised bonds run on a closed ledger owned by the depositories. What comes next could be proprietary chains or public infrastructure. Institutions need someone who can explain the options without selling one.",
       "ETHIndia has convened India's Ethereum builders since 2019 [TODO: verify year and add one proof point, e.g. hackathon scale]. ETHIndia Institutional brings that network to banks, market infrastructure and regulators."
-    ],
-    "focusNote": "[TODO: client to confirm the final list]"
+    ]
   },
   "briefing": {
     "label": "Report · 25 Sep 2026",
@@ -28,7 +26,7 @@
   },
   "dinner": {
     "title": "ETHIndia Institutional Dinner",
-    "body": "A closed-door dinner for senior people at Indian banks, asset managers, market infrastructure institutions and regulators, with researchers and builders. Seats are limited and each invitation is confirmed individually. The venue is shared with confirmed guests."
+    "body": "A closed-door dinner for senior people at Indian banks, asset managers, market infrastructure institutions and regulators, with the researchers and builders working on Ethereum. Seats are limited and each invitation is confirmed individually. The venue is shared with confirmed guests."
   },
   "segments": {
     "title": "Across Indian finance",
@@ -50,5 +48,23 @@
   "newsletter": {
     "title": "Research and updates, in your inbox.",
     "consent": "I agree to receive research and updates from ETHIndia Institutional and have read the"
+  },
+  "ethereum": {
+    "label": "Where Ethereum fits",
+    "title": "The rail underneath is still open.",
+    "paragraphs": [
+      "India's first tokenised bonds run on a closed ledger owned by its stock depositories. What comes next could run on that model, on a ledger shared between institutions, or on a public chain like Ethereum.",
+      "Ethereum gives institutions a settlement layer that no single one of them controls, the largest pool of smart-contract developers and tooling, and a network that has run since 2015. Its open problem for institutions is confidentiality, which has to be built in a layer above the chain. The research sets out where Ethereum fits in India and where it does not."
+    ],
+    "links": [
+      {
+        "label": "Ethereum against the alternatives",
+        "href": "/briefing/d"
+      },
+      {
+        "label": "The privacy question",
+        "href": "/briefing/e"
+      }
+    ]
   }
 }

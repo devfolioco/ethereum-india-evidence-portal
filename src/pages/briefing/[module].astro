@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
+import CopyForLlm from '../../components/CopyForLlm.astro';
 import '../../styles/prose.css';
 
 const bodies = import.meta.glob<string>('../../content/briefing/[a-g].html', {
@@ -73,6 +74,13 @@ const tiers = [
       </div>
 
       <div class="panel reader__panel prose" set:html={body} />
+
+      <CopyForLlm
+        summary="Full report — copy for an LLM"
+        label={`Module ${L} full report, with source provenance`}
+        src={`/llm/module-${m.data.letter}.md`}
+        rows={6}
+      />
 
       <nav class="pager" aria-label="Previous and next module">
         {prev ? (
@@ -186,6 +194,7 @@ const tiers = [
   .reader__panel :global(.tier > h3) { margin-top: 2.2em; }
 
   .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+  .reader__main > :global(.copy) { margin-top: 16px; }
   .pager__link {
     display: grid;
     gap: 4px;

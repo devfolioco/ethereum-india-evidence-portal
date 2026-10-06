@@ -45,15 +45,45 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
         <h2 id="why-india-title">{home.whyIndia.title}</h2>
         <T text={home.whyIndia.intro} />
       </div>
-      <dl class="facts">
-        {stats.map((s) => (
-          <div class="facts__row">
-            <dt class="facts__value px">{s.value}</dt>
-            <dd class="facts__label">{s.label}</dd>
-            <dd class="facts__source meta"><a href={s.href}>{s.source}</a></dd>
-          </div>
+      <ol class="points">
+        {stats.map((p) => (
+          <li class="point">
+            <ul class="point__figures">
+              {p.figures.map((f) => (
+                <li>
+                  <span class="point__value px">{f.value}</span>
+                  <span class="meta">{f.caption}</span>
+                </li>
+              ))}
+            </ul>
+            <div class="point__text">
+              <h3>{p.headline}</h3>
+              <p>{p.body}</p>
+              <ul class="point__sources meta">
+                {p.figures.map((f) => <li><a href={f.href}>{f.source}</a></li>)}
+              </ul>
+            </div>
+          </li>
         ))}
-      </dl>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Where Ethereum fits -->
+  <section class="section" id="ethereum" aria-labelledby="ethereum-title">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <p class="label">{home.ethereum.label}</p>
+          <h2 id="ethereum-title">{home.ethereum.title}</h2>
+        </div>
+        <div class="split__body">
+          {home.ethereum.paragraphs.map((t) => <p>{t}</p>)}
+          <p class="deeper">
+            {home.ethereum.links.map((l) => <a href={l.href}>{l.label} <span aria-hidden="true">→</span></a>)}
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -66,7 +96,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
           {home.whyUs.paragraphs.map((p) => <T text={p} />)}
         </div>
       </div>
-      <ul class="cols">
+      <ul class="cols cols--3">
         {focus.map((f) => (
           <li>
             <h3>{f.title}</h3>
@@ -74,7 +104,6 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
           </li>
         ))}
       </ul>
-      <div class="section__note"><T text={home.whyUs.focusNote} /></div>
     </div>
   </section>
 
@@ -162,7 +191,8 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
                 {fmtDate(data.date)}
               </time>
               <div>
-                <h3>{data.title}</h3>
+                {data.kind && <p class="label updates__kind">{data.kind}</p>}
+                <h3>{data.link ? <a href={data.link}>{data.title}</a> : data.title}</h3>
                 <div class="updates__body"><Content /></div>
               </div>
             </li>
@@ -293,30 +323,31 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 32px clamp(20px, 3vw, 40px);
   }
+  .cols--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .cols > li { display: grid; align-content: start; gap: 8px; padding-top: 16px; border-top: 1px solid var(--ink); }
   .cols > li > h3 { font-size: 20px; }
   .cols__body { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
 
-  /* 3. sourced figures */
-  .facts {
+  /* 3. four sourced points: figures left, the claim and its sources right */
+  .points { border-top: 1px solid var(--border); }
+  .point {
     display: grid;
-    grid-template-columns: max-content minmax(0, 1fr);
-    column-gap: clamp(24px, 5vw, 72px);
-    border-top: 1px solid var(--border);
-  }
-  .facts__row {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: subgrid; /* figures share one column width */
-    row-gap: 4px;
-    align-items: baseline;
-    padding-block: clamp(16px, 2vw, 24px);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 16px clamp(24px, 5vw, 72px);
+    padding-block: clamp(20px, 2.4vw, 32px);
     border-bottom: 1px solid var(--border);
   }
-  .facts__value { white-space: nowrap; font-size: clamp(28px, 3vw, 40px); line-height: 1.1; letter-spacing: -0.02em; }
-  .facts__label { max-width: 46ch; font-size: clamp(17px, 1.4vw, 19px); }
-  .facts__source { grid-column: 2; }
-  .facts dd { margin: 0; }
+  .point__figures { display: grid; gap: 14px; align-content: start; }
+  .point__figures li { display: grid; gap: 2px; }
+  .point__value { font-size: clamp(28px, 3vw, 40px); line-height: 1.1; letter-spacing: -0.02em; overflow-wrap: anywhere; }
+  .point__text { display: grid; gap: 10px; align-content: start; max-width: 56ch; }
+  .point__text h3 { font-size: clamp(20px, 1.8vw, 24px); }
+  .point__text p { font-size: clamp(17px, 1.4vw, 19px); }
+  .point__sources { display: grid; gap: 2px; margin-top: 4px; }
+  .point__sources a { display: inline-flex; align-items: center; min-height: 28px; }
+
+  .deeper { display: flex; flex-wrap: wrap; gap: 4px 28px; }
+  .deeper a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
 
   .section__note { margin-top: 24px; max-width: var(--measure); }
 
@@ -392,6 +423,7 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
     padding-block: 20px;
     border-bottom: 1px solid var(--border);
   }
+  .updates__kind { color: var(--accent); margin-bottom: 4px; }
   .updates__date { font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); padding-top: 4px; }
   .updates__body { margin-top: 6px; font-size: 16px; color: var(--ink-2); }
 
@@ -472,13 +504,12 @@ const ECOSYSTEM_VISIBLE = 18; // three rows of six
   }
 
   @media (max-width: 860px) {
+    .point { grid-template-columns: 1fr; }
     .split, .briefing, .dinner__inner, .subscribe { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 560px) {
     .cols { grid-template-columns: 1fr; }
-    .facts { grid-template-columns: 1fr; }
-    .facts__source { grid-column: 1; }
     .ecosystem { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .updates__item { grid-template-columns: 1fr; }
     .field__row { flex-direction: column; }

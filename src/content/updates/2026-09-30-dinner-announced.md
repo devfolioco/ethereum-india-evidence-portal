@@ -1,6 +1,8 @@
 ---
-title: Institutional dinner announced
+title: ETHIndia Institutional Dinner announced
 date: 2026-09-30
+kind: Event
+link: /dinner
 ---
 
-The ETHIndia Institutional Dinner will be held on 4 November 2026 in Mumbai, near the Devcon venue. Invitations are confirmed individually.
+4 November 2026, during Devcon 8 in Mumbai. Seats are by invitation.

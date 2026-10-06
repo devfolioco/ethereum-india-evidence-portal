@@ -1,6 +1,8 @@
 ---
-title: Briefing published
+title: Tokenised settlement in India published
 date: 2026-09-25
+kind: Report
+link: /briefing
 ---
 
-Tokenised settlement in India: what's live, what's legal, where Ethereum fits.
+The seven-module briefing and its Figure Ledger.

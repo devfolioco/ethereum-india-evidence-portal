@@ -58,7 +58,9 @@ Last result (3 Oct): accessibility, best practices and SEO **100** on `/`, `/bri
 - `public/data/figures.json` (the portal's ledger data) drives `/briefing/ledger`. Rows keep `id="fig-N"`; staleness is computed as in the portal (older than six months before `meta.generated`, unless HISTORICAL or CURRENT).
 - Home page stats link to their ledger rows; sources came from the portal ledger.
 - Module pages: reading-depth tabs (default 30 seconds, remembers the last choice, `#tier-30s|5min|full` selects one), sticky A–G nav with scroll progress (CSS scroll timeline; no progress bar in Firefox), prev/next.
-- Not ported: the portal's per-module "copy for an LLM" textareas. `llms.txt` and `figures.json` cover that use.
+- **Portal data audit (7 Oct):** every old-portal page was diffed against the build; modules A–G, Figure Ledger and Reconciliation are complete. Gaps closed: the four "Why India" points (`stats.json`), "Where Ethereum fits" (`home.json → ethereum`), "On this site" trio (now `focus.json`, replacing the brief's unconfirmed Research/Convening/Requirements/Education), portal hero sentence and update entries (`kind`, `link`), and the "copy for an LLM" tools: `CopyForLlm.astro`, module full-report text in `public/llm/module-<letter>.md` (verbatim from the portal) and the overview's personalised prompt.
+- Not ported: the portal's per-section "Copy" buttons on module h3s (subsets of the full-report text).
+- Naming: the portal says "ETHIndia Institutions"; the site uses "ETHIndia Institutional" (logo kit). Unconfirmed with the client.
 
 ## File map
 

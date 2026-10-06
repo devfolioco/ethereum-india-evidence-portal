@@ -3,11 +3,11 @@
   "tagline": "An ETHIndia initiative",
   "domain": "https://institutions.ethindia.co",
   "title": "ETHIndia Institutional — Ethereum for institutional finance in India",
-  "description": "Where banks, market infrastructure, regulators and builders work out what role Ethereum should play in India's tokenised finance.",
+  "description": "Briefings, convenings and coordination on Ethereum for Indian banks, market infrastructure and regulators. From ETHIndia.",
   "hero": {
     "eyebrow": "An ETHIndia initiative",
     "title": "Eth[e]reum for instit[u]tional finance in [I]ndia.",
-    "sub": "Where banks, market infrastructure, regulators and builders work out what role Ethereum should play in India's tokenised finance.",
+    "sub": "Indian finance has started putting assets on distributed ledgers. ETHIndia Institutional is where banks, market infrastructure, regulators and builders work out what role Ethereum and its ecosystem should play in that.",
     "primary": {
       "label": "Read the report",
       "href": "/briefing"

@@ -2,12 +2,14 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
+import CopyForLlm from '../../components/CopyForLlm.astro';
 import home from '../../content/home.json';
 import lede from '../../content/briefing/_overview-lede.html?raw';
 import scenes from '../../content/briefing/_overview.html?raw';
 import '../../styles/prose.css';
 
 const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
+const llmPrompt = "Please fetch {{BASE_URL}}llms.txt first. It indexes the pages of \"Ethereum and Distributed Settlement Infrastructure in Indian Institutional Finance\": seven module reports, a Figure Ledger carrying a source tier and date on every claim, and a Reconciliation page. Then read the briefing overview at {{BASE_URL}}briefing and open whichever module pages look most relevant.\nBefore you answer, use what you already know about me from memory and our past conversations: what I work on, what I follow, what I have asked you before. If you know nothing about me, ask me that first.\nThen give me a handful of bullet points about Ethereum's institutional potential in India that I'm least likely to already know, each with a line on why it is new or useful for me specifically.";
 const citeUrl = 'institutions.ethindia.co/briefing';
 ---
 
@@ -36,6 +38,15 @@ const citeUrl = 'institutions.ethindia.co/briefing';
   <section class="brief-lede" aria-label="Introduction">
     <div class="wrap">
       <div class="prose brief-lede__text" set:html={lede} />
+      <div class="brief-lede__llm">
+        <CopyForLlm
+          summary="Copy a personalized prompt — explore this briefing with your own LLM"
+          label="Personalized prompt for exploring this briefing"
+          hint="Paste this into ChatGPT, Claude, Gemini, or any LLM that can fetch a URL. With JavaScript on, the box below already has this site's real address in it. Reading without JavaScript? Swap {{BASE_URL}} for this site's address before you paste."
+          text={llmPrompt}
+          rows={9}
+        />
+      </div>
     </div>
   </section>
 
@@ -110,6 +121,8 @@ const citeUrl = 'institutions.ethindia.co/briefing';
 
   .brief-lede { padding-block: clamp(40px, 6vw, 80px); }
   .brief-lede__text { font-size: clamp(19px, 1.6vw, 22px); line-height: 1.55; max-width: 62ch; }
+
+  .brief-lede__llm { margin-top: 32px; max-width: 62ch; }
 
   .brief-scenes { display: grid; }
 
