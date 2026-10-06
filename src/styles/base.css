@@ -20,9 +20,10 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: 0 var(--gutter);
+  /* The ruling sits just outside the content edge, so text never touches a line. */
+  inset: 0 calc(var(--gutter) - var(--hair-pad));
   z-index: -1;
-  max-width: calc(var(--wrap) - 2 * var(--gutter));
+  max-width: calc(var(--wrap) - 2 * var(--gutter) + 2 * var(--hair-pad));
   margin-inline: auto;
   border-right: 1px solid var(--hairline);
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px);

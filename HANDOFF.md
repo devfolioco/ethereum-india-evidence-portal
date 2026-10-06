@@ -8,7 +8,8 @@ The site is the old portal's content in this repo's styling. **Copy, nav, sectio
 
 - Three page families, chosen by `<Base chrome=...>`: `landing` (home: logo + "Institutions" + 4 anchors, footer "Tokenised settlement in India"), `narrative` (briefing overview: back link, no nav, footer "The full briefing"), `portal` (modules, ledger, reconciliation: header + sidebar, `PortalShell.astro`).
 - Home copy is generated verbatim from the portal into `src/content/home.json`; overview and reconciliation HTML likewise (`src/content/briefing/_*.html`). Module headings/questions/descriptions in the `.md` files are the portal's.
-- Logo: the portal's ETHIndia wordmark (`EthindiaLogo.astro`) + "Institutions". The "ETHIndia Institutional" logo kit is no longer used in the nav (still in favicon/OG); the name is "ETHIndia Institutions" everywhere.
+- **Update (8 Oct, later):** the nav uses the logo kit again (`.logo` mask, no separate "Institutions" label; the kit lockup says Institutional). Fonts are now real: Hanken Grotesk (variable) stands in for Neue Montreal and Pixelify Sans for Matrix Sans, self-hosted in `public/fonts` (OFL); swap in the licensed files per the commented block in tokens.css. Data chips (tier, flags, ledger IDs) use the sans, not the pixel face. The hairline layer sits `--hair-pad` outside the content edge, and two-column rows split on the 50% hairline.
+- (superseded) Logo: the portal's ETHIndia wordmark (`EthindiaLogo.astro`) + "Institutions". The "ETHIndia Institutional" logo kit is no longer used in the nav (still in favicon/OG); the name is "ETHIndia Institutions" everywhere.
 - Ledger has the portal's controls (module/tier toggles, weak/stale/conflict, search, sortable columns, copy citation). The split-sort quiz on the overview is ported.
 - Older sections below describe the first build and are partly obsolete (ticker, dinner page, FAQ etc. are gone).
 

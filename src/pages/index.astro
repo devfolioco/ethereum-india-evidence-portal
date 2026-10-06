@@ -125,33 +125,41 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .section__head { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 48px); }
   .split .section__head { margin-bottom: 0; align-content: start; }
 
-  /* Why India: four claims, each a rule-separated row */
+  /* Why India: four claims on the page's own column ruling.
+     The headline sits in the left half, the sentence in the right half, first baselines shared. */
   .points { border-top: 1px solid var(--border); }
   .point {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 8px clamp(24px, 5vw, 72px);
-    padding-block: clamp(20px, 2.4vw, 32px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: baseline;
+    padding-block: clamp(28px, 3.4vw, 48px);
     border-bottom: 1px solid var(--border);
   }
-  .point h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; }
-  .point p { max-width: 52ch; font-size: clamp(17px, 1.4vw, 19px); }
+  .point h3 {
+    max-width: 18ch;
+    font-size: clamp(28px, 3.1vw, 42px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .point p { max-width: 46ch; padding-left: var(--hair-pad); font-size: clamp(18px, 1.5vw, 20px); line-height: 1.55; }
 
   /* Where Ethereum fits */
   .split {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(24px, 5vw, 72px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
   }
-  .split__body { display: grid; gap: 20px; max-width: 56ch; font-size: clamp(17px, 1.4vw, 19px); }
+  .split > :last-child { padding-left: var(--hair-pad); }
+  .split__body { display: grid; gap: 20px; max-width: 56ch; font-size: clamp(18px, 1.5vw, 20px); line-height: 1.55; }
   .deeper { display: flex; flex-wrap: wrap; gap: 4px 28px; }
   .deeper a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
 
   /* On this site */
-  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px clamp(20px, 3vw, 40px); }
-  .cols > li { display: grid; align-content: start; gap: 8px; padding-top: 16px; border-top: 1px solid var(--ink); }
-  .cols h3 { font-size: 20px; }
+  .cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px 0; }
+  .cols > li { display: grid; align-content: start; gap: 8px; padding: 16px var(--hair-pad) 0 0; border-top: 1px solid var(--ink); }
+  .cols h3 { font-size: 22px; font-weight: 500; letter-spacing: -0.01em; }
   .cols p { font-size: 16px; line-height: 1.5; color: var(--ink-2); }
 
   /* Briefing */
@@ -175,10 +183,11 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .dinner { padding-block: clamp(56px, 8vw, 112px); }
   .dinner__inner {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: clamp(24px, 5vw, 80px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
   }
+  .dinner__text { padding-right: clamp(24px, 4vw, 56px); }
+  .dinner__card { margin-left: var(--hair-pad); }
   .dinner__text { display: grid; gap: 18px; }
   .dinner__text p:last-child { max-width: 52ch; }
   .dinner__card { display: grid; gap: 12px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--border); background: var(--panel); }
@@ -201,8 +210,11 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .updates__summary { margin-top: 6px; color: var(--ink-2); font-size: 16px; }
 
   @media (max-width: 860px) {
-    .point, .split, .dinner__inner { grid-template-columns: 1fr; }
+    .point, .split, .dinner__inner { grid-template-columns: 1fr; row-gap: 14px; }
+    .point p, .split > :last-child, .dinner__card { padding-left: 0; margin-left: 0; }
+    .dinner__text { padding-right: 0; }
     .cols { grid-template-columns: 1fr; }
+    .cols > li { padding-right: 0; }
   }
   @media (max-width: 560px) {
     .updates__item { grid-template-columns: 1fr; }

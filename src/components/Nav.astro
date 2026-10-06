@@ -1,6 +1,4 @@
 ---
-import EthindiaLogo from './EthindiaLogo.astro';
-
 // Same four anchors as the old portal's top bar.
 const links = [
   ['Why India', '#why-india'],
@@ -12,8 +10,10 @@ const links = [
 
 <div class="nav deep">
   <div class="nav__inner">
-    <a class="nav__brand" href="https://ethindia.co" aria-label="ETHIndia"><EthindiaLogo /></a>
-    <span class="nav__sub">Institutions</span>
+    <a class="nav__brand" href="/">
+      <span class="logo" aria-hidden="true"></span>
+      <span class="visually-hidden">ETHIndia Institutions, home</span>
+    </a>
     <nav class="nav__links" aria-label="Sections">
       {links.map(([label, href]) => <a href={href} data-nav-link>{label}</a>)}
     </nav>
@@ -36,16 +36,7 @@ const links = [
   }
 
   .nav__brand { display: flex; align-items: center; min-height: 44px; flex: none; }
-  .nav__brand :global(.ethindia-wordmark) { height: clamp(24px, 2vw, 28px); width: auto; }
-  .nav__sub {
-    padding-left: 14px;
-    border-left: 1px solid var(--rule);
-    font-family: var(--font-pixel);
-    font-size: 14px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-2);
-  }
+  .nav__brand .logo { --logo-h: clamp(28px, 2.4vw, 34px); }
 
   .nav__links { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); margin-left: auto; }
   .nav__links a {
