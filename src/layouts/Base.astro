@@ -95,13 +95,42 @@ const ogImage = new URL('/og/default.png', site.domain).href;
         };
         const walk = (node: Element) => {
           for (const child of node.children) {
-            if (child.matches('h2, .scene-headline')) n++;
+            if (child.matches('h2, .scene-headline')) { splitWords(child); n++; }
+            else if (child.matches('.runhead, .scene-eyebrow')) continue;
             else if (child.matches(DESCEND)) walk(child);
-            else if (child.matches(LISTS)) [...child.children].forEach(step);
-            else step(child);
+            else if (child.matches(LISTS)) {
+              for (const row of child.children) {
+                step(row);
+                (row as HTMLElement).dataset.row = child.matches('.cols') ? 'top' : 'bottom';
+              }
+            } else step(child);
           }
         };
         walk(root);
+      };
+
+      // Wrap each word of a heading in a clipping box so it can rise out of its own baseline.
+      // Only text nodes change; the heading's text and reading order stay the same.
+      const splitWords = (heading: Element) => {
+        let i = 0;
+        const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+        const nodes: Text[] = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+        for (const node of nodes) {
+          const frag = document.createDocumentFragment();
+          for (const part of node.data.split(/(\s+)/)) {
+            if (!part) continue;
+            if (/^\s+$/.test(part)) { frag.append(part); continue; }
+            const box = document.createElement('span');
+            box.className = 'w';
+            box.style.setProperty('--wi', String(i++));
+            const inner = document.createElement('span');
+            inner.textContent = part;
+            box.append(inner);
+            frag.append(box);
+          }
+          node.replaceWith(frag);
+        }
       };
 
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {

@@ -72,14 +72,6 @@ p { max-width: var(--measure); text-wrap: pretty; }
   font-weight: 400;
 }
 
-.label {
-  font-family: var(--font-pixel);
-  font-size: 14px;
-  line-height: 1.2;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--accent);
-}
 
 .meta { font-size: 14px; color: var(--ink-2); }
 
@@ -90,7 +82,23 @@ p { max-width: var(--measure); text-wrap: pretty; }
   padding-inline: var(--gutter);
 }
 
-.section { padding-block: clamp(56px, 8vw, 112px); }
+.section { --sec-pad: clamp(56px, 8vw, 112px); position: relative; padding-block: var(--sec-pad); }
+.section > .wrap { position: relative; }
+
+/* Running head: a section's name set on its top edge at the right, like the tab of a ledger page.
+   It replaces the uppercase kicker; the heading carries the section on its own. */
+.runhead {
+  position: absolute;
+  top: calc(-1 * var(--sec-pad) + 20px);
+  right: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.runhead::before { content: ""; width: 28px; height: 1px; background: var(--rule); }
 /* Section seams are one ruled line, drawn as a pseudo-element so it can be ruled in on scroll. */
 .section + .section, .narr .scene + .scene { position: relative; }
 .section + .section::before, .narr .scene + .scene::before {
@@ -205,29 +213,61 @@ p { max-width: var(--measure); text-wrap: pretty; }
 .field input:disabled, .field textarea:disabled { background: var(--surface); color: var(--ink-2); cursor: not-allowed; }
 .field__hint { font-size: 14px; color: var(--ink-2); }
 
-/* Section transitions: each section is ruled into the page like a ledger entry.
-   The seam draws across the page, the heading rises out of its own baseline, then the
-   body settles in reading order. Base.astro marks below-the-fold sections (data-reveal)
-   and their steps (data-step, --step); everything is visible without JS. */
-[data-reveal]::before { transform: scaleX(0); }
-[data-reveal] :is(h2, .scene-headline) {
-  clip-path: inset(100% 0 -0.3em 0);
-  transform: translateY(0.45em);
+/* Motion has one grammar: the ledger being ruled.
+   - Load: the page's column ruling draws down (the hero title rises in Hero.astro).
+   - Scroll: a new section's seam draws across, its running head slides in where the line ends,
+     the heading rises word by word out of its baseline, then content settles in reading order
+     while the rule under each entry draws. The hero recedes as you leave it; the dinner band
+     opens to full bleed. Base.astro marks sections (data-reveal), steps (data-step, --step),
+     rows (data-row) and heading words (.w, --wi). Everything is visible without JS. */
+@media (prefers-reduced-motion: no-preference) {
+  body::before { animation: rule-down 1500ms var(--ease-out) both; }
 }
-[data-reveal] [data-step] { opacity: 0; transform: translateY(14px); }
+@keyframes rule-down {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
 
-[data-reveal="in"]::before { transform: none; transition: transform 1100ms var(--ease-out); }
-[data-reveal="in"] :is(h2, .scene-headline) {
-  clip-path: inset(-0.15em 0 -0.3em 0);
-  transform: none;
-  transition: clip-path 850ms var(--ease-out) 160ms, transform 850ms var(--ease-out) 160ms;
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+.w > span { display: inline-block; }
+
+[data-reveal]::before { transform: scaleX(0); }
+[data-reveal] :is(.runhead, .scene-eyebrow) { opacity: 0; transform: translateX(-28px); }
+[data-reveal] .w > span { transform: translateY(108%); }
+[data-reveal] [data-step] { opacity: 0; transform: translateY(32px); filter: blur(6px); }
+[data-reveal] [data-row] { position: relative; }
+[data-reveal] [data-row="bottom"] { border-bottom-color: transparent; }
+[data-reveal] [data-row="top"] { border-top-color: transparent; }
+[data-reveal] [data-row]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left center;
 }
-[data-reveal="in"] [data-step] {
-  --delay: calc(220ms + var(--step, 0) * 90ms);
+[data-reveal] [data-row="bottom"]::after { bottom: -1px; background: var(--border); }
+[data-reveal] [data-row="top"]::after { top: -1px; background: var(--ink); }
+
+[data-reveal="in"]::before { transform: none; transition: transform 900ms var(--ease-out); }
+[data-reveal="in"] :is(.runhead, .scene-eyebrow) {
   opacity: 1;
   transform: none;
-  transition: opacity 600ms var(--ease-out) var(--delay), transform 750ms var(--ease-out) var(--delay);
+  transition: opacity 500ms var(--ease-out) 420ms, transform 800ms var(--ease-out) 420ms;
 }
+[data-reveal="in"] .w > span { transform: none; transition: transform 950ms var(--ease-out) calc(120ms + var(--wi, 0) * 45ms); }
+[data-reveal="in"] [data-step] {
+  --delay: calc(300ms + var(--step, 0) * 85ms);
+  opacity: 1;
+  transform: none;
+  filter: none;
+  transition:
+    opacity 700ms var(--ease-out) var(--delay),
+    transform 950ms var(--ease-out) var(--delay),
+    filter 700ms var(--ease-out) var(--delay);
+}
+[data-reveal="in"] [data-row]::after { transform: none; transition: transform 1100ms var(--ease-out) calc(var(--delay) + 140ms); }
 
 /* Zone change into the dinner band: the navy field opens from the content edge to full bleed as it scrolls in. */
 @supports (animation-timeline: view()) {
@@ -241,7 +281,7 @@ p { max-width: var(--measure); text-wrap: pretty; }
 }
 
 @media print {
-  [data-reveal]::before, [data-reveal] :is(h2, .scene-headline), [data-reveal] [data-step] { opacity: 1; transform: none; clip-path: none; }
+  [data-reveal] *, [data-reveal]::before { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -56,7 +56,8 @@ const here = (key: string) => (current === key ? 'page' : undefined);
   }
   .portal__title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding-block: 8px; }
   .portal__name { font-size: 15px; color: var(--ink-2); }
-  .portal__tab { font-family: var(--font-pixel); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  .portal__tab { font-size: 15px; font-weight: 500; color: var(--ink); }
+  .portal__tab::before { content: "/"; margin-right: 14px; color: var(--rule); }
   .portal__toggle { display: none; }
 
   .portal {
@@ -91,7 +92,7 @@ const here = (key: string) => (current === key ? 'page' : undefined);
   .portal__nav a[aria-current] { color: var(--ink); font-weight: 500; box-shadow: -10px 0 0 -8px var(--accent), -2px 0 0 0 var(--accent); }
   .portal__back { color: var(--ink) !important; font-weight: 500; }
   .portal__back span { margin-right: 8px; }
-  .portal__group { margin-top: 18px; padding-bottom: 6px; border-bottom: 1px solid var(--ink); text-transform: uppercase; letter-spacing: 0.08em; }
+  .portal__group { margin-top: 18px; padding-bottom: 6px; border-bottom: 1px solid var(--ink); font-weight: 600; color: var(--ink); }
   .portal__letter { width: 1.8em; color: var(--accent); }
 
   .portal__main { min-width: 0; }

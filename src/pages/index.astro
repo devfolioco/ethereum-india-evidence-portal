@@ -12,9 +12,9 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
 
   <section class="section" id="why-india" aria-labelledby="why-india-title">
     <div class="wrap">
+      <p class="runhead">{whyIndia.eyebrow}</p>
       <div class="section__head">
-        <p class="label">{whyIndia.eyebrow}</p>
-        <h2 id="why-india-title">{whyIndia.title}</h2>
+                <h2 id="why-india-title">{whyIndia.title}</h2>
       </div>
       <ul class="points">
         {whyIndia.points.map((p) => (
@@ -29,10 +29,10 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
 
   <section class="section" id="ethereum" aria-labelledby="ethereum-title">
     <div class="wrap">
+      <p class="runhead">{ethereum.eyebrow}</p>
       <div class="split">
         <div class="section__head">
-          <p class="label">{ethereum.eyebrow}</p>
-          <h2 id="ethereum-title">{ethereum.title}</h2>
+                    <h2 id="ethereum-title">{ethereum.title}</h2>
         </div>
         <div class="split__body">
           {ethereum.paragraphs.map((t) => <p>{t}</p>)}
@@ -46,9 +46,9 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
 
   <section class="section" id="expect" aria-labelledby="expect-title">
     <div class="wrap">
+      <p class="runhead">{expect.eyebrow}</p>
       <div class="section__head">
-        <p class="label">{expect.eyebrow}</p>
-        <h2 id="expect-title">{expect.title}</h2>
+                <h2 id="expect-title">{expect.title}</h2>
       </div>
       <ul class="cols">
         {expect.items.map((item) => (
@@ -63,9 +63,9 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
 
   <section class="section" id="briefing" aria-labelledby="briefing-title">
     <div class="wrap">
+      <p class="runhead">{briefing.eyebrow}</p>
       <div class="section__head">
-        <p class="label">{briefing.eyebrow}</p>
-        <h2 id="briefing-title">{briefing.title}</h2>
+                <h2 id="briefing-title">{briefing.title}</h2>
       </div>
       <article class="report">
         <p class="report__date meta"><time datetime={briefing.iso}>{briefing.date}</time></p>
@@ -83,31 +83,33 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   <section class="dinner band" id="dinner" aria-labelledby="dinner-title">
     <div class="wrap dinner__inner">
       <div class="dinner__text">
-        <p class="label">{dinner.eyebrow}</p>
         <h2 id="dinner-title">{dinner.title}</h2>
         <p>{dinner.body}</p>
       </div>
       <div class="dinner__card">
         <p class="dinner__when px"><time datetime={dinner.iso}>{dinner.when}</time></p>
+        <p class="dinner__occasion">{dinner.eyebrow}</p>
         <p class="dinner__where">{dinner.where}</p>
-        <p class="label">{dinner.access}</p>
-        <span class="btn" aria-disabled="true">{dinner.pending}</span>
+        <div class="dinner__cta">
+          <span class="btn" aria-disabled="true">{dinner.pending}</span>
+          <p class="dinner__access">{dinner.access}</p>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="section" id="updates" aria-labelledby="updates-title">
     <div class="wrap">
+      <p class="runhead">{updates.eyebrow}</p>
       <div class="section__head">
-        <p class="label">{updates.eyebrow}</p>
-        <h2 id="updates-title">{updates.title}</h2>
+                <h2 id="updates-title">{updates.title}</h2>
       </div>
       <ol class="updates">
         {updates.items.map((u) => (
           <li class="updates__item">
             <p class="updates__meta">
-              <span class="label">{u.type}</span>
-              <time class="meta" datetime={u.iso}>{u.date}</time>
+              <time datetime={u.iso}>{u.date}</time>
+              <span class="updates__type">{u.type}</span>
             </p>
             <div>
               <h3><a href={u.href}>{u.title}</a></h3>
@@ -191,8 +193,11 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .dinner__text { display: grid; gap: 18px; }
   .dinner__text p:last-child { max-width: 52ch; }
   .dinner__card { display: grid; gap: 12px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--border); background: var(--panel); }
-  .dinner__when { font-size: clamp(20px, 2vw, 26px); text-transform: uppercase; letter-spacing: 0.04em; }
-  .dinner__card .btn { justify-self: start; margin-top: 6px; }
+  .dinner__when { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; }
+  .dinner__occasion { font-size: 18px; }
+  .dinner__where { color: var(--ink-2); }
+  .dinner__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 10px; }
+  .dinner__access { font-size: 15px; color: var(--ink-2); }
 
   /* Updates */
   .updates { border-top: 1px solid var(--border); max-width: 880px; }
@@ -203,7 +208,9 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
     padding-block: 20px;
     border-bottom: 1px solid var(--border);
   }
-  .updates__meta { display: grid; gap: 2px; align-content: start; }
+  .updates__meta { display: grid; gap: 2px; align-content: start; padding-top: 5px; font-size: 15px; color: var(--ink-2); }
+  .updates__type { font-size: 14px; }
+  .updates__type::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 8px; vertical-align: 0.12em; background: var(--accent); }
   .updates h3 { font-size: 22px; font-weight: 500; }
   .updates h3 a { text-decoration: none; }
   .updates h3 a:hover { text-decoration: underline; text-decoration-thickness: 1px; }

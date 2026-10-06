@@ -14,7 +14,7 @@ const parts = marked.split(/\[(.)\]/);
 <section class="hero deep" aria-labelledby="hero-title">
   <div class="wrap hero__grid">
     <div class="hero__copy">
-      <p class="label">{hero.eyebrow}</p>
+      <p class="visually-hidden">{hero.eyebrow}</p>
       <h1 id="hero-title" class="hero__title" aria-label={hero.title}>
         <span aria-hidden="true">
           {parts.map((part, i) => (i % 2 ? <span class="px">{part}</span> : part))}
@@ -40,7 +40,6 @@ const parts = marked.split(/\[(.)\]/);
   }
 
   .hero__title {
-    margin-top: 20px;
     font-size: clamp(44px, 5.6vw, 92px);
   }
   .hero__title .px { letter-spacing: -0.04em; }
@@ -58,4 +57,36 @@ const parts = marked.split(/\[(.)\]/);
     .hero__grid { grid-template-columns: 1fr; }
     .hero__art { justify-self: center; max-width: 440px; }
   }
+
+  /* Entrance: the title rises out of its baseline while the ruling draws down (base.css),
+     then the sentence settles and the map surfaces. On leaving, copy and map drift apart. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__title { animation: title-rise 1100ms var(--ease-out) 200ms both; }
+    .hero__sub { animation: settle 900ms var(--ease-out) 650ms both; }
+    .hero__art { animation: surface 1400ms var(--ease-out) 350ms both; }
+
+    @supports (animation-timeline: view()) {
+      .hero__copy, .hero__art > :global(*) {
+        animation: var(--leave) linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 100%;
+      }
+      .hero__copy { --leave: copy-leave; }
+      .hero__art > :global(*) { --leave: art-leave; }
+    }
+  }
+  @keyframes title-rise {
+    from { clip-path: inset(100% 0 -0.2em 0); transform: translateY(0.35em); }
+    to { clip-path: inset(-0.2em 0 -0.2em 0); transform: none; }
+  }
+  @keyframes settle {
+    from { opacity: 0; transform: translateY(24px); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  @keyframes surface {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes copy-leave { to { transform: translateY(-14vh); opacity: 0.15; } }
+  @keyframes art-leave { to { transform: translateY(10vh) scale(0.92); opacity: 0.25; } }
 </style>
