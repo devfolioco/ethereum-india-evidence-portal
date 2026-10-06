@@ -10,9 +10,8 @@ const path = Astro.url.pathname;
 <nav class="nav deep" aria-label="Primary">
   <div class="nav__inner">
     <a class="nav__logo" href="/">
-      {/* TODO: /logo/ethindia-institutional.svg — Arko supplies the final mark. */}
-      <span class="nav__logo-eth">ETHIndia</span>
-      <span class="nav__logo-sub">Institutional</span>
+      <span class="logo" aria-hidden="true"></span>
+      <span class="visually-hidden">ETHIndia Institutional, home</span>
     </a>
 
     <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
@@ -48,15 +47,8 @@ const path = Astro.url.pathname;
     padding-inline: var(--gutter);
   }
 
-  .nav__logo {
-    display: flex;
-    align-items: baseline;
-    gap: 8px;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .nav__logo-eth { font-weight: 600; font-size: 18px; letter-spacing: -0.01em; }
-  .nav__logo-sub { font-weight: 500; font-size: 18px; color: var(--ink-2); }
+  .nav__logo { display: flex; align-items: center; min-height: 44px; flex: none; }
+  .nav__logo .logo { --logo-h: clamp(28px, 2.4vw, 34px); }
 
   .nav__links { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); }
   .nav__links a {

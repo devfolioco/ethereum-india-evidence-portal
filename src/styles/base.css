@@ -212,3 +212,17 @@ p { max-width: var(--measure); text-wrap: pretty; }
   }
   [data-reveal] { opacity: 1; transform: none; }
 }
+
+/* Logo lockup, drawn as a mask so it takes the zone's ink in every palette.
+   Aspect ratio from /logo/ethindia-institutional.svg (4667 × 869). */
+.logo {
+  display: block;
+  height: var(--logo-h, 32px);
+  aspect-ratio: 4667 / 869;
+  background-color: currentColor;
+  -webkit-mask: url("/logo/ethindia-institutional.svg") center / contain no-repeat;
+  mask: url("/logo/ethindia-institutional.svg") center / contain no-repeat;
+}
+@media (forced-colors: active) {
+  .logo { forced-color-adjust: none; background-color: CanvasText; }
+}

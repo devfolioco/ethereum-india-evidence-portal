@@ -13,8 +13,8 @@ const year = new Date().getFullYear();
   <div class="wrap footer__inner">
     <div class="footer__brand">
       <a class="footer__logo" href="/">
-        <span class="footer__logo-eth">ETHIndia</span>
-        <span class="footer__logo-sub">Institutional</span>
+        <span class="logo" aria-hidden="true"></span>
+        <span class="visually-hidden">ETHIndia Institutional, home</span>
       </a>
       <p class="meta">
         {site.tagline}. <a href="https://ethindia.co">ethindia.co</a>
@@ -51,9 +51,8 @@ const year = new Date().getFullYear();
     justify-content: space-between;
   }
 
-  .footer__logo { display: flex; align-items: baseline; gap: 8px; text-decoration: none; }
-  .footer__logo-eth { font-weight: 600; font-size: 18px; }
-  .footer__logo-sub { font-weight: 500; font-size: 18px; color: var(--ink-2); }
+  .footer__logo { display: flex; align-items: center; width: fit-content; min-height: 44px; }
+  .footer__logo .logo { --logo-h: 40px; }
   .footer__brand p { margin-top: 10px; }
 
   .footer__links { display: flex; flex-wrap: wrap; gap: clamp(32px, 6vw, 80px); }
