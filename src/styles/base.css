@@ -91,7 +91,16 @@ p { max-width: var(--measure); text-wrap: pretty; }
 }
 
 .section { padding-block: clamp(56px, 8vw, 112px); }
-.section + .section { border-top: 1px solid var(--border); }
+/* Section seams are one ruled line, drawn as a pseudo-element so it can be ruled in on scroll. */
+.section + .section, .narr .scene + .scene { position: relative; }
+.section + .section::before, .narr .scene + .scene::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--border);
+  transform-origin: left center;
+}
 
 .panel {
   background: var(--panel);
@@ -196,12 +205,43 @@ p { max-width: var(--measure); text-wrap: pretty; }
 .field input:disabled, .field textarea:disabled { background: var(--surface); color: var(--ink-2); cursor: not-allowed; }
 .field__hint { font-size: 14px; color: var(--ink-2); }
 
-/* Section entry: below-the-fold sections rise in once (Base.astro adds data-reveal). */
-[data-reveal] { opacity: 0; transform: translateY(12px); }
-[data-reveal="in"] {
+/* Section transitions: each section is ruled into the page like a ledger entry.
+   The seam draws across the page, the heading rises out of its own baseline, then the
+   body settles in reading order. Base.astro marks below-the-fold sections (data-reveal)
+   and their steps (data-step, --step); everything is visible without JS. */
+[data-reveal]::before { transform: scaleX(0); }
+[data-reveal] :is(h2, .scene-headline) {
+  clip-path: inset(100% 0 -0.3em 0);
+  transform: translateY(0.45em);
+}
+[data-reveal] [data-step] { opacity: 0; transform: translateY(14px); }
+
+[data-reveal="in"]::before { transform: none; transition: transform 1100ms var(--ease-out); }
+[data-reveal="in"] :is(h2, .scene-headline) {
+  clip-path: inset(-0.15em 0 -0.3em 0);
+  transform: none;
+  transition: clip-path 850ms var(--ease-out) 160ms, transform 850ms var(--ease-out) 160ms;
+}
+[data-reveal="in"] [data-step] {
+  --delay: calc(220ms + var(--step, 0) * 90ms);
   opacity: 1;
   transform: none;
-  transition: opacity 300ms var(--ease), transform 300ms var(--ease);
+  transition: opacity 600ms var(--ease-out) var(--delay), transform 750ms var(--ease-out) var(--delay);
+}
+
+/* Zone change into the dinner band: the navy field opens from the content edge to full bleed as it scrolls in. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .band { animation: band-open linear both; animation-timeline: view(); animation-range: entry 0% entry 80%; }
+  }
+}
+@keyframes band-open {
+  from { clip-path: inset(0 var(--gutter)); }
+  to { clip-path: inset(0 0); }
+}
+
+@media print {
+  [data-reveal]::before, [data-reveal] :is(h2, .scene-headline), [data-reveal] [data-step] { opacity: 1; transform: none; clip-path: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -211,10 +251,9 @@ p { max-width: var(--measure); text-wrap: pretty; }
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  [data-reveal] { opacity: 1; transform: none; }
 }
 
-/* Logo lockup, drawn as a mask so it takes the zone's ink in every palette.
+/* Logo lockup, drawn as a mask so it takes the zone's ink (bone on navy, navy on stone).
    Aspect ratio from /logo/ethindia-institutional.svg (4667 × 869). */
 .logo {
   display: block;

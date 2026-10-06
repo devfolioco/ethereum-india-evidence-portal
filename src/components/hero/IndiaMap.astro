@@ -30,7 +30,7 @@
 
   if (root && canvas && ctx) {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // Colours come from the zone the map sits in, and are re-read when the palette changes.
+    // Colours come from the zone the map sits in.
     let ink = '#13202f', paper = '#f1eee6', pixelFont = 'monospace';
     let shadeLo = [19, 32, 47], shadeHi = [241, 238, 230]; // ETH mark: shadow → lit face
     const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
@@ -205,10 +205,6 @@
       if (reduce) draw(1.6);
     };
     new ResizeObserver(resize).observe(canvas);
-    document.addEventListener('palettechange', () => {
-      readColors();
-      if (reduce) draw(1.6);
-    });
 
     if (!reduce) {
       let raf = 0;

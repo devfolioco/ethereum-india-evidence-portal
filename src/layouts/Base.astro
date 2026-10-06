@@ -4,7 +4,6 @@ import '../styles/base.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import PortalShell from '../components/PortalShell.astro';
-import PaletteSwitcher from '../components/PaletteSwitcher.astro';
 import site from '../content/site.json';
 
 // chrome mirrors the old portal's three page families:
@@ -58,13 +57,6 @@ const ogImage = new URL('/og/default.png', site.domain).href;
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap.xml" />
 
-    {/* Palette: apply the visitor's stored choice before first paint (see PaletteSwitcher). */}
-    <script is:inline>
-      try {
-        const p = new URLSearchParams(location.search).get('palette') || localStorage.getItem('palette');
-        if (p === 'navy' || p === 'light' || p === 'dark') document.documentElement.dataset.palette = p;
-      } catch {}
-    </script>
   </head>
 
   <body data-chrome={chrome}>
@@ -81,7 +73,6 @@ const ogImage = new URL('/og/default.png', site.domain).href;
         <Footer variant={chrome} />
       </>
     )}
-    <PaletteSwitcher />
 
     <style is:global>
       html { scroll-padding-top: calc(var(--nav-h) + 16px); }
@@ -89,8 +80,30 @@ const ogImage = new URL('/og/default.png', site.domain).href;
     </style>
 
     <script>
-      // Section entry: only sections that start below the fold animate, so nothing
-      // already on screen ever blinks, and a missed observer leaves content visible.
+      // Section transitions (styles in base.css). Only sections that start below the fold take
+      // part, so nothing already on screen ever blinks, and without JS everything stays visible.
+      // Each section's content is numbered in reading order (--step) so it settles after its
+      // seam and heading; list rows count as steps of their own.
+      const DESCEND = '.section__head, .split, .split__body, .dinner__text';
+      const LISTS = '.points, .updates, .cols, .findings';
+      const markSteps = (section: HTMLElement) => {
+        const root = section.querySelector<HTMLElement>(':scope > .wrap, :scope > .scene-inner') ?? section;
+        let n = 0;
+        const step = (el: Element) => {
+          (el as HTMLElement).dataset.step = '';
+          (el as HTMLElement).style.setProperty('--step', String(Math.min(n++, 7)));
+        };
+        const walk = (node: Element) => {
+          for (const child of node.children) {
+            if (child.matches('h2, .scene-headline')) n++;
+            else if (child.matches(DESCEND)) walk(child);
+            else if (child.matches(LISTS)) [...child.children].forEach(step);
+            else step(child);
+          }
+        };
+        walk(root);
+      };
+
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
         const io = new IntersectionObserver(
           (entries) => {
@@ -100,10 +113,13 @@ const ogImage = new URL('/og/default.png', site.domain).href;
               io.unobserve(e.target);
             }
           },
-          { rootMargin: '0px 0px -10% 0px' }
+          { rootMargin: '0px 0px -12% 0px' }
         );
-        for (const el of document.querySelectorAll<HTMLElement>('main > section, main > article > section')) {
-          if (el.getBoundingClientRect().top > innerHeight) {
+        const sections = [...document.querySelectorAll<HTMLElement>('main > section, main > .narr > section')];
+        // The opening section never waits on the observer (a zero-height prerender would otherwise hide it).
+        for (const el of sections.slice(1)) {
+          if (innerHeight > 0 && el.getBoundingClientRect().top > innerHeight) {
+            markSteps(el);
             el.dataset.reveal = '';
             io.observe(el);
           }

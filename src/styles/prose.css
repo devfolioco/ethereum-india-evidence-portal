@@ -119,8 +119,7 @@
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 .narr .hero .landing-prompt { max-width: 62ch; }
 
-.narr .scene { padding-block: clamp(48px, 7vw, 96px); border-top: 1px solid var(--border); }
-.narr .hero + .scene { border-top: 0; }
+.narr .scene { padding-block: clamp(48px, 7vw, 96px); }
 .narr .scene-inner { display: grid; gap: 20px; width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
 .narr .scene-inner > * { max-width: 880px; }
 .scene-eyebrow { display: flex; align-items: baseline; gap: 14px; font-family: var(--font-pixel); font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
