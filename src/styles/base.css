@@ -14,9 +14,9 @@ body {
   overflow-x: hidden;
 }
 
-/* Column hairlines: faint verticals on the content grid (4 columns, 2 on tablet,
-   edges only on phones), fixed to the viewport so they read as the page's ruling,
-   not a pattern. Solid zones (.deep, .band, panels) sit on top of them. */
+/* Frame: two faint verticals just outside the content edges, fixed to the viewport so they
+   read as the page's ruling. Nothing crosses the reading column. Solid zones (.deep, .band,
+   panels) sit on top of them. */
 body::before {
   content: "";
   position: fixed;
@@ -25,13 +25,9 @@ body::before {
   z-index: -1;
   max-width: calc(var(--wrap) - 2 * var(--gutter) + 2 * var(--hair-pad));
   margin-inline: auto;
-  border-right: 1px solid var(--hairline);
-  background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px);
-  background-size: 25% 100%;
+  border-inline: 1px solid var(--hairline);
   pointer-events: none;
 }
-@media (max-width: 1080px) { body::before { background-size: 50% 100%; } }
-@media (max-width: 560px) { body::before { background-size: 100% 100%; } }
 
 ::selection { background: var(--accent); color: var(--paper); }
 
