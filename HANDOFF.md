@@ -23,7 +23,7 @@ The site is the old portal's content in this repo's styling. **Copy, nav, sectio
 
 ## Stack and commands
 
-Astro 7 (static), plain CSS custom properties, vanilla JS. One dependency (`astro`). Windows; Node 24. Git repo on `main`, **local only: no remote**, so nothing can be pushed until one is added.
+Astro 7 (static), plain CSS custom properties, vanilla JS. One dependency (`astro`). Windows; Node 24. Git repo on `main`, remote `origin` = github.com/superark21/ethindia-institutional (private).
 
 ```bash
 npm run dev        # http://localhost:4321 (.claude/launch.json "eii")
@@ -137,7 +137,6 @@ vercel.json                   301s from the old portal's .html URLs
 
 ## Open decisions for the user
 
-- **Git remote:** none exists, so "push" isn't possible. Needs a GitHub repo (and whether it's private) before pushing; Vercel Git integration could then replace manual CLI deploys.
 - **Custom domain:** attach `institutions.ethindia.co` to the Vercel project (see Deploy).
 - **Sticky chrome height:** the brief wants nav + ticker ≤ 96px, but `--nav-h: clamp(56px, 5vw, 80px)` + 32px ticker = 97px at 1280px and 113px at ≥1600px. Options: cap `--nav-h` at ~64px, or a 24px ticker. Unanswered.
 
