@@ -52,7 +52,6 @@ const here = (key: string) => (current === key ? 'page' : undefined);
     gap: 12px;
     min-height: 56px;
     padding-inline: max(var(--gutter), calc((100vw - var(--wrap)) / 2 + var(--gutter)));
-    border-bottom: 1px solid var(--border);
   }
   .portal__title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding-block: 8px; }
   .portal__name { font-size: 15px; color: var(--ink-2); }
@@ -82,17 +81,16 @@ const here = (key: string) => (current === key ? 'page' : undefined);
     grid-template-columns: auto 1fr;
     align-items: baseline;
     min-height: 44px;
-    padding: 10px 0;
+    padding: 10px 12px;
     line-height: 1.35;
     color: var(--ink-2);
     text-decoration: none;
-    border-bottom: 1px solid var(--border);
   }
-  .portal__nav a:hover { color: var(--ink); }
-  .portal__nav a[aria-current] { color: var(--ink); font-weight: 500; box-shadow: -10px 0 0 -8px var(--accent), -2px 0 0 0 var(--accent); }
+  .portal__nav a:hover { color: var(--ink); background: var(--panel); }
+  .portal__nav a[aria-current] { color: var(--ink); font-weight: 500; background: var(--surface); border-radius: var(--radius-card); }
   .portal__back { color: var(--ink) !important; font-weight: 500; }
   .portal__back span { margin-right: 8px; }
-  .portal__group { margin-top: 18px; padding-bottom: 6px; border-bottom: 1px solid var(--ink); font-weight: 600; color: var(--ink); }
+  .portal__group { margin-top: 24px; padding: 0 12px 10px; font-weight: 600; color: var(--ink); }
   .portal__letter { width: 1.8em; color: var(--accent); }
 
   .portal__main { min-width: 0; }
@@ -104,7 +102,7 @@ const here = (key: string) => (current === key ? 'page' : undefined);
       place-items: center;
       width: 44px;
       height: 44px;
-      border: 1px solid var(--border);
+      background: var(--surface);
       border-radius: var(--radius-card);
       cursor: pointer;
     }
@@ -114,7 +112,7 @@ const here = (key: string) => (current === key ? 'page' : undefined);
     .portal__bars::before { transform: translateY(-5px); }
     .portal__bars::after { transform: translateY(5px); }
     .portal__check:focus-visible ~ .portal__head .portal__toggle { outline: 2px solid var(--ink); outline-offset: 3px; }
-    .portal__nav { display: none; position: static; max-height: none; padding: 8px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-card); }
+    .portal__nav { display: none; position: static; max-height: none; padding: 8px 16px; background: var(--panel); border-radius: var(--radius-card); }
     .portal__check:checked ~ .portal .portal__nav { display: grid; }
   }
 </style>
