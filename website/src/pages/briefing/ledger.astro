@@ -172,13 +172,13 @@ const tiers = ['T1', 'T2', 'T3', 'T4', 'T5'];
     min-height: 44px;
     padding: 8px 14px;
     font-size: 15px;
-    background: transparent;
-    border: 1px solid var(--rule);
+    background: var(--surface);
+    border: 0;
     border-radius: var(--radius-pill);
     cursor: pointer;
   }
-  .toggle-btn:hover { border-color: var(--ink); }
-  .toggle-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .toggle-btn:hover { background: var(--panel); }
+  .toggle-btn[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
   .flag-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; cursor: pointer; }
   .flag-toggle input { width: 20px; height: 20px; accent-color: var(--accent); }
   .search {

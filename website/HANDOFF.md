@@ -2,6 +2,17 @@
 
 Start a new chat with: "Read HANDOFF.md and PRODUCT.md, then continue from 'Next'."
 
+## Layout update — 8 October 2026
+
+The user's latest direction is to remove unnecessary lines and improve spacing without changing the brand. This supersedes the older hairline, running-head and ruled-motion descriptions below.
+
+- Keep the navy/stone/brass palette, typefaces, logo and dotted India hero.
+- Sections and list items are separated by whitespace. Labels sit directly above their headings. Do not restore section seams or animated row rules.
+- Home: four India points in a two-column grid; three site offerings in one borderless panel; a two-column report feature; spaced update entries. These stack on mobile.
+- Cards, sidebar navigation, footer links, copy panels and quiz items have no decorative outlines. Filled backgrounds identify controls and the active sidebar item.
+- Retain useful table row separators, source-link underlines, input boundaries and visible keyboard focus.
+- Verified: production build; all 11 content routes at 375, 768 and 1440px without page overflow; reading tabs, mobile navigation, ledger search and quiz reveal. Visually reviewed the home, overview and reader layouts.
+
 ## What this is
 
 A **reskin of the old portal at https://institutions.ethindia.co**. The client wants the portal's data exactly, in this repo's styling.

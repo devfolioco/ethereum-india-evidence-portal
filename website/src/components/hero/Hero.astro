@@ -3,11 +3,13 @@ import home from '../../content/home.json';
 import IndiaMap from './IndiaMap.astro';
 
 const { hero } = home;
-// Three letters are set in the pixel face (glyph swap); the text itself is the portal's, unchanged.
+// One letter in each major word is set in the pixel face (glyph swap); the text itself is the
+// portal's, unchanged.
 const marked = hero.title
   .replace('Ethereum', 'Eth[e]reum')
   .replace('Institutional', 'Instit[u]tional')
-  .replace('India', '[I]ndia');
+  .replace('Finance', 'Fin[a]nce')
+  .replace('India', 'In[d]ia');
 const parts = marked.split(/\[(.)\]/);
 ---
 
@@ -30,7 +32,7 @@ const parts = marked.split(/\[(.)\]/);
 </section>
 
 <style>
-  .hero { padding-block: clamp(40px, 6vw, 88px); border-bottom: 1px solid var(--border); }
+  .hero { padding-block: clamp(40px, 6vw, 88px); }
 
   .hero__grid {
     display: grid;

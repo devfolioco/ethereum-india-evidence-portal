@@ -83,7 +83,7 @@ const ogImage = new URL('/og/default.png', site.domain).href;
       // Section transitions (styles in base.css). Only sections that start below the fold take
       // part, so nothing already on screen ever blinks, and without JS everything stays visible.
       // Each section's content is numbered in reading order (--step) so it settles after its
-      // seam and heading; list rows count as steps of their own.
+      // heading; list items count as steps of their own.
       const DESCEND = '.section__head, .split, .split__body, .dinner__text';
       const LISTS = '.points, .updates, .cols, .findings';
       const markSteps = (section: HTMLElement) => {
@@ -101,7 +101,6 @@ const ogImage = new URL('/og/default.png', site.domain).href;
             else if (child.matches(LISTS)) {
               for (const row of child.children) {
                 step(row);
-                (row as HTMLElement).dataset.row = child.matches('.cols') ? 'top' : 'bottom';
               }
             } else step(child);
           }

@@ -8,25 +8,9 @@ body {
   font-size: 18px;
   line-height: 1.6;
   color: var(--ink);
-  /* No body background: it would paint over the hairline layer. html carries the colour. */
   caret-color: var(--accent);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-
-/* Frame: two faint verticals just outside the content edges, fixed to the viewport so they
-   read as the page's ruling. Nothing crosses the reading column. Solid zones (.deep, .band,
-   panels) sit on top of them. */
-body::before {
-  content: "";
-  position: fixed;
-  /* The ruling sits just outside the content edge, so text never touches a line. */
-  inset: 0 calc(var(--gutter) - var(--hair-pad));
-  z-index: -1;
-  max-width: calc(var(--wrap) - 2 * var(--gutter) + 2 * var(--hair-pad));
-  margin-inline: auto;
-  border-inline: 1px solid var(--hairline);
-  pointer-events: none;
 }
 
 ::selection { background: var(--accent); color: var(--paper); }
@@ -81,39 +65,21 @@ p { max-width: var(--measure); text-wrap: pretty; }
 .section { --sec-pad: clamp(56px, 8vw, 112px); position: relative; padding-block: var(--sec-pad); }
 .section > .wrap { position: relative; }
 
-/* Running head: a section's name set on its top edge at the right, like the tab of a ledger page.
-   It replaces the uppercase kicker; the heading carries the section on its own. */
+/* Labels sit with their headings; whitespace carries the section hierarchy. */
 .runhead {
-  position: absolute;
-  top: calc(-1 * var(--sec-pad) + 20px);
-  right: var(--gutter);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  margin-bottom: 20px;
   font-size: 14px;
   font-weight: 500;
   color: var(--ink-2);
 }
-.runhead::before { content: ""; width: 28px; height: 1px; background: var(--rule); }
-/* Section seams are one ruled line, drawn as a pseudo-element so it can be ruled in on scroll. */
-.section + .section, .narr .scene + .scene { position: relative; }
-.section + .section::before, .narr .scene + .scene::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 1px;
-  background: var(--border);
-  transform-origin: left center;
-}
+.section + .section { padding-top: clamp(24px, 4vw, 56px); }
 
 .panel {
   background: var(--panel);
-  border: 1px solid var(--border);
   border-radius: var(--radius-card);
 }
 
-/* Buttons share the page's ledger language: square-cornered like the panels, with a brass
-   rule that draws along the bottom edge on hover (the same ruling motion as the page). */
+/* Filled controls keep their shape without decorative outlines. */
 .btn {
   position: relative;
   display: inline-flex;
@@ -127,7 +93,7 @@ p { max-width: var(--measure); text-wrap: pretty; }
   line-height: 1.2;
   letter-spacing: 0.01em;
   text-decoration: none;
-  border: 1px solid var(--ink);
+  border: 0;
   border-radius: 2px;
   background: var(--ink);
   color: var(--paper);
@@ -135,31 +101,19 @@ p { max-width: var(--measure); text-wrap: pretty; }
   overflow: hidden;
   transition: background-color 200ms var(--ease-out), border-color 200ms var(--ease-out), color 200ms var(--ease-out);
 }
-.btn::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 2px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 420ms var(--ease-out);
-}
-.btn:hover::after, .btn:focus-visible::after { transform: none; }
 .btn:hover { background: color-mix(in srgb, var(--ink) 88%, var(--paper)); }
 .btn:active { transform: translateY(1px); }
 
-.btn--secondary { background: transparent; color: var(--ink); border-color: var(--rule); }
-.btn--secondary:hover { background: var(--surface); border-color: var(--ink); }
+.btn--secondary { background: var(--surface); color: var(--ink); }
+.btn--secondary:hover { background: color-mix(in srgb, var(--surface) 80%, var(--ink)); }
 
 .btn[aria-disabled="true"],
 .btn:disabled {
-  background: transparent;
+  background: var(--surface);
   color: var(--ink-2);
-  border: 1px dashed var(--rule);
+  border: 0;
   cursor: not-allowed;
 }
-.btn[aria-disabled="true"]::after, .btn:disabled::after { display: none; }
 .btn[aria-disabled="true"] { pointer-events: none; cursor: default; }
 
 /* Drawn arrow. Arrows in the content are aria-hidden text spans; this replaces the glyph
@@ -179,23 +133,16 @@ p { max-width: var(--measure); text-wrap: pretty; }
 .btn > span[aria-hidden="true"] { margin-left: 0; }
 :is(.btn, .rlink, .deeper a, .scene-deeper a):hover > span[aria-hidden="true"] { transform: translateX(4px); }
 
-/* Ruled link: underlined by a quiet rule; on hover an ink rule draws over it from the left. */
+/* Text actions use weight and an arrow; underline only on interaction. */
 .rlink, .deeper a, .scene-deeper a, .ref-list a {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  padding-bottom: 3px;
+  min-height: 44px;
   font-weight: 500;
   text-decoration: none;
-  background:
-    linear-gradient(currentColor, currentColor) left bottom / 0% 1px no-repeat,
-    linear-gradient(var(--rule), var(--rule)) left bottom / 100% 1px no-repeat;
-  transition: background-size 420ms var(--ease-out);
 }
-:is(.rlink, .deeper a, .scene-deeper a, .ref-list a):hover { background-size: 100% 1px, 100% 1px; }
-/* 44px touch target without moving the rule away from the words. */
-.rlink, .deeper a, .scene-deeper a, .ref-list a { position: relative; }
-:is(.rlink, .deeper a, .scene-deeper a, .ref-list a)::before { content: ""; position: absolute; inset: -11px -4px -8px; }
+:is(.rlink, .deeper a, .scene-deeper a, .ref-list a):hover { text-decoration: underline; }
 
 .skip-link {
   position: absolute;
@@ -262,44 +209,13 @@ p { max-width: var(--measure); text-wrap: pretty; }
 .field input:disabled, .field textarea:disabled { background: var(--surface); color: var(--ink-2); cursor: not-allowed; }
 .field__hint { font-size: 14px; color: var(--ink-2); }
 
-/* Motion has one grammar: the ledger being ruled.
-   - Load: the page's column ruling draws down (the hero title rises in Hero.astro).
-   - Scroll: a new section's seam draws across, its running head slides in where the line ends,
-     the heading rises word by word out of its baseline, then content settles in reading order
-     while the rule under each entry draws. The hero recedes as you leave it; the dinner band
-     opens to full bleed. Base.astro marks sections (data-reveal), steps (data-step, --step),
-     rows (data-row) and heading words (.w, --wi). Everything is visible without JS. */
-@media (prefers-reduced-motion: no-preference) {
-  body::before { animation: rule-down 1500ms var(--ease-out) both; }
-}
-@keyframes rule-down {
-  from { clip-path: inset(0 0 100% 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-
+/* Content reveals keep the existing motion, without drawing decorative rules. */
 .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.14em; margin-bottom: -0.14em; }
 .w > span { display: inline-block; }
 
-[data-reveal]::before { transform: scaleX(0); }
 [data-reveal] :is(.runhead, .scene-eyebrow) { opacity: 0; transform: translateX(-28px); }
 [data-reveal] .w > span { transform: translateY(108%); }
 [data-reveal] [data-step] { opacity: 0; transform: translateY(32px); filter: blur(6px); }
-[data-reveal] [data-row] { position: relative; }
-[data-reveal] [data-row="bottom"] { border-bottom-color: transparent; }
-[data-reveal] [data-row="top"] { border-top-color: transparent; }
-[data-reveal] [data-row]::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 1px;
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-[data-reveal] [data-row="bottom"]::after { bottom: -1px; background: var(--border); }
-[data-reveal] [data-row="top"]::after { top: -1px; background: var(--ink); }
-
-[data-reveal="in"]::before { transform: none; transition: transform 900ms var(--ease-out); }
 [data-reveal="in"] :is(.runhead, .scene-eyebrow) {
   opacity: 1;
   transform: none;
@@ -316,7 +232,6 @@ p { max-width: var(--measure); text-wrap: pretty; }
     transform 950ms var(--ease-out) var(--delay),
     filter 700ms var(--ease-out) var(--delay);
 }
-[data-reveal="in"] [data-row]::after { transform: none; transition: transform 1100ms var(--ease-out) calc(var(--delay) + 140ms); }
 
 /* Zone change into the dinner band: the navy field opens from the content edge to full bleed as it scrolls in. */
 @supports (animation-timeline: view()) {
