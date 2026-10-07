@@ -42,7 +42,7 @@ Last result (3 Oct): accessibility, best practices and SEO **100** on `/`, `/bri
 ## Deploy
 
 - Vercel project `superark21s-projects/ethindia-institutional`, linked locally (`.vercel/`, gitignored). CLI is signed in.
-- Live: **https://ethindia-institutional.vercel.app** (production alias). Last deploy: 7 Oct 2026, commit `a6b3ef5` (logo kit).
+- Live: **https://ethindia-institutional.vercel.app** (production alias). Last deploy: 8 Oct 2026, commit `db1522c` (portal reskin, motion, buttons).
 - Redeploy: `npx vercel deploy --prod --yes`. No Git integration, so deploys are manual from the CLI. The CLI sometimes prints only its update banner; rerun and look for the `Aliased` line.
 - **`institutions.ethindia.co`** still serves the old portal. Phases 3–4 are done and `vercel.json` redirects every old `.html` URL (including `ledger.html#fig-N` anchors), so the domain can be attached to this Vercel project whenever the user says so. Not attached yet.
 
