@@ -87,7 +87,7 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
         <p>{dinner.body}</p>
       </div>
       <div class="dinner__card">
-        <p class="dinner__when px"><time datetime={dinner.iso}>{dinner.when}</time></p>
+        <p class="dinner__when px"><time datetime={dinner.iso}>{dinner.when.split(', ').map((part, i, all) => i < all.length - 1 ? <><span>{part},</span> </> : <span>{part}</span>)}</time></p>
         <p class="dinner__occasion">{dinner.eyebrow}</p>
         <p class="dinner__where">{dinner.where}</p>
         <div class="dinner__cta">
@@ -194,6 +194,7 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .dinner__text p:last-child { max-width: 52ch; }
   .dinner__card { display: grid; gap: 12px; padding: clamp(20px, 3vw, 32px); border: 1px solid var(--border); background: var(--panel); }
   .dinner__when { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; }
+  .dinner__when span { white-space: nowrap; } /* break after the weekday, never inside the date */
   .dinner__occasion { font-size: 18px; }
   .dinner__where { color: var(--ink-2); }
   .dinner__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 10px; }
@@ -218,7 +219,9 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
 
   @media (max-width: 860px) {
     .point, .split, .dinner__inner { grid-template-columns: 1fr; row-gap: 14px; }
-    .point p, .split > :last-child, .dinner__card { padding-left: 0; margin-left: 0; }
+    .point p, .split > :last-child { padding-left: 0; margin-left: 0; }
+    .dinner__inner { row-gap: 32px; }
+    .dinner__card { margin-left: 0; }
     .dinner__text { padding-right: 0; }
     .cols { grid-template-columns: 1fr; }
     .cols > li { padding-right: 0; }
