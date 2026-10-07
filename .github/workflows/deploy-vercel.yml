@@ -63,8 +63,9 @@ jobs:
           printf '### Deployment source\n\nSource commit: %s\n\nRunner-only commit: %s\n' \
             "$source_sha" "$(git rev-parse HEAD)" >> "$GITHUB_STEP_SUMMARY"
 
+      # Runs from the repo root: the Vercel project's Root Directory is set to
+      # `website`, so Vercel resolves that folder itself.
       - name: Deploy website
-        working-directory: website
         shell: bash
         run: |
           deployment_url=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN")
