@@ -42,28 +42,22 @@ there is no `npm install` step, no lockfile, and no `node_modules/`.
 `package.json` exists only to declare `"type": "module"` and alias
 `npm run build`.
 
-## Forking and publishing your own copy
+## Editing the content
 
-1. Fork the repo on GitHub, then clone your fork.
-2. Enable Pages on the fork: **Settings -> Pages -> Source: GitHub Actions**.
-   Forks start with Pages and Actions disabled, so nothing deploys until you
-   turn both on.
-3. Edit `content/*.md` or `data/figures.json`.
-4. Run `node scripts/build.js`.
-5. **Commit the regenerated `.html` files and `llms.txt` in the same commit as
-   the Markdown you changed**, and push to `main`.
+1. Edit `content/*.md` or `data/figures.json`.
+2. Run `node scripts/build.js`.
+3. **Commit the regenerated `.html` files and `llms.txt` in the same commit as
+   the Markdown you changed.**
 
 The generated HTML is committed on purpose, because it is what makes the site
 readable over `file://`, forkable with no toolchain, and complete on the first
-byte of a plain `curl`. The cost is that it can drift from its source, so
-`.github/workflows/pages.yml` rebuilds on every push and pull request, on any
-branch, and **fails the run if a fresh build differs from what you
-committed**. If CI fails with "Generated HTML is out of date", you skipped
-step 4. Only pushes to `main` deploy.
+byte of a plain `curl`. The cost is that it can drift from its source, and
+nothing checks for that automatically: if you skip step 2, the committed HTML
+silently goes stale. Running `node scripts/build.js && git diff --exit-code`
+confirms the tree is in sync.
 
-That same workflow deploys the whole tree to Pages, `data/figures.json`
-included (the Figure Ledger fetches it at runtime) and `content/*.md`
-included (useful to anyone reading the sources directly).
+The public site is the redesigned build in `website/`, deployed to Vercel by
+`.github/workflows/deploy-vercel.yml` on pushes to `main`.
 
 ## The content model and the build step
 
@@ -177,11 +171,11 @@ citation at a different claim.
 Two rules that will bite otherwise:
 
 - **The build must never read the clock.** No `Date.now()`, no bare
-  `new Date()` in `scripts/narrative.js`. CI rebuilds and diffs, so a clock
-  read makes every push fail with a misleading "generated HTML is out of
-  date". Anything that depends on today's date belongs in client-side JS.
-- **No root-relative URLs.** `/assets/x.css` breaks both the GitHub Pages
-  project subpath and `file://`. Everything stays bare-relative.
+  `new Date()` in `scripts/narrative.js`. A clock read makes every rebuild
+  rewrite the HTML even when no source changed. Anything that depends on
+  today's date belongs in client-side JS.
+- **No root-relative URLs.** `/assets/x.css` breaks `file://` and any
+  subpath hosting. Everything stays bare-relative.
 
 Each of the seven module files (`module-a.md` … `module-g.md`) is split into
 three depth tiers using HTML comment delimiters that already exist in the

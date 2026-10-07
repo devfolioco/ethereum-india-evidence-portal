@@ -28,8 +28,9 @@ const ROOT = path.resolve(__dirname, '..');
  * file changes, which shows up as a page that is subtly wrong for returning
  * visitors and for anyone reloading a local server. The hash is derived from
  * the file's bytes, so it changes only when the file does and the build stays
- * deterministic. Never use a timestamp here: CI rebuilds and diffs, so a
- * changing query string would fail every push.
+ * deterministic. Never use a timestamp here: a rebuild with no source change
+ * must leave the committed HTML untouched, and a changing query string would
+ * rewrite every page on every build.
  */
 async function versionedAsset(relPath) {
   const bytes = await readFile(path.join(ROOT, relPath));
@@ -445,9 +446,9 @@ async function writeLlmsTxt() {
 }
 
 /**
- * No <lastmod>: the only honest source is git history, and CI's shallow
- * checkout would date every page to the latest commit, so the file would
- * differ between a local build and CI and fail the drift check.
+ * No <lastmod>: the only honest source is git history, and a shallow clone
+ * would date every page to the latest commit, so the file would differ
+ * between checkouts.
  */
 async function writeSitemap(siteBase) {
   const urls = TABS.map(t => `  <url><loc>${escapeHtmlText(siteBase + (t.page === 'index.html' ? '' : t.page))}</loc></url>`);

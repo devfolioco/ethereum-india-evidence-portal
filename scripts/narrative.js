@@ -2,8 +2,8 @@
 // the A-G finding cards from content/intro.md.
 //
 // THE BUILD MUST NEVER READ THE CLOCK. No Date.now(), no bare new Date().
-// CI runs `node scripts/build.js` then `git diff --exit-code`; a clock read
-// makes the output differ on every run and fails every push forever. Any date
+// A rebuild with no source change must produce no `git diff`; a clock read
+// makes the output differ on every run and dirties every commit. Any date
 // arithmetic the build needs derives from figures.json meta.generated or a
 // literal in narrative.json, the same rule stalenessCutoff() already follows.
 //
