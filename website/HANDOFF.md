@@ -24,7 +24,7 @@ npx vercel deploy --prod --yes  # manual deploy; look for the "Aliased" line
 ```
 
 - Git: `main`, remote `origin` = https://github.com/superark21/ethindia-institutional (private).
-- Vercel project `superark21s-projects/ethindia-institutional`, linked locally (`.vercel/`, gitignored). **No Git integration**: pushes don't deploy; deploy from the CLI.
+- Now lives in `website/` of [devfolioco/ethereum-india-evidence-portal](https://github.com/devfolioco/ethereum-india-evidence-portal). Pushes to `main` that touch `website/**` deploy to the Devfolio Vercel project through `.github/workflows/deploy-vercel.yml`. The old `superark21s-projects/ethindia-institutional` project is no longer the deploy target.
 - Live: **https://ethindia-institutional.vercel.app**. Last deploy 8 Oct 2026 (commit `db1522c`).
 - **`institutions.ethindia.co` still serves the old portal.** `vercel.json` 301s every old `.html` URL (including `ledger.html#fig-N`) to the new paths, so the domain can be attached to the Vercel project whenever the user says so (needs a DNS change on ethindia.co).
 
