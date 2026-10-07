@@ -1,0 +1,96 @@
+---
+// "Copy for an LLM": a quiet disclosure with a copy button and the text itself.
+// Pass `text` for inline copy, or `src` to load a plain-text file on first open (also linked for no-JS readers).
+// `{{BASE_URL}}` in the text becomes this site's origin once JS runs.
+interface Props {
+  summary: string;
+  label: string;
+  hint?: string;
+  text?: string;
+  src?: string;
+  rows?: number;
+}
+const { summary, label, hint, text = '', src, rows = 10 } = Astro.props;
+---
+
+<details class="copy" data-src={src}>
+  <summary>{summary}</summary>
+  <div class="copy__panel">
+    {hint && <p class="meta copy__hint">{hint}</p>}
+    <div class="copy__bar">
+      <button type="button" class="btn btn--secondary copy__btn" hidden>Copy to clipboard</button>
+      {src && <a href={src}>Open as plain text</a>}
+      <span class="meta" role="status" aria-live="polite"></span>
+    </div>
+    <textarea readonly rows={rows} aria-label={`${label}, for pasting into an LLM`}>{text}</textarea>
+  </div>
+</details>
+
+<style>
+  .copy { border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--panel); }
+  .copy summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+  .copy summary::-webkit-details-marker { display: none; }
+  .copy summary::after { content: "+"; font-family: var(--font-pixel); }
+  .copy[open] summary::after { content: "−"; }
+  .copy__panel { display: grid; gap: 12px; padding: 4px 16px 16px; }
+  .copy__hint { max-width: var(--measure); }
+  .copy__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; }
+  .copy__bar a { display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; }
+  .copy textarea {
+    width: 100%;
+    resize: vertical;
+    padding: 12px;
+    font: 14px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+</style>
+
+<script>
+  async function copy(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  document.querySelectorAll<HTMLDetailsElement>('details.copy').forEach((d) => {
+    const ta = d.querySelector('textarea')!;
+    const btn = d.querySelector<HTMLButtonElement>('.copy__btn')!;
+    const status = d.querySelector<HTMLElement>('[role=status]')!;
+    const fill = () => { ta.value = ta.value.replaceAll('{{BASE_URL}}', location.origin + '/'); };
+    fill();
+    btn.hidden = false;
+
+    let loading: Promise<void> | undefined;
+    const load = () => {
+      if (!d.dataset.src || ta.value) return Promise.resolve();
+      return (loading ??= fetch(d.dataset.src)
+        .then((r) => r.text())
+        .then((t) => { ta.value = t; fill(); })
+        .catch(() => { status.textContent = 'Could not load the text.'; loading = undefined; }));
+    };
+    d.addEventListener('toggle', () => { if (d.open) load(); });
+
+    btn.addEventListener('click', async () => {
+      await load();
+      status.textContent = (await copy(ta.value)) ? 'Copied.' : 'Copy failed. Select the text and copy it by hand.';
+      setTimeout(() => (status.textContent = ''), 2500);
+    });
+  });
+</script>

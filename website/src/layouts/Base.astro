@@ -1,0 +1,159 @@
+---
+import '../styles/tokens.css';
+import '../styles/base.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import PortalShell from '../components/PortalShell.astro';
+import site from '../content/site.json';
+
+// chrome mirrors the old portal's three page families:
+//   landing   — top bar + sections footer (home)
+//   narrative — no bar, hero with a back link, "full briefing" footer (briefing overview)
+//   portal    — header + module sidebar (modules, ledger, reconciliation)
+interface Props {
+  title?: string;
+  description?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  chrome?: 'landing' | 'narrative' | 'portal';
+  tab?: string;
+  current?: string;
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  type = 'website',
+  noindex = false,
+  chrome = 'landing',
+  tab = '',
+  current = '',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.domain).href;
+const ogImage = new URL('/og/default.png', site.domain).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preload" href="/fonts/HankenGrotesk-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+  </head>
+
+  <body data-chrome={chrome}>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {chrome === 'portal' ? (
+      <PortalShell tab={tab} current={current}><slot /></PortalShell>
+    ) : (
+      <>
+        {chrome === 'landing' && (
+          <header class="chrome"><Nav /></header>
+        )}
+        <main id="main"><slot /></main>
+        <Footer variant={chrome} />
+      </>
+    )}
+
+    <style is:global>
+      html { scroll-padding-top: calc(var(--nav-h) + 16px); }
+      .chrome { position: sticky; top: 0; z-index: 50; }
+    </style>
+
+    <script>
+      // Section transitions (styles in base.css). Only sections that start below the fold take
+      // part, so nothing already on screen ever blinks, and without JS everything stays visible.
+      // Each section's content is numbered in reading order (--step) so it settles after its
+      // seam and heading; list rows count as steps of their own.
+      const DESCEND = '.section__head, .split, .split__body, .dinner__text';
+      const LISTS = '.points, .updates, .cols, .findings';
+      const markSteps = (section: HTMLElement) => {
+        const root = section.querySelector<HTMLElement>(':scope > .wrap, :scope > .scene-inner') ?? section;
+        let n = 0;
+        const step = (el: Element) => {
+          (el as HTMLElement).dataset.step = '';
+          (el as HTMLElement).style.setProperty('--step', String(Math.min(n++, 7)));
+        };
+        const walk = (node: Element) => {
+          for (const child of node.children) {
+            if (child.matches('h2, .scene-headline')) { splitWords(child); n++; }
+            else if (child.matches('.runhead, .scene-eyebrow')) continue;
+            else if (child.matches(DESCEND)) walk(child);
+            else if (child.matches(LISTS)) {
+              for (const row of child.children) {
+                step(row);
+                (row as HTMLElement).dataset.row = child.matches('.cols') ? 'top' : 'bottom';
+              }
+            } else step(child);
+          }
+        };
+        walk(root);
+      };
+
+      // Wrap each word of a heading in a clipping box so it can rise out of its own baseline.
+      // Only text nodes change; the heading's text and reading order stay the same.
+      const splitWords = (heading: Element) => {
+        let i = 0;
+        const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+        const nodes: Text[] = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+        for (const node of nodes) {
+          const frag = document.createDocumentFragment();
+          for (const part of node.data.split(/(\s+)/)) {
+            if (!part) continue;
+            if (/^\s+$/.test(part)) { frag.append(part); continue; }
+            const box = document.createElement('span');
+            box.className = 'w';
+            box.style.setProperty('--wi', String(i++));
+            const inner = document.createElement('span');
+            inner.textContent = part;
+            box.append(inner);
+            frag.append(box);
+          }
+          node.replaceWith(frag);
+        }
+      };
+
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              (e.target as HTMLElement).dataset.reveal = 'in';
+              io.unobserve(e.target);
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px' }
+        );
+        const sections = [...document.querySelectorAll<HTMLElement>('main > section, main > .narr > section')];
+        // The opening section never waits on the observer (a zero-height prerender would otherwise hide it).
+        for (const el of sections.slice(1)) {
+          if (innerHeight > 0 && el.getBoundingClientRect().top > innerHeight) {
+            markSteps(el);
+            el.dataset.reveal = '';
+            io.observe(el);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

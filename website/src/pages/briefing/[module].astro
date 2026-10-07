@@ -1,0 +1,161 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CopyForLlm from '../../components/CopyForLlm.astro';
+import '../../styles/prose.css';
+
+const bodies = import.meta.glob<string>('../../content/briefing/[a-g].html', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+
+export async function getStaticPaths() {
+  const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
+  return modules.map((m) => ({ params: { module: m.data.letter }, props: { module: m } }));
+}
+
+const { module: m } = Astro.props;
+const body = bodies[`../../content/briefing/${m.data.letter}.html`];
+
+const tiers = [
+  ['30s', '30 seconds'],
+  ['5min', '5 minutes'],
+  ['full', 'Full report'],
+];
+---
+
+<Base
+  chrome="portal"
+  tab={m.data.title}
+  current={m.data.letter}
+  title={`${m.data.title} — Ethereum/India Institutional Briefing`}
+  description={m.data.description}
+  type="article"
+>
+  <article aria-labelledby="page-title">
+    <header class="tab-header">
+      <h1 id="page-title">{m.data.heading}</h1>
+      <p class="question"><strong>Question:</strong> {m.data.question}</p>
+    </header>
+
+    <div class="tiers" role="tablist" aria-label="Reading depth" hidden>
+      {tiers.map(([id, label]) => (
+        <button type="button" role="tab" id={`tab-${id}`} aria-controls={`tier-${id}`} aria-selected="false" tabindex="-1" data-tier-tab={id}>
+          {label}
+        </button>
+      ))}
+    </div>
+
+    <CopyForLlm
+      summary="Full report — copy for an LLM"
+      label="Full report markdown, with source provenance"
+      src={`/llm/module-${m.data.letter}.md`}
+      rows={6}
+    />
+
+    <div class="panel reader__panel prose" set:html={body} />
+  </article>
+</Base>
+
+<style>
+  .tab-header { display: grid; gap: 18px; margin-bottom: 28px; }
+  .tab-header h1 { font-size: clamp(32px, 4vw, 56px); line-height: 1.04; max-width: 22ch; }
+  .question {
+    max-width: 68ch;
+    padding: 16px 20px;
+    font-size: clamp(17px, 1.4vw, 19px);
+    background: var(--surface);
+    border-radius: var(--radius-card);
+  }
+
+  /* Reading depth tabs */
+  .tiers {
+    display: flex;
+    gap: 4px;
+    width: fit-content;
+    max-width: 100%;
+    margin-bottom: 16px;
+    padding: 4px;
+    background: var(--surface);
+    border-radius: var(--radius-pill);
+  }
+  .tiers[hidden] { display: none; }
+  .tiers button {
+    min-height: 40px;
+    padding: 8px 18px;
+    font-size: 15px;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-pill);
+    color: var(--ink-2);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tiers button:hover { color: var(--ink); }
+  .tiers button[aria-selected="true"] { background: var(--ink); color: var(--paper); }
+
+  article > :global(.copy) { margin-bottom: 16px; max-width: 880px; }
+
+  .reader__panel { padding: clamp(22px, 4vw, 56px); }
+  .reader__panel :global(.tier + .tier) { margin-top: 3em; padding-top: 2em; border-top: 1px solid var(--border); }
+  .reader__panel :global(.tier[hidden]) { display: none; }
+  .reader__panel :global(.tier:focus-visible) { outline-offset: clamp(10px, 2vw, 22px); }
+  .reader__panel.is-tabbed :global(.tier) { margin-top: 0; padding-top: 0; border-top: 0; }
+  .reader__panel :global(.tier > h2:first-child) { margin-top: 0; }
+  .reader__panel :global(.tier > * + *) { margin-top: 1.1em; }
+  .reader__panel :global(.tier > h3) { margin-top: 2.2em; }
+
+  @media (max-width: 560px) {
+    .tiers { width: 100%; }
+    .tiers button { flex: 1; padding-inline: 8px; }
+  }
+</style>
+
+<script>
+  // Reading-depth tabs. Without JS all three tiers show in sequence, each under its own heading.
+  const tablist = document.querySelector<HTMLElement>('.tiers');
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('[data-tier-tab]')];
+  const panels = [...document.querySelectorAll<HTMLElement>('.reader__panel .tier')];
+
+  if (tablist && tabs.length && panels.length === tabs.length) {
+    const select = (id: string, focus = false) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.tierTab === id;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        if (on && focus) t.focus();
+      });
+      panels.forEach((p) => {
+        p.hidden = p.dataset.tier !== id;
+        p.setAttribute('role', 'tabpanel');
+        p.setAttribute('aria-labelledby', `tab-${p.dataset.tier}`);
+        p.tabIndex = 0;
+      });
+      try { localStorage.setItem('briefing-tier', id); } catch {}
+    };
+
+    const ids = tabs.map((t) => t.dataset.tierTab!);
+    let initial = ids[0];
+    try {
+      const saved = localStorage.getItem('briefing-tier');
+      if (saved && ids.includes(saved)) initial = saved;
+    } catch {}
+    const fromHash = location.hash.match(/^#tier-(.+)$/)?.[1];
+    if (fromHash && ids.includes(fromHash)) initial = fromHash;
+
+    tablist.hidden = false;
+    panels[0].parentElement?.classList.add('is-tabbed');
+    select(initial);
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(t.dataset.tierTab!));
+      t.addEventListener('keydown', (e) => {
+        const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (step) select(ids[(i + step + ids.length) % ids.length], true);
+        if (e.key === 'Home') select(ids[0], true);
+        if (e.key === 'End') select(ids[ids.length - 1], true);
+      });
+    });
+  }
+</script>

@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import body from '../../content/briefing/_reconciliation.html?raw';
+import '../../styles/prose.css';
+---
+
+<Base
+  chrome="portal"
+  tab="Reconciliation"
+  current="reconciliation"
+  title="Reconciliation — Ethereum/India Institutional Briefing"
+  description="A cross-module audit of the briefing: where the modules contradict each other, which figures rest on weak sources, and which claims were retired."
+  type="article"
+>
+  <div class="panel recon prose" set:html={body} />
+</Base>
+
+<style>
+  .recon { max-width: 920px; padding: clamp(22px, 4vw, 56px); }
+  .recon :global(h1) { font-size: clamp(32px, 4vw, 52px); line-height: 1.04; margin-bottom: 0.6em; }
+</style>

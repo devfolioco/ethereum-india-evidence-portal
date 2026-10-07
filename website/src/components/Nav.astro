@@ -1,0 +1,79 @@
+---
+// Same four anchors as the old portal's top bar.
+const links = [
+  ['Why India', '#why-india'],
+  ['Ethereum', '#ethereum'],
+  ['Briefing', '#briefing'],
+  ['Updates', '#updates'],
+];
+---
+
+<div class="nav deep">
+  <div class="nav__inner">
+    <a class="nav__brand" href="/">
+      <span class="logo" aria-hidden="true"></span>
+      <span class="visually-hidden">ETHIndia Institutions, home</span>
+    </a>
+    <nav class="nav__links" aria-label="Sections">
+      {links.map(([label, href]) => <a href={href} data-nav-link>{label}</a>)}
+    </nav>
+  </div>
+</div>
+
+<style>
+  .nav { border-bottom: 1px solid var(--border); }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    gap: 4px 14px;
+    flex-wrap: wrap;
+    min-height: var(--nav-h);
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .nav__brand { display: flex; align-items: center; min-height: 44px; flex: none; }
+  .nav__brand .logo { --logo-h: clamp(28px, 2.4vw, 34px); }
+
+  .nav__links { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); margin-left: auto; }
+  .nav__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--ink-2);
+  }
+  .nav__links a:hover { color: var(--ink); }
+  .nav__links a[aria-current] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 8px; }
+
+  @media (max-width: 640px) {
+    .nav__links { width: 100%; margin-left: 0; justify-content: space-between; }
+  }
+</style>
+
+<script>
+  // Highlight the link for the section currently on screen.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+  const byId = new Map(links.map((a) => [a.getAttribute('href')!.slice(1), a] as const));
+  const sections = [...byId.keys()].map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+
+  if (sections.length) {
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) entry.isIntersecting ? visible.add(entry.target.id) : visible.delete(entry.target.id);
+        const active = sections.find((s) => visible.has(s.id))?.id;
+        for (const [id, link] of byId) {
+          if (id === active) link.setAttribute('aria-current', 'true');
+          else link.removeAttribute('aria-current');
+        }
+      },
+      { rootMargin: '-30% 0px -60% 0px' }
+    );
+    sections.forEach((s) => observer.observe(s));
+  }
+</script>

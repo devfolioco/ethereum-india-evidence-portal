@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+
+// landing   — "Tokenised settlement in India" list + ETHIndia initiative note
+// narrative — "The full briefing" list + licence note
+interface Props { variant?: 'landing' | 'narrative' | 'portal' }
+const { variant = 'landing' } = Astro.props;
+
+const modules = (await getCollection('briefing')).sort((a, b) => a.data.order - b.data.order);
+const landing = variant === 'landing';
+---
+
+<footer class="footer deep">
+  <div class="wrap">
+    <nav class="footer__nav" aria-label={landing ? 'The briefing' : 'The full briefing'}>
+      <h2 class="footer__title">{landing ? 'Tokenised settlement in India' : 'The full briefing'}</h2>
+      <ul>
+        {landing && <li><a href="/briefing">Briefing overview</a></li>}
+        {modules.map((m) => (
+          <li>
+            <a href={`/briefing/${m.data.letter}`}>
+              <span class="footer__letter px" aria-hidden="true">{m.data.letter.toUpperCase()}</span>{m.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <p class="footer__note meta">
+      {landing ? <>An <a href="https://ethindia.co">ETHIndia</a> initiative. Prose and data CC BY 4.0. Code MIT.</> : <>Prose and data CC BY 4.0. Code MIT.</>}
+    </p>
+  </div>
+</footer>
+
+<style>
+  .footer { padding-block: clamp(40px, 6vw, 72px) 28px; }
+  .footer__title { font-size: 20px; font-weight: 500; margin-bottom: 14px; }
+  .footer__nav ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0 32px; }
+  .footer__nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    min-height: 44px;
+    padding-block: 10px;
+    font-size: 15px;
+    text-decoration: none;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .footer__nav a:hover { color: var(--ink); }
+  .footer__letter { width: 1.2em; color: var(--accent); }
+  .footer__note { margin-top: clamp(28px, 4vw, 48px); }
+  .footer__note a { color: inherit; }
+</style>

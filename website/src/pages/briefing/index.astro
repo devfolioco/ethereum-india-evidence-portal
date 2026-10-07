@@ -1,0 +1,174 @@
+---
+import Base from '../../layouts/Base.astro';
+import overview from '../../content/briefing/_overview.html?raw';
+import '../../styles/prose.css';
+
+// The whole page body is the old portal's, verbatim; only zone and button classes are mapped
+// onto this site's design system.
+const html = overview
+  .replace('<header class="hero" id="hero">', '<header class="hero deep" id="hero">')
+  .replaceAll('btn btn-primary', 'btn')
+  .replaceAll('btn btn-ghost', 'btn btn--secondary');
+---
+
+<Base
+  chrome="narrative"
+  title="Tokenised settlement in India: what's live, what's legal, where Ethereum fits"
+  description="Where distributed-ledger settlement stands in Indian institutional finance: what is live, what Indian law permits, where public Ethereum fits, in seven modules."
+  type="article"
+>
+  <div class="narr" set:html={html} />
+</Base>
+
+<script>
+  import { copyText, flash } from '../../scripts/clipboard';
+
+  // --- "Explore with your own LLM" prompt: real address in, one-click copy ---
+  document.querySelectorAll<HTMLDetailsElement>('.landing-prompt-details').forEach((details) => {
+    const textarea = details.querySelector<HTMLTextAreaElement>('.copy-textarea');
+    const summary = details.querySelector<HTMLElement>('.landing-prompt-summary');
+    if (!textarea) return;
+    textarea.value = textarea.value.split('{{BASE_URL}}').join(location.origin + '/');
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn--secondary copy-btn';
+    btn.textContent = 'Copy to clipboard';
+    btn.addEventListener('click', async () => flash(btn, (await copyText(textarea.value)) ? 'Copied' : 'Copy failed'));
+    textarea.before(btn);
+
+    summary?.addEventListener('click', async () => {
+      if (details.open) return; // copy only on the click that opens it
+      const ok = await copyText(textarea.value);
+      flash(summary, ok ? 'Copied — go paste it into your LLM' : 'Copy failed — use the box below');
+    });
+  });
+
+  // --- Split sort: collapse the two columns into one shuffled grid and let the reader call each item.
+  // Every item and status line is already in the served HTML; this only adds the guessing.
+  document.querySelectorAll<HTMLElement>('[data-widget="split-sort"]').forEach((widget) => {
+    const cols = [...widget.querySelectorAll<HTMLElement>('.sort-col')];
+    if (cols.length !== 2) return;
+
+    const sides = cols.map((col) => ({
+      id: col.dataset.side!,
+      label: col.querySelector('.sort-col-label')!.textContent!,
+      sub: col.querySelector('.sort-col-sub')!.textContent!,
+    }));
+    const items = [...widget.querySelectorAll<HTMLElement>('.sort-item')].map((el) => ({
+      el,
+      side: el.dataset.side!,
+      placed: null as string | null,
+    }));
+    if (!items.length) return;
+    widget.classList.add('is-enhanced');
+
+    const legend = document.createElement('ul');
+    legend.className = 'sort-legend';
+    sides.forEach((side) => {
+      const li = document.createElement('li');
+      li.dataset.side = side.id;
+      li.innerHTML = '<strong></strong><span></span>';
+      li.querySelector('strong')!.textContent = side.label;
+      li.querySelector('span')!.textContent = side.sub;
+      legend.appendChild(li);
+    });
+
+    const grid = document.createElement('ul');
+    grid.className = 'sort-list sort-grid';
+
+    const controls = document.createElement('div');
+    controls.className = 'sort-controls';
+    const score = document.createElement('p');
+    score.className = 'sort-score';
+    score.setAttribute('role', 'status');
+    const reveal = document.createElement('button');
+    reveal.type = 'button';
+    reveal.className = 'btn btn--secondary';
+    reveal.textContent = 'Show me the answers';
+    controls.append(score, reveal);
+
+    widget.querySelector('.sort-prompt')!.after(legend, controls, grid);
+    cols.forEach((col) => col.remove());
+
+    const sideLabel = (item: (typeof items)[number]) => sides.find((s) => s.id === item.side)!.label;
+    let revealed = false;
+
+    const update = () => {
+      const guessed = items.filter((i) => i.placed !== null);
+      const right = guessed.filter((i) => i.placed === i.side);
+      const left = items.length - guessed.length;
+      if (!left) {
+        score.textContent = `${right.length} of ${items.length} right. The status line on each card is the real answer.`;
+        reveal.remove();
+      } else if (revealed) {
+        score.textContent = 'The status line on each card is the real answer.';
+      } else {
+        score.textContent = guessed.length ? `${right.length} of ${guessed.length} right — ${left} to go` : '';
+      }
+    };
+
+    const resolve = (item: (typeof items)[number], guess: string) => {
+      if (item.placed !== null || revealed) return;
+      item.placed = guess;
+      item.el.classList.remove('is-pending');
+      item.el.dataset.side = item.side;
+      const verdict = document.createElement('p');
+      verdict.className = 'sort-verdict';
+      if (guess === item.side) {
+        item.el.classList.add('is-right');
+        verdict.textContent = 'Right — ' + sideLabel(item);
+      } else {
+        item.el.classList.add('is-wrong');
+        verdict.textContent = 'Actually — ' + sideLabel(item);
+      }
+      item.el.querySelector('.sort-actions')!.replaceWith(verdict);
+      update();
+    };
+
+    items
+      .slice()
+      .sort(() => Math.random() - 0.5)
+      .forEach((item) => {
+        item.el.classList.add('is-pending');
+        item.el.removeAttribute('data-side');
+        const actions = document.createElement('div');
+        actions.className = 'sort-actions';
+        sides.forEach((side) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'sort-btn';
+          b.textContent = side.label;
+          b.addEventListener('click', () => resolve(item, side.id));
+          actions.appendChild(b);
+        });
+        item.el.appendChild(actions);
+        grid.appendChild(item.el);
+      });
+
+    // Showing is a toggle over the cards not yet guessed; hiding puts them back in play.
+    reveal.addEventListener('click', () => {
+      revealed = !revealed;
+      items
+        .filter((i) => i.placed === null)
+        .forEach((i) => {
+          i.el.classList.toggle('is-pending', !revealed);
+          i.el.querySelector<HTMLElement>('.sort-actions')!.hidden = revealed;
+          if (revealed) {
+            i.el.dataset.side = i.side;
+            const v = document.createElement('p');
+            v.className = 'sort-verdict is-shown';
+            v.textContent = sideLabel(i);
+            i.el.appendChild(v);
+          } else {
+            i.el.removeAttribute('data-side');
+            i.el.querySelector('.sort-verdict.is-shown')?.remove();
+          }
+        });
+      reveal.textContent = revealed ? 'Hide the answers' : 'Show me the answers';
+      update();
+    });
+
+    update();
+  });
+</script>

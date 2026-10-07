@@ -1,0 +1,223 @@
+---
+// Decorative hero graphic: dotted India (official boundary) with a floating ETH mark.
+// Dots are pre-rasterised by scripts/india-dots.mjs; this file only draws them.
+---
+
+<div class="india-map" aria-hidden="true">
+  <canvas></canvas>
+</div>
+
+<style>
+  .india-map {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 10;
+  }
+  .india-map canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  import data from './india-dots.json';
+
+  const root = document.querySelector<HTMLElement>('.india-map');
+  const canvas = root?.querySelector('canvas');
+  const ctx = canvas?.getContext('2d');
+
+  if (root && canvas && ctx) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Colours come from the zone the map sits in.
+    let ink = '#13202f', paper = '#f1eee6', pixelFont = 'monospace';
+    let shadeLo = [19, 32, 47], shadeHi = [241, 238, 230]; // ETH mark: shadow → lit face
+    const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+    const luma = ([r, g, b]: number[]) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    const readColors = () => {
+      const css = getComputedStyle(root);
+      ink = css.getPropertyValue('--ink').trim() || ink;
+      paper = css.getPropertyValue('--paper').trim() || paper;
+      pixelFont = css.getPropertyValue('--font-pixel').trim() || pixelFont;
+      const [a, b] = [rgb(ink), rgb(paper)];
+      [shadeLo, shadeHi] = luma(a) < luma(b) ? [a, b] : [b, a];
+    };
+    readColors();
+
+    // --- map geometry, in "map units": the map spans y ∈ [-1, 1] ---
+    const { cols, rows, dots, mumbai } = data;
+    const unit = 2 / rows;
+    const mapW = cols * unit;
+    const toMap = (c: number, r: number) => [(c - cols / 2) * unit, (r - rows / 2) * unit];
+
+    const n = dots.length / 2;
+    const dx = new Float32Array(n);
+    const dy = new Float32Array(n);
+    const dist = new Float32Array(n); // distance from Mumbai, drives the ripple
+    const phase = new Float32Array(n); // per-dot shimmer offset
+    const [mx, my] = toMap(mumbai[0], mumbai[1]);
+    for (let i = 0; i < n; i++) {
+      const [x, y] = toMap(dots[2 * i], dots[2 * i + 1]);
+      dx[i] = x;
+      dy[i] = y;
+      dist[i] = Math.hypot(x - mx, y - my);
+      phase[i] = dots[2 * i] * 0.45 + dots[2 * i + 1] * 0.3;
+    }
+
+    // --- ETH mark as two square pyramids, proportions fitted to the official logo ---
+    type V = [number, number, number];
+    const ring = (y: number): V[] => [[0, y, 1], [1, y, 0], [0, y, -1], [-1, y, 0]];
+    const top: V = [0, 2.05, 0];
+    const bottom: V = [0, -1.98, 0];
+    const base1 = ring(0);
+    const base2 = ring(-0.237);
+    const faces: { v: V[]; nrm: V }[] = [];
+    const addFace = (v: V[], center: V) => {
+      const [a, b, c] = v;
+      const u = [b[0] - a[0], b[1] - a[1], b[2] - a[2]];
+      const w = [c[0] - a[0], c[1] - a[1], c[2] - a[2]];
+      let nrm: V = [u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0]];
+      const mid = [0, 1, 2].map((k) => (a[k] + b[k] + c[k]) / 3 - center[k]);
+      if (nrm[0] * mid[0] + nrm[1] * mid[1] + nrm[2] * mid[2] < 0) nrm = [-nrm[0], -nrm[1], -nrm[2]];
+      const len = Math.hypot(...nrm);
+      faces.push({ v, nrm: [nrm[0] / len, nrm[1] / len, nrm[2] / len] });
+    };
+    for (let i = 0; i < 4; i++) addFace([bottom, base2[i], base2[(i + 1) % 4]], [0, -1, 0]);
+    for (let i = 0; i < 4; i++) addFace([top, base1[i], base1[(i + 1) % 4]], [0, 0.7, 0]);
+
+    const VIEW = 0.63; // look down onto the mark, as in the 2D logo
+    const LIGHT: V = [-0.55, 0.65, 0.52];
+
+    const drawMark = (cx: number, cy: number, k: number, spin: number) => {
+      const cs = Math.cos(spin), sn = Math.sin(spin);
+      const cv = Math.cos(VIEW), sv = Math.sin(VIEW);
+      const view = ([x, y, z]: V): V => {
+        const x1 = x * cs + z * sn;
+        const z1 = -x * sn + z * cs;
+        return [x1, y * cv - z1 * sv, y * sv + z1 * cv];
+      };
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = paper;
+      for (const f of faces) {
+        const nv = view(f.nrm);
+        if (nv[2] <= 0.02) continue; // back face
+        const light = Math.max(0, nv[0] * LIGHT[0] + nv[1] * LIGHT[1] + nv[2] * LIGHT[2]);
+        const s = 0.12 + 0.82 * light ** 1.1;
+        ctx.fillStyle = `rgb(${shadeLo.map((lo, c) => Math.round(lo + (shadeHi[c] - lo) * s)).join(',')})`;
+        ctx.beginPath();
+        f.v.forEach((p, j) => {
+          const [x, y] = view(p);
+          j ? ctx.lineTo(cx + x * k, cy - y * k) : ctx.moveTo(cx + x * k, cy - y * k);
+        });
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+      }
+    };
+
+    // --- scene ---
+    const TILT = 0.42; // map plane leans back
+    const DEPTH = 3.2; // camera distance, map units
+    const BUCKETS = 12; // dots are batched by alpha to keep draw calls low
+    const sx = new Float32Array(n);
+    const sy = new Float32Array(n);
+    const ss = new Float32Array(n);
+    const sb = new Uint8Array(n);
+    let W = 0, H = 0, S = 0;
+
+    // Map-plane point (x, y, lift) → screen [x, y, perspective scale].
+    const project = (x: number, y: number, lift: number, yaw: number) => {
+      const ct = Math.cos(TILT), st = Math.sin(TILT);
+      const y1 = y * ct - lift * st;
+      const z1 = y * st + lift * ct;
+      const x2 = x * Math.cos(yaw) + z1 * Math.sin(yaw);
+      const z2 = -x * Math.sin(yaw) + z1 * Math.cos(yaw);
+      const f = DEPTH / (DEPTH - z2);
+      return [W / 2 + x2 * f * S, H * 0.5 + y1 * f * S, f];
+    };
+
+    const draw = (t: number) => {
+      ctx.clearRect(0, 0, W, H);
+      const yaw = 0.3 * Math.sin(t * 0.21);
+      const ripple = ((t % 4.5) / 4.5) * 2.4; // ring radius, map units
+      const dotPx = unit * S * 0.46;
+
+      for (let i = 0; i < n; i++) {
+        const a = ripple - dist[i];
+        const wave = a > 0 && a < 0.18 ? Math.sin((Math.PI * a) / 0.18) * Math.max(0, 1 - dist[i] / 1.9) : 0;
+        const [x, y, f] = project(dx[i], dy[i], wave * 0.07, yaw);
+        const alpha = 0.36 + 0.09 * Math.sin(phase[i] + t * 1.1) + 0.6 * wave;
+        sx[i] = x;
+        sy[i] = y;
+        ss[i] = Math.max(1, dotPx * f * (1 + wave * 0.5));
+        sb[i] = Math.min(BUCKETS - 1, Math.max(1, Math.round(alpha * f * f * BUCKETS)));
+      }
+      ctx.fillStyle = ink;
+      for (let b = 1; b < BUCKETS; b++) {
+        ctx.globalAlpha = b / BUCKETS;
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) if (sb[i] === b) ctx.rect(sx[i] - ss[i] / 2, sy[i] - ss[i] / 2, ss[i], ss[i]);
+        ctx.fill();
+      }
+
+      // Mumbai: marker, two expanding rings, label.
+      const [px, py, pf] = project(mx, my, 0, yaw);
+      ctx.strokeStyle = ink;
+      ctx.lineWidth = 1;
+      for (let k = 0; k < 2; k++) {
+        const age = (t / 3 + k / 2) % 1;
+        const r = (0.03 + age * 0.2) * S * pf;
+        ctx.globalAlpha = (1 - age) * 0.7;
+        ctx.beginPath();
+        ctx.ellipse(px, py, r, r * Math.cos(TILT), 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      const m = dotPx * 2.2;
+      ctx.fillRect(px - m / 2, py - m / 2, m, m);
+      ctx.font = `13px ${pixelFont}`;
+      ctx.textBaseline = 'middle';
+      ctx.fillText('MUMBAI', px + m + 8, py);
+
+      // Floating ETH mark and its shadow on the map plane.
+      const bob = Math.sin(t * 0.8);
+      const [gx, gy, gf] = project(0.02, 0.16, 0, yaw);
+      const k = H * 0.075; // mark is ~3.3k tall
+      ctx.globalAlpha = 0.09 - bob * 0.02;
+      ctx.beginPath();
+      ctx.ellipse(gx, gy, k * 1.1 * gf, k * 0.32 * gf, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      drawMark(gx, gy - k * 2.1 - H * 0.03 - bob * H * 0.012, k, 0.5 * Math.sin(t * 0.35) + yaw);
+    };
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      W = rect.width;
+      H = rect.height;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      S = Math.min(W / (mapW * 1.2), H / (2 * 1.22));
+      if (reduce) draw(1.6);
+    };
+    new ResizeObserver(resize).observe(canvas);
+
+    if (!reduce) {
+      let raf = 0;
+      const start = performance.now();
+      const loop = (now: number) => {
+        draw((now - start) / 1000);
+        raf = requestAnimationFrame(loop);
+      };
+      // Only animate while on screen.
+      new IntersectionObserver(([entry]) => {
+        cancelAnimationFrame(raf);
+        if (entry.isIntersecting) raf = requestAnimationFrame(loop);
+      }).observe(root);
+    }
+  }
+</script>
