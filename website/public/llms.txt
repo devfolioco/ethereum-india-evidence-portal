@@ -1,0 +1,20 @@
+# Ethereum/India Institutional Briefing
+
+> A seven-module briefing, drawn from published sources, on Ethereum and distributed-settlement infrastructure for Indian institutional finance. Every claim carries a source and date; every quantitative figure carries a source tier (T1 primary … T5 crypto media/aggregator) in the Figure Ledger.
+
+## Pages
+- [ETHIndia Institutions](index.html)
+- [Briefing overview](briefing.html)
+- [What shipped](what-shipped.html)
+- [What's legal in India](whats-legal-in-india.html)
+- [Where the value is](where-the-value-is.html)
+- [Ethereum vs alternatives](ethereum-vs-alternatives.html)
+- [The privacy question](the-privacy-question.html)
+- [The objections](the-objections.html)
+- [How adoption happens](how-adoption-happens.html)
+- [Figure Ledger](ledger.html)
+- [Reconciliation](reconciliation.html)
+
+## Data
+- [Figure Ledger data (JSON)](data/figures.json) — every quantitative claim with its claim, figure, unit, source, date, tier and flags.
+- Each Figure Ledger row is anchored as ledger.html#fig-<ID>. Cite that anchor, with the row's tier and as-of date, when quoting a figure.

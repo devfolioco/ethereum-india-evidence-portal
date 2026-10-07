@@ -1,0 +1,144 @@
+[Source: The privacy question — content/module-e.md — Ethereum/India institutional briefing]
+[Every figure carries a source tier (T1 primary … T5 crypto media) and an "as of" date. Treat T4/T5 figures as unverified for volumes/adoption. This subject moves monthly; re-check anything dated more than six months ago.]
+
+## The full report
+
+*This module was researched in September 2026, after the other six, and it revises two claims in Module D that the intervening year overtook. See Reconciliation §1.12 for what changed and which phrasing to rely on. The verdict Module D reached about bank core settlement survives intact and is restated here.*
+
+### Overview
+
+The evidence base's central finding is that funds and stablecoins settled on public Ethereum while banks and core market infrastructure chose permissioned ledgers, with confidentiality the stated reason. That finding is unchanged. What has changed is that the answer to "and what is Ethereum doing about it" is no longer "nothing yet."
+
+Sort everything below by one distinction. **Confidentiality** hides transaction detail from the public while preserving disclosure to auditors, supervisors and counterparties who are entitled to it. **Anonymity** hides it from everyone, including them. Institutions want the first. Regulators are legislating against the second. Technologies that deliver confidentiality with selective disclosure are procurable in principle and are held back only by maturity; technologies that deliver anonymity are held back by law and will stay that way. Collapsing the two produces the two most common errors in this argument, treating a shielded pool as an institutional product and treating a regulator's hostility to mixers as hostility to on-chain privacy.
+
+### The requirement, decomposed
+
+The EEA Privacy Working Group's *State of Privacy on Ethereum for Enterprise*, version 1, April 2026 (T1, consortium report), is the most useful single document on this subject and the spine of the sections below. Its decomposition of what an institution needs is more precise than "privacy": transaction amounts hidden from the public; counterparty identities hidden from competitors; account balances hidden for corporate treasury operations; business logic hidden so proprietary strategies are not reconstructable from contract execution; network-level metadata protected so RPC queries do not leak position interest; encrypted ordering to prevent front-running; and selective disclosure to satisfy audit, GDPR, MiCA and supervisory reporting.
+
+Two consequences follow. A system can solve some of these and remain unusable, which is why "Ethereum has privacy tools now" is not a procurement answer. And whitelisting solves none of them, a point Module D already makes on [BUIDL](https://app.rwa.xyz/assets/BUIDL): gating who may hold a token is access control, and every balance and transfer remains public.
+
+### The protocol layer, and the limit of the roadmap
+
+The Ethereum Foundation's privacy team was renamed Privacy Stewards of Ethereum in September 2025 and published a roadmap organised around private writes (making a payment, vote or transfer without unwanted disclosure), private reads (querying and authenticating without surveillance or metadata leakage), and private proving (proofs of data on consumer hardware). Short-term goals named PlasmaFold, confidential voting and privacy in DeFi applications (ethereum.org, T1/T4 promotional; The Block, T3). Vitalik Buterin's "maximally simple L1 privacy roadmap" (April 2025, T1) is the clearest statement of method: integrate shielded transfers into wallets, default to one address per application, ship FOCIL and EIP-7701, and use trusted execution environments and private information retrieval to stop RPC providers reconstructing a user's holdings. Privacy and quantum resistance moved to the front of his August 2026 roadmap (The Block, 10 Aug 2026, T3).
+
+**The limit is the most important sentence in this module.** None of this makes Ethereum L1 a confidential ledger, and none of it is proposed to. The base layer remains public, the roadmap is deliberately designed to avoid consensus changes, and confidentiality is delivered by overlays at the wallet, application and layer-2 layers. An institution assessing "Ethereum privacy" is assessing a particular overlay, with that overlay's own trust model, operator and maturity, and Ethereum's own security properties are not transferred to it by association. Anyone who presents the roadmap as though L1 were becoming private has misread it, and a bank's technology committee will find the gap in one question.
+
+*India translation.* The analogue is any domestic proposal that cites the Ethereum roadmap as evidence that confidentiality is solved. It is not, and the [RBI](https://www.rbi.org.in/) and [SEBI](https://www.sebi.gov.in/) will assess the specific overlay, its operator and its jurisdiction rather than Ethereum. Owned by whichever sponsor proposes it; blocked by nothing yet, because nobody has proposed one. Confidence: high, this is a reading of published roadmaps rather than a forecast.
+
+### The wallet layer: Kohaku
+
+Kohaku is an open-source wallet SDK and reference implementation from the Ethereum Foundation, unveiled 8 October 2025 and released 25 May 2026 (T4/T5, project posts and crypto media; no primary release note located at T1). It provides reusable components for private sending and receiving, key management and recovery, and risk-based transaction controls, and it integrates shielded-pool protocols directly at the wallet layer, with [Railgun](https://railgun.org/) working through ERC-4337 relaying and Tornado Cash and [Privacy Pools](https://privacypools.com/) integrations in development. Its stated design choice is to be adopted by existing wallets rather than to compete with them. Status: LIMITED PILOT. No named production wallet integration with disclosed usage was found.
+
+The strategic logic is sound, because privacy that requires a separate application is privacy nobody uses, and putting it behind the wallet a user already has is the only route to default adoption. The relevance to this evidence base is nonetheless close to zero. Kohaku addresses a self-custodial user's exposure. An institution's exposure is that its positions are legible to its competitors, and its custody is with a regulated custodian rather than a browser extension. Offering Kohaku in response to the Canton objection concedes that the objection was not understood.
+
+### The shielded-pool layer, and why institutions cannot use it
+
+Railgun shielded roughly $1.6bn during 2025, taking cumulative volume to about $4bn since its 2021 launch (DL News, 21 Oct 2025, T3). Other figures circulate, including roughly $92m TVL and "$2bn+ shielded volume" on aggregator pages, on different measures and dates; the two sets are not reconcilable from public sources and no point figure should be asserted. Privacy Pools, from the 2023 association-set paper co-authored by Buterin (T1), lets a withdrawal prove membership of a set of deposits that excludes known-illicit funds, which is the most serious attempt anyone has made to keep anonymity and compliance in the same system.
+
+Two things disqualify this layer for regulated settlement, and neither is technical. **Scale:** $4bn cumulative against Broadridge's roughly $8tn in a single month is three orders of magnitude apart, so the comparison is not close enough to argue about. **Legal exposure:** OFAC removed Tornado Cash from the sanctions list in March 2025 (T1, US Treasury), but on 6 August 2025 a jury convicted Roman Storm of conspiracy to operate an unlicensed money-transmitting business while hanging on the money-laundering and sanctions counts, and prosecutors sought a retrial for around October 2026 (T3). A compliance function reading that record will not approve routing client settlement through a shielded pool, and it is right not to. This layer matters to the argument as the thing institutions will be assumed to be doing, and the useful move is to distinguish it from what they would actually deploy rather than to defend it.
+
+*India translation.* Foreclosed rather than difficult. FIU-IND's 2026 guidelines bar reporting entities from permitting deposits or withdrawals of anonymity-enhancing assets and require mixer and tumbler transactions to be identified through blockchain analytics and not facilitated. No Indian regulated entity can touch this layer, and no argument about association sets changes that until a regulator writes the distinction down. Confidence: high on the direction, medium on the precise wording, because the guideline is currently sourced to a law-firm summary rather than the FIU circular itself.
+
+### The layer-2 layer, where the work actually is
+
+The EEA report profiles seven enterprise privacy solutions and classifies each against public evidence.
+
+**COTI** (garbled circuits, mainnet since March 2025) is the only one rated generally available, with a Privex DEX volume figure and supply-chain deployments with UNICEF and the Bangladesh government cited in the report; the volume claim is company-reported (T4). **Silent Data** (Applied Blockchain, trusted execution environments, launched as a privacy-enabled Ethereum L2 in July 2025) is rated early production, on the strength of DHL CRYOPDP running since December 2025, a Bank of England Digital Pound Lab Phase 1 engagement, and the Archax fund deployment below. **Linea Enterprise** (Consensys, ZK private validium), **Nightfall** (EY, ZK rollup), **Paladin** (Kaleido and LF Decentralized Trust), **Prividium** (ZKsync) and **Polygon CDK** are all rated pilot, with the report noting that announcements exist but verifiable continuous operation does not.
+
+**The Archax deployment is the fact that changes Module D.** On 19 February 2026, tokenised money-market funds managed through Archax, an FCA-regulated digital securities venue, including funds from Aberdeen, BlackRock, Fidelity International and State Street, became available on Silent Data with balance, transaction and investor data confidential to authorised parties and processed inside TEEs, with private smart contract execution for fund operations, compliance checks and access controls (Applied Blockchain and Archax, 19 Feb 2026, T4/company; Asset Servicing Times, T3). These are described as the first tokenised fund products offered with a privacy wrapper on public-chain infrastructure: IN PRODUCTION. Module D's claim that the privacy-focused L2s are not in regulated production no longer holds at the fund layer, and that correction is logged rather than made quietly.
+
+**Aztec** activated its Ignition mainnet on 20 November 2025 with block production and staking but limited functionality, and shipped Alpha V5 on 21 July 2026 enabling private smart contracts, with project-reported figures of roughly 2.5 seconds to prove a private transaction on a consumer laptop and fees under $0.05 (T4, project-reported; treat as unverified). No named regulated-FI production deployment: LIMITED PILOT. **EY's Nightfall_4**, an open-source ZK rollup released to the public domain, was integrated by [Starknet](https://www.starknet.io/) in February 2026 for private business-to-business and cross-border payments, confidential treasury management and tokenised asset transfers with selective disclosure and KYC support (The Block, 17 Feb 2026, T3), and COTI announced COTI Nightfall on 26 March 2026 with testnet first and mainnet later in 2026 (T4): ANNOUNCED / pilot in both cases.
+
+### SWIFT chose Ethereum technology and kept it permissioned
+
+SWIFT's shared ledger is built on Linea, a Consensys Ethereum layer-2 stack, and deployed as permissioned infrastructure. The pilot ran from September 2025 with twelve or more banks on a private testnet (EEA report, T1). On 9 July 2026 SWIFT announced the ledger was ready for initial use, with seventeen banks including ANZ, BNP Paribas, BNY Mellon, Citi, DBS, HSBC, Itaú Unibanco, Lloyds, MUFG, Standard Chartered, UBS and Wells Fargo pioneering tokenised cross-border payments, with smart contracts recording, sequencing and validating transfers of tokenised deposits, regulated stablecoins and CBDCs (SWIFT press release, T1).
+
+This deserves its own section because it is the strongest single piece of evidence for the framing Module D argues and against the framing most people bring to the argument. The world's interbank messaging utility evaluated the field and chose Ethereum's execution technology, which is a genuine and checkable win for the stack, the tooling and the talent pool. It also declined to settle on the public network, which is the same rejection Goldman, DTCC and HSBC made for the same reason. Both halves must be stated together. Presenting the first without the second is the kind of selective quotation that costs credibility with the audience this base is written for, and the second without the first misses that the middle option is now the one winning.
+
+*India translation.* The analogue is a domestic or GIFT City cross-border rail built on an Ethereum-lineage permissioned stack rather than on public Ethereum, which is the shape the SWIFT precedent makes easiest to propose to an Indian bank's technology committee. It would be owned by a bank consortium or a regulator-utility on the [NPCI](https://www.npci.org.in/) template, with the RBI supervising. What blocks it today: the settlement-finality gap under the [PSS Act 2007](https://www.rbi.org.in/scripts/BS_ViewPaymentSystemsAct.aspx) covered in Module B, not confidentiality. What would change it: RBI designation of the operator. Confidence: high on the SWIFT facts, medium on Indian applicability, since SWIFT itself has not announced Indian participants.
+
+### The token-standard layer: standards rather than deployments
+
+Standards work is moving quickly. Stealth addresses are standardised as [ERC-5564](https://ercs.ethereum.org/ERCS/erc-5564) with ERC-6538 for registry, and confidential token designs now exist as [ERC-7984](https://ercs.ethereum.org/ERCS/erc-7984) (Confidential Fungible Token) and [ERC-7945](https://ercs.ethereum.org/ERCS/erc-7945) (Confidential Transactions Supported Token), alongside EIP-8105 (T1, ercs.ethereum.org). [Circle](https://www.circle.com/) published a Confidential ERC-20 whitepaper using fully homomorphic encryption to hide balances and amounts while giving auditors and regulators selective access (T4). Applied Blockchain's UCEF keeps the ERC-20 interface and standard Solidity permission controls while staying cryptography-agnostic, with confidential balances but visible addresses (T4). AvaCloud's eERC and the pERC-20 proposal cover similar ground (CoinDesk, 10 Jun 2026, T3).
+
+The limitation is the one the EEA report states directly and it is decisive: ERC-5564 and ERC-6538 are deployed on Ethereum mainnet but not on ZKsync, Polygon CDK, COTI, Linea, Silent Data or Prividium, which are the venues where institutional activity sits. A standard that is not deployed where it is needed is a roadmap item, and the gap between a published ERC and a supported production path is where most of this subject's optimism goes to die.
+
+### The regulatory countercurrent
+
+The direction of travel closes anonymity while leaving confidentiality open, and reading it the other way round is the most expensive mistake available here.
+
+**European Union.** Regulation (EU) 2024/1624, the AMLR, applies from 1 July 2027 and prohibits credit institutions, financial institutions and crypto-asset service providers from keeping anonymous accounts or handling anonymity-enhancing coins, with customer due diligence required above €1,000 and a new supervisor, AMLA, directly overseeing a first cohort of providers from 2027 (T1, EUR-Lex; T3 press coverage for the cohort size). Individuals may still self-custody and transact such assets; regulated platforms lose the ability to handle them.
+
+**India.** FIU-IND's 2026 AML/CFT guidelines for VDA reporting entities classify assets designed to conceal origin, ownership or transaction value as high risk and require that reporting entities not permit their deposit or withdrawal, that mixer and tumbler transactions be identified through transaction monitoring and blockchain analytics and not facilitated, and that originator and beneficiary information travel with a transfer, including the originator's PAN, identity document number, verified name, wallet address and address or date of birth. **Sourcing caveat: this rests on a law-firm summary (T3) and the primary FIU-IND circular was not located; treat the substance as reliable and the exact wording as UNVERIFIED until the circular is in hand.** Logged in Reconciliation §3.
+
+**United States.** The Storm proceedings above remain unresolved into late 2026, which keeps developer liability for privacy tooling an open question rather than a settled one in either direction.
+
+**Data protection, and a tension nobody has resolved.** The [Digital Personal Data Protection Act 2023](https://www.meity.gov.in/) and its 2025 Rules give data principals correction and erasure rights that sit awkwardly against an immutable ledger, and RBI payment-data localisation adds a second constraint on where a privacy overlay's operator and its attestation infrastructure may sit. Confidentiality technology arguably helps here, by keeping personal data off the public ledger entirely, but no Indian regulator or court has addressed the question. *This paragraph is analysis rather than sourced law and should be labelled as such wherever it is reused.*
+
+### The production table
+
+Status labels follow this base's convention; the EEA column reproduces its April 2026 classification.
+
+| System | Technique | Trust model | Named regulated deployment | Status | Tier |
+|---|---|---|---|---|---|
+| Silent Data | TEE, private smart contracts | Hardware attestation | Archax tokenised MMFs (Aberdeen, BlackRock, Fidelity Intl, State Street), Feb 2026; BoE Digital Pound Lab Ph.1 | IN PRODUCTION (fund layer) | T3/T4 |
+| COTI | Garbled circuits | Cryptographic + operator | Privex DEX; UNICEF/Bangladesh supply chain | IN PRODUCTION (non-securities) | T4 |
+| Linea Enterprise | ZK private validium | Operator-permissioned | SWIFT shared ledger, 17 banks, Jul 2026 | IN PRODUCTION (permissioned) | T1 |
+| Nightfall (EY) | ZK rollup | Cryptographic | Starknet integration Feb 2026; COTI Nightfall Mar 2026 | ANNOUNCED / pilot | T3/T4 |
+| Aztec | ZK, programmable privacy | Cryptographic | None named | LIMITED PILOT | T4 |
+| Prividium, Polygon CDK, Paladin | ZK / privacy groups | Mixed | None named | LIMITED PILOT | T1 (EEA) |
+| Railgun, Privacy Pools | Shielded pools | Cryptographic, anonymity | None, and foreclosed for regulated entities | Not procurable | T3 |
+| Kohaku | Wallet SDK | Client-side | None named | LIMITED PILOT | T4/T5 |
+| Canton (comparator) | Protocol-level sub-transaction privacy | Permissioned participants | DTCC, GS DAP, HSBC Orion, Broadridge DLR | IN PRODUCTION (~$8tn/month) | T2/T4 |
+
+The Canton row is what makes the table honest. The privacy work on Ethereum is real and it is being measured against a permissioned competitor that already solved this problem in production at a scale nothing in the rows above approaches.
+
+### Disconfirming evidence
+
+The case that none of this closes the gap, stated as strongly as it can be.
+
+Canton's confidentiality is the data model rather than an overlay, as Module D's mechanism analysis sets out, and it has been settling trillions per month for years. Ethereum's answer is arriving at a layer three orders of magnitude smaller, in the segment that had already chosen public chains and never had the confidentiality problem in the first place. Winning the fund layer twice is not progress on the bank layer.
+
+The trust model of the one deployment that counts is weaker than the pitch implies. Silent Data is TEE-based, so its guarantee depends on hardware manufacturer attestation rather than on a cryptographic proof, a point the EEA report makes explicitly about the whole hardware-anchored category. A supervisor comparing that against Canton's model is not comparing like with like, and the honest framing concedes it.
+
+The best available status source is self-interested by construction. The EEA report is a consortium document whose members include the vendors it rates. Its methodology is strict and its classifications are conservative, which is why it is used here, and it remains a body rating itself. Label it whenever it is quoted.
+
+Privacy fragments the one advantage Ethereum holds uncontested. Counterparty reachability is the reason the fund layer chose a public chain, and assets inside different privacy systems are not reachable from each other. The EEA report's own open questions include how privacy solutions will interoperate across L1 and L2 and what standards that would require, with no answer offered. Buying confidentiality currently spends the reachability that was the reason to be there.
+
+And the report's summary judgement is unflattering. Across a research window from November 2025 to April 2026, most solutions remained at pilot or testnet, no single solution covers all the enterprise requirements it lists, and the regulatory question is recorded as unanswered.
+
+### Falsifiable conditions
+
+What would have to become true for the bifurcation this evidence base documents to dissolve. None of these had occurred as of September 2026.
+
+1. A named G-SIB or market infrastructure runs position-sensitive settlement, meaning dealer inventory, repo or collateral rather than fund distribution, on a public Ethereum layer-2 with confidentiality, and discloses a volume figure.
+2. The EEA or an equivalent independent assessor moves two or more privacy stacks from pilot to general availability with named regulated deployments and verifiable continuous operation.
+3. A confidential token standard is deployed and supported on the layer-2s where institutional assets actually sit, rather than on mainnet alone.
+4. A financial regulator accepts a selective-disclosure proof as satisfying an audit, reporting or supervisory-access obligation, in writing.
+5. For India specifically, FIU-IND or SEBI distinguishes selective-disclosure confidentiality from anonymity-enhancing assets in writing, which is the single change that would move this from unaskable to arguable.
+
+Condition 1 is the one to watch. The other four are enabling; that one settles the question.
+
+### India translation
+
+*The consolidated version, since the sections above each carry their own.*
+
+**Finding.** Ethereum-based confidentiality reached regulated production during 2026 at the fund-distribution layer, on a TEE-based layer-2, with selective disclosure. It has not reached the bank core-settlement layer anywhere, and the shielded-pool route that most people associate with the phrase "privacy on Ethereum" is legally foreclosed for regulated Indian entities.
+
+**Indian analogue.** Two, and they behave differently. The near one is a privacy-wrapped tokenised fund in GIFT City, which is the Archax pattern transplanted, and the only surface inside Module B's permitted perimeter where it could be attempted. The far one is confidential corporate-bond dealer inventory and repo positions, the same need Module D identifies, where the honest answer remains a Canton-class architecture or the CBDC layer. *Revised September 2026:* both got firmer ground. RBI Executive Director P. Vasudevan put data privacy, data movement and consent management on the record as unresolved tokenisation risks on 9 September 2026, which is the Indian regulator naming this module's demand unprompted and raises the value of arriving with an answer. And SEBI's Demat 2.0 chose a permissioned depository-owned ledger for the far case, which is the outcome this module predicted for bank-layer confidentiality rather than a setback to it.
+
+**Who would own it.** For the fund case, an [IFSCA](https://ifsca.gov.in/)-regulated GIFT City fund platform with an AMC and its administrator, IFSCA supervising. For the settlement case, CCIL or a regulator-utility, RBI supervising, and the technology question is not the binding one.
+
+**What blocks it today.** The FIU guidelines read broadly enough that a compliance officer will ask whether a confidential fund wrapper is an anonymity-enhancing arrangement, and there is no written answer. No Indian regulator has recognised a selective-disclosure proof for any reporting obligation. The DPDP tension is unadjudicated. The VDA tax classification, covered in Modules B and C, blocks the domestic version of the fund case before confidentiality is even reached, so privacy is not the first constraint to fix.
+
+**What would have to change.** A written FIU-IND or SEBI distinction between selective disclosure and anonymity, and an IFSCA circular permitting a confidential fund register at a named venue. Both are administrative rather than legislative, which makes this materially easier than the settlement-finality and register questions Module B identifies, and it is the cheapest regulatory ask anywhere in this evidence base.
+
+**Confidence.** High that the Archax deployment is in production and that no bank core-settlement venue has moved. Medium on the exact FIU wording, pending the primary circular. Low on any timeline, since no Indian party has publicly proposed this.
+
+### Module close
+
+1. **Findings hardest to dismiss.** Ethereum L1 is not becoming a confidential ledger and was never proposed to be, so every claim rests on an overlay with its own trust model; the first privacy-wrapped tokenised funds on public-chain infrastructure went live through an FCA-regulated venue in February 2026 with four named large managers; the EEA's own April 2026 survey puts one of seven enterprise stacks at general availability; and SWIFT chose Ethereum layer-2 technology in permissioned form for seventeen banks, validating the stack and rejecting the public ledger in a single decision.
+2. **Strongest chart.** The EEA's seven solutions plotted by maturity (general availability, early production, pilot) against Canton's monthly settled volume on the same panel, one image capturing both that the work is real and that the installed base is three orders of magnitude behind the incumbent.
+3. **Claims most likely to be challenged.** "Privacy is solved on Ethereum" (it is solved for one fund-distribution deployment on a hardware trust model; concede the trust model before it is raised); "regulators are banning on-chain privacy" (they are banning anonymity and leaving selective disclosure open, and the EU AMLR text is the place to show it); "Kohaku answers the confidentiality objection" (it does not, and offering it signals the objection was misheard).
+4. **One-sentence summary.** Confidentiality on Ethereum moved from absent to genuinely deployed during 2026, but it moved at the fund-distribution layer on a hardware trust model while the bank core-settlement layer stayed where it was and SWIFT chose a permissioned Ethereum-lineage ledger, so the bifurcation this evidence base documents is narrower than it was and has not closed, and for India the binding constraint is a written regulatory distinction between confidentiality and anonymity that nobody has yet asked for.
+5. **What this module could not establish.** The primary FIU-IND circular text behind the AEC and mixer prohibition; any AUM or volume figure for the Archax privacy-wrapped funds; independent verification of Aztec's V5 performance claims or COTI's Privex volume; whether SWIFT's shared ledger has any Indian participant; and whether any Indian regulator has considered the DPDP position on immutable public ledgers.
