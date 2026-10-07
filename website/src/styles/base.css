@@ -8,25 +8,9 @@ body {
   font-size: 18px;
   line-height: 1.6;
   color: var(--ink);
-  /* No body background: it would paint over the hairline layer. html carries the colour. */
   caret-color: var(--accent);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-
-/* Frame: two faint verticals just outside the content edges, fixed to the viewport so they
-   read as the page's ruling. Nothing crosses the reading column. Solid zones (.deep, .band,
-   panels) sit on top of them. */
-body::before {
-  content: "";
-  position: fixed;
-  /* The ruling sits just outside the content edge, so text never touches a line. */
-  inset: 0 calc(var(--gutter) - var(--hair-pad));
-  z-index: -1;
-  max-width: calc(var(--wrap) - 2 * var(--gutter) + 2 * var(--hair-pad));
-  margin-inline: auto;
-  border-inline: 1px solid var(--hairline);
-  pointer-events: none;
 }
 
 ::selection { background: var(--accent); color: var(--paper); }
@@ -95,12 +79,13 @@ p { max-width: var(--measure); text-wrap: pretty; }
   color: var(--ink-2);
 }
 .runhead::before { content: ""; width: 28px; height: 1px; background: var(--rule); }
-/* Section seams are one ruled line, drawn as a pseudo-element so it can be ruled in on scroll. */
+/* Section seams are one ruled line, drawn as a pseudo-element so it can be ruled in on scroll.
+   The line spans the content column, not the viewport, so it ends where the text does. */
 .section + .section, .narr .scene + .scene { position: relative; }
 .section + .section::before, .narr .scene + .scene::before {
   content: "";
   position: absolute;
-  inset: 0 0 auto;
+  inset: 0 calc(max(0px, (100% - var(--wrap)) / 2) + var(--gutter)) auto;
   height: 1px;
   background: var(--border);
   transform-origin: left center;
@@ -263,20 +248,12 @@ p { max-width: var(--measure); text-wrap: pretty; }
 .field__hint { font-size: 14px; color: var(--ink-2); }
 
 /* Motion has one grammar: the ledger being ruled.
-   - Load: the page's column ruling draws down (the hero title rises in Hero.astro).
+   - Load: the hero title rises (Hero.astro).
    - Scroll: a new section's seam draws across, its running head slides in where the line ends,
      the heading rises word by word out of its baseline, then content settles in reading order
      while the rule under each entry draws. The hero recedes as you leave it; the dinner band
      opens to full bleed. Base.astro marks sections (data-reveal), steps (data-step, --step),
      rows (data-row) and heading words (.w, --wi). Everything is visible without JS. */
-@media (prefers-reduced-motion: no-preference) {
-  body::before { animation: rule-down 1500ms var(--ease-out) both; }
-}
-@keyframes rule-down {
-  from { clip-path: inset(0 0 100% 0); }
-  to { clip-path: inset(0 0 0 0); }
-}
-
 .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.14em; margin-bottom: -0.14em; }
 .w > span { display: inline-block; }
 
