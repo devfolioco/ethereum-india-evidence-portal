@@ -1,12 +1,12 @@
 ---
 import home from '../../content/home.json';
 import IndiaMap from './IndiaMap.astro';
+import PixelRupee from './PixelRupee.astro';
 
 const { hero } = home;
-// One letter in each major word is set in the pixel face (glyph swap); the text itself is the
-// portal's, unchanged.
+// Pixel accents and the rupee substitution are visual; the accessible title uses the original wording.
 const marked = hero.title
-  .replace('Ethereum', 'Eth[e]reum')
+  .replace('Ethereum', 'Ethe[₹]eum')
   .replace('Institutional', 'Instit[u]tional')
   .replace('Finance', 'Fin[a]nce')
   .replace('India', 'In[d]ia');
@@ -19,7 +19,7 @@ const parts = marked.split(/\[(.)\]/);
       <p class="visually-hidden">{hero.eyebrow}</p>
       <h1 id="hero-title" class="hero__title" aria-label={hero.title}>
         <span aria-hidden="true">
-          {parts.map((part, i) => (i % 2 ? <span class="px">{part}</span> : part))}
+          {parts.map((part, i) => (i % 2 ? (part === '₹' ? <PixelRupee /> : <span class="px">{part}</span>) : part))}
         </span>
       </h1>
       <p class="hero__sub">{hero.sub}</p>
