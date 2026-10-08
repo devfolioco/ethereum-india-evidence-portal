@@ -3,7 +3,7 @@
 > A seven-module briefing, drawn from published sources, on Ethereum and distributed-settlement infrastructure for Indian institutional finance. Every claim carries a source and date; every quantitative figure carries a source tier (T1 primary … T5 crypto media/aggregator) in the Figure Ledger.
 
 ## Pages
-- [ETHIndia Institutions](index.html)
+- [ETHIndia Institutional](index.html)
 - [Briefing overview](briefing.html)
 - [What shipped](what-shipped.html)
 - [What's legal in India](whats-legal-in-india.html)

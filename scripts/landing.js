@@ -1,4 +1,4 @@
-// Renders index.html: the ETHIndia Institutions landing page.
+// Renders index.html: the ETHIndia Institutional landing page.
 //
 // Same rules as scripts/narrative.js. The build never reads the clock, so
 // updates are sorted by their literal ISO dates and dates are formatted by

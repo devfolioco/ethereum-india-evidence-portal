@@ -1,4 +1,4 @@
-# Reconciliation — Cross-Module Audit
+# Reconciliation: Cross-Module Audit
 
 > **Read this before quoting any figure.** This tab interrogates the six modules against each other: where they disagree, which figures rest on weak sources, where the research is thinnest, and where the evidence revised the working thesis. It is published deliberately, because an evidence base that hides its own weak points is not checkable. Nothing here should be lifted into another document without reading the entry that covers it.
 

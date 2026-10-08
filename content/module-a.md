@@ -1,4 +1,4 @@
-# Module A — What Actually Shipped
+# Module A: What Actually Shipped
 
 **Question:** Among the world's largest financial institutions, what blockchain and Ethereum-based infrastructure is genuinely in production today, at what volume, on which chains, and what reasoning drove each architectural choice?
 

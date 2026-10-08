@@ -1,4 +1,4 @@
-# Module B — India's Actual Perimeter
+# Module B: India's Actual Perimeter
 
 **Question:** What is legally and practically permitted in India today for tokenised instruments, distributed settlement and blockchain registries, by whom and under whose authority, and where is the gap between that perimeter and what the global precedents would require?
 

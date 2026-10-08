@@ -2,7 +2,7 @@
 letter: d
 order: 4
 title: "Ethereum vs alternatives"
-heading: "Module D — The Honest Comparison"
+heading: "Module D: The Honest Comparison"
 question: "On the criteria financial institutions actually use to select infrastructure, how does Ethereum compare to its realistic alternatives, and in which specific cases is Ethereum the wrong choice?"
 description: "Public Ethereum against Canton and permissioned EVM chains on the criteria institutions use to pick infrastructure, and where Ethereum is the wrong choice."
 legacy: ethereum-vs-alternatives

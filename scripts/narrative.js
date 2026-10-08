@@ -67,7 +67,7 @@ function renderHero(scene, ctx) {
   const where = `scene "${scene.id}"`;
   return `<header class="hero" id="${escapeAttr(scene.id)}">
       <div class="hero-inner">
-        <a class="hero-home" href="index.html"><span aria-hidden="true">← </span>ETHIndia Institutions</a>
+        <a class="hero-home" href="index.html"><span aria-hidden="true">← </span>ETHIndia Institutional</a>
         <p class="hero-eyebrow">${escapeHtmlText(scene.eyebrow)}</p>
         <h1 class="hero-headline">${inline(scene.headline, ctx, where)}</h1>
         <p class="hero-sub">${inline(scene.sub, ctx, where)}</p>

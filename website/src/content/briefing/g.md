@@ -2,7 +2,7 @@
 letter: g
 order: 7
 title: "How adoption happens"
-heading: "Module G — Adoption Precedent and the Devcon Question"
+heading: "Module G: Adoption Precedent and the Devcon Question"
 question: "How has new financial infrastructure historically crossed from proposal into institutional adoption in India, and what does that sequence imply about how a tokenised settlement layer, and a developer conference in Mumbai, would have to be positioned?"
 description: "How new financial infrastructure such as demat and UPI reached institutional adoption in India, and what that sequence implies for a tokenised settlement layer."
 legacy: how-adoption-happens
