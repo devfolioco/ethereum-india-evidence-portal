@@ -1,4 +1,4 @@
-# Module C — Where the Value Actually Is
+# Module C: Where the Value Actually Is
 
 **Question:** Which specific processes inside Indian financial institutions are expensive, slow, or capital-inefficient enough that a distributed-settlement or tokenisation primitive would produce a measurable improvement, how large is each in rupee terms, and who owns the budget?
 

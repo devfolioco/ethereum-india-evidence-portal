@@ -1,4 +1,4 @@
-# Module D — The Honest Comparison
+# Module D: The Honest Comparison
 
 **Question:** On the criteria financial institutions actually use to select infrastructure, how does Ethereum compare to its realistic alternatives, and in which specific cases is Ethereum the wrong choice?
 

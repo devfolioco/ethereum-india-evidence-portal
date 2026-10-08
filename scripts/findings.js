@@ -1,6 +1,6 @@
 // The A-G finding cards on briefing.html, built from content/intro.md.
 //
-// Each module is a `### A — What shipped` heading followed by a bullet list.
+// Each module is a `### A: What shipped` heading followed by a bullet list.
 // The letter and title become a linked card head and the list becomes the
 // card body. The destination comes from the module tabs, so the links cannot
 // drift from the pages that exist. A heading that does not match the pattern,
@@ -20,12 +20,12 @@ function splitBeforeFirstH2(raw) {
 function renderFindingCards(html, moduleTabs) {
   const byModule = new Map(moduleTabs.map(t => [t.module, t]));
   const blocks = [...html.matchAll(/<h3>([\s\S]*?)<\/h3>\s*(<ul>[\s\S]*?<\/ul>)/g)];
-  if (!blocks.length) throw new Error('content/intro.md: no "### X — Title" headings with bullet lists under "## Findings by module".');
+  if (!blocks.length) throw new Error('content/intro.md: no "### X: Title" headings with bullet lists under "## Findings by module".');
 
   const cards = blocks.map(([, heading, list]) => {
-    const m = heading.match(/^([A-G])\s*\u2014\s*(.+)$/);
+    const m = heading.match(/^([A-G])\s*[:\u2014]\s*(.+)$/);
     const tab = m && byModule.get(m[1]);
-    if (!tab) throw new Error(`content/intro.md: finding heading "${heading}" does not name a module as "X — Title".`);
+    if (!tab) throw new Error(`content/intro.md: finding heading "${heading}" does not name a module as "X: Title".`);
     const [, letter, title] = m;
     return `<li class="finding">
             <a class="finding-head" href="${escapeAttr(tab.page)}" aria-label="Module ${letter}, ${escapeAttr(title)}">

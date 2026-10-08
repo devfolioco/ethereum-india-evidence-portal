@@ -29,7 +29,7 @@ const tiers = [
   chrome="portal"
   tab={m.data.title}
   current={m.data.letter}
-  title={`${m.data.title} — Ethereum/India Institutional Briefing`}
+  title={`${m.data.title}: Ethereum/India Institutional Briefing`}
   description={m.data.description}
   type="article"
 >
@@ -48,7 +48,7 @@ const tiers = [
     </div>
 
     <CopyForLlm
-      summary="Full report — copy for an LLM"
+      summary="Full report: copy for an LLM"
       label="Full report markdown, with source provenance"
       src={`/llm/module-${m.data.letter}.md`}
       rows={6}

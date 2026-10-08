@@ -1,4 +1,4 @@
-# Module E — What Is Actually Moving on Privacy, and What Is Not
+# Module E: What Is Actually Moving on Privacy, and What Is Not
 
 **Question:** Confidentiality is the criterion on which institutions rejected public Ethereum. What has changed on the protocol, wallet, layer-2 and standards layers since, and does any of it change that decision?
 

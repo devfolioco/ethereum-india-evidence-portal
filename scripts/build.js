@@ -42,7 +42,7 @@ async function versionedAsset(relPath) {
 // renderSidebar() emits a heading wherever the group changes, so interleaving
 // two runs of the same group would print its heading twice.
 const TABS = [
-  { id: 'home', label: 'ETHIndia Institutions', file: 'data/landing.json', page: 'index.html', isLanding: true },
+  { id: 'home', label: 'ETHIndia Institutional', file: 'data/landing.json', page: 'index.html', isLanding: true },
   { id: 'narrative', label: 'Briefing overview', file: 'data/narrative.json', page: 'briefing.html', isNarrative: true },
   { id: 'what-shipped', label: 'What shipped', module: 'A', group: 'modules', file: 'content/module-a.md', page: 'what-shipped.html', hasTiers: true, description: 'Which blockchain systems the largest financial institutions run in production, at what volume, on which chains, and why bank settlement went permissioned.' },
   { id: 'whats-legal-in-india', label: "What's legal in India", module: 'B', group: 'modules', file: 'content/module-b.md', page: 'whats-legal-in-india.html', hasTiers: true, description: 'What RBI, SEBI and IFSCA permit in India today for tokenised instruments, distributed settlement and blockchain registries, and where the legal gaps remain.' },
@@ -138,7 +138,7 @@ function attachSectionAttrs(html, sections, tab) {
 function renderCopyDetails(tab, fullRaw) {
   const payload = PROVENANCE_HEADER(tab.label, tab.file) + fullRaw;
   return `<details class="copy-details js-copy-widget" data-copy-label="this module's full report">
-        <summary>Full report — copy for an LLM</summary>
+        <summary>Full report: copy for an LLM</summary>
         <textarea class="copy-textarea" readonly rows="6" aria-label="Full report markdown, with source provenance, for pasting into an LLM">${escapeHtmlText(payload)}</textarea>
       </details>`;
 }
@@ -338,7 +338,7 @@ ${links}
   return `<div class="sidebar-nav">\n${parts.join('\n')}\n    </div>`;
 }
 
-/** `# Module A — What Actually Shipped` -> the Article headline. */
+/** `# Module A: What Actually Shipped` -> the Article headline. */
 function markdownTitle(raw) {
   const m = /^# (.+)$/m.exec(raw);
   return m ? m[1].trim() : null;
@@ -346,7 +346,7 @@ function markdownTitle(raw) {
 
 function pageHeadMeta({ tab, raw, site }) {
   const url = site.base + tab.page;
-  const title = `${tab.label} — ${SITE_NAME}`;
+  const title = `${tab.label}: ${SITE_NAME}`;
   const common = { url, description: tab.description, siteBase: site.base, dateModified: site.dateModified };
   const jsonLd = tab.isLedger
     ? datasetLd({ ...common, name: `${SITE_NAME}: Figure Ledger` })
@@ -363,7 +363,7 @@ function pageShell({ tab, raw, bodyHtml, assets, site }) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${tab.label} — ${SITE_NAME}</title>
+<title>${tab.label}: ${SITE_NAME}</title>
 ${pageHeadMeta({ tab, raw, site })}
 <link rel="stylesheet" href="${assets.tokens}">
 <link rel="stylesheet" href="${assets.styles}">

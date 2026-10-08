@@ -26,7 +26,7 @@ Then give me a handful of bullet points about Ethereum's institutional potential
 export function renderLandingPromptCta({ id = 'llm' } = {}) {
   return `<div class="landing-prompt" id="${id}">
     <details class="landing-prompt-details js-copy-widget" data-copy-label="a personalized exploration prompt">
-      <summary class="landing-prompt-summary">Copy a personalized prompt — explore this briefing with your own LLM</summary>
+      <summary class="landing-prompt-summary">Copy a personalized prompt: explore this briefing with your own LLM</summary>
       <div class="landing-prompt-panel">
         <p class="landing-prompt-hint">Paste this into ChatGPT, Claude, Gemini, or any LLM that can fetch a URL. With JavaScript on, the box below already has this page's real address in it. Reading without JavaScript? Swap the <code>{{BASE_URL}}</code> placeholder for this page's address before you paste.</p>
         <textarea class="copy-textarea landing-prompt-textarea" readonly rows="14" aria-label="Personalized prompt for exploring this report with an LLM">${escapeHtmlText(OVERVIEW_PROMPT)}</textarea>

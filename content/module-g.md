@@ -1,4 +1,4 @@
-# Module G — Adoption Precedent and the Devcon Question
+# Module G: Adoption Precedent and the Devcon Question
 
 **Question:** How has new financial infrastructure historically crossed from proposal into institutional adoption in India, and what does that sequence imply about how a tokenised settlement layer, and a developer conference in Mumbai, would have to be positioned?
 

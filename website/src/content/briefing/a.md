@@ -2,7 +2,7 @@
 letter: a
 order: 1
 title: "What shipped"
-heading: "Module A — What Actually Shipped"
+heading: "Module A: What Actually Shipped"
 question: "Among the world's largest financial institutions, what blockchain and Ethereum-based infrastructure is genuinely in production today, at what volume, on which chains, and what reasoning drove each architectural choice?"
 description: "Which blockchain systems the largest financial institutions run in production, at what volume, on which chains, and why bank settlement went permissioned."
 legacy: what-shipped
