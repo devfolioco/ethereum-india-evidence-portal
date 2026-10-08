@@ -258,11 +258,11 @@ p { max-width: var(--measure); text-wrap: pretty; }
 }
 
 /* Logo lockup, drawn as a mask so it takes the zone's ink (bone on navy, navy on stone).
-   Aspect ratio from /logo/ethindia-institutional.svg (4667 × 869). */
+   Aspect ratio from /logo/ethindia-institutional.svg (3634 × 298). */
 .logo {
   display: block;
   height: var(--logo-h, 32px);
-  aspect-ratio: 4667 / 869;
+  aspect-ratio: 3634 / 298;
   background-color: currentColor;
   -webkit-mask: url("/logo/ethindia-institutional.svg") center / contain no-repeat;
   mask: url("/logo/ethindia-institutional.svg") center / contain no-repeat;
