@@ -54,7 +54,7 @@
       },
       {
         "title": "Convenings",
-        "body": "Closed-door dinners and roundtables for people at banks, asset managers, market infrastructure institutions and regulators, starting at Devcon 8 in Mumbai."
+        "body": "Closed-door roundtables for people at banks, asset managers, market infrastructure institutions and regulators."
       },
       {
         "title": "Announcements",
@@ -73,28 +73,10 @@
     "read": "Read the briefing",
     "ledger": "Figure Ledger"
   },
-  "dinner": {
-    "eyebrow": "During Devcon 8, Mumbai",
-    "title": "ETHIndia Institutional Dinner",
-    "body": "A closed-door dinner for senior people at Indian banks, asset managers, market infrastructure institutions and regulators, with the researchers and builders working on Ethereum. Seats are limited and each invitation is confirmed individually.",
-    "iso": "2026-11-04",
-    "when": "Wednesday, 4 November 2026",
-    "where": "Mumbai. The venue is shared with confirmed guests.",
-    "access": "By invitation",
-    "pending": "Invite requests open soon"
-  },
   "updates": {
     "eyebrow": "Updates",
     "title": "Events, announcements and reports.",
     "items": [
-      {
-        "type": "Event",
-        "iso": "2026-09-30",
-        "date": "30 September 2026",
-        "title": "ETHIndia Institutional Dinner announced",
-        "href": "#dinner",
-        "summary": "4 November 2026, during Devcon 8 in Mumbai. Seats are by invitation."
-      },
       {
         "type": "Report",
         "iso": "2026-09-25",

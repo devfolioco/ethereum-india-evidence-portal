@@ -138,31 +138,6 @@ function renderResearch(reports, ctx) {
     </section>`;
 }
 
-function renderDinner(events, ctx) {
-  const ev = events.find(e => e.featured);
-  if (!ev) return '';
-  // An event can be announced before its Luma page exists. The button then
-  // renders as plain text rather than a link to nowhere.
-  const action = ev.luma_url
-    ? `<a class="btn btn-primary btn-lg" href="${escapeAttr(ev.luma_url)}">Request an invite<span aria-hidden="true"> →</span></a>`
-    : `<span class="btn btn-pending btn-lg">Invite requests open soon</span>`;
-  return `<section class="l-dinner" id="${escapeAttr(ev.id)}" aria-labelledby="${escapeAttr(ev.id)}-title">
-      <div class="l-inner l-dinner-grid">
-        <div>
-          <p class="l-hero-eyebrow">${escapeHtmlText(ev.context)}</p>
-          <h2 class="l-dinner-title" id="${escapeAttr(ev.id)}-title">${escapeHtmlText(ev.title)}</h2>
-          <p class="l-dinner-body">${inline(ev.body, ctx, `event "${ev.id}"`)}</p>
-        </div>
-        <div class="l-dinner-card">
-          <p class="l-dinner-when"><time datetime="${escapeAttr(ev.date)}">${escapeHtmlText(ev.date_label)}</time></p>
-          <p class="l-dinner-where">${escapeHtmlText(ev.place)}</p>
-          <p class="l-dinner-access">By invitation</p>
-          ${action}
-        </div>
-      </div>
-    </section>`;
-}
-
 function renderUpdates(updates, ctx) {
   if (!updates.length) return '';
   // ISO dates sort as strings; newest first. slice() so the source array is untouched.
@@ -234,7 +209,6 @@ export async function renderLandingPage({ landing, figuresData, tabs, assets, lo
     renderEthereum(landing.ethereum, ctx),
     renderExpect(landing.expect, ctx),
     renderResearch(landing.reports, ctx),
-    renderDinner(landing.events, ctx),
     renderUpdates(landing.updates, ctx),
   ].filter(Boolean).join('\n\n    ');
 

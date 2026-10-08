@@ -84,7 +84,7 @@ const ogImage = new URL('/og/default.png', site.domain).href;
       // part, so nothing already on screen ever blinks, and without JS everything stays visible.
       // Each section's content is numbered in reading order (--step) so it settles after its
       // heading; list items count as steps of their own.
-      const DESCEND = '.section__head, .split, .split__body, .dinner__text';
+      const DESCEND = '.section__head, .split, .split__body';
       const LISTS = '.points, .updates, .cols, .findings';
       const markSteps = (section: HTMLElement) => {
         const root = section.querySelector<HTMLElement>(':scope > .wrap, :scope > .scene-inner') ?? section;
