@@ -10,10 +10,9 @@ Senior people at Indian banks, asset managers, exchanges, depositories, clearing
 ## Product Purpose
 The site for ETHIndia Institutional, a think tank under ETHIndia that works out how Ethereum fits Indian institutional finance. Its jobs, in order:
 1. Get people to the ETHIndia Institutional briefing/report and make it easy to read.
-2. Drive invite requests for the Institutional Dinner (4 Nov 2026, Mumbai, invite-only).
-3. Position ETHIndia Institutional as the neutral, credible front door to Ethereum for Indian institutions.
+2. Position ETHIndia Institutional as the neutral, credible front door to Ethereum for Indian institutions.
 
-Success is a senior reader finishing a briefing module, or requesting a dinner invite, and coming away seeing ETHIndia Institutional as neutral rather than selling.
+Success is a senior reader finishing a briefing module and coming away seeing ETHIndia Institutional as neutral rather than selling.
 
 ## Brand Personality
 Calm, factual, trustworthy. A research institute that belongs to the ETHIndia family, not an event page. It speaks plainly, cites its numbers, and never hypes. Visually it borrows ethindia.co's language (white graph paper, black ink, pixel-font accents, ticker) and turns the volume down.

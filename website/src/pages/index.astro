@@ -4,7 +4,7 @@ import Hero from '../components/hero/Hero.astro';
 import home from '../content/home.json';
 import '../styles/prose.css';
 
-const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
+const { whyIndia, ethereum, expect, briefing, updates } = home;
 ---
 
 <Base>
@@ -77,24 +77,6 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
           <a class="rlink" href="/briefing/ledger">{briefing.ledger}</a>
         </div>
       </article>
-    </div>
-  </section>
-
-  <section class="dinner band" id="dinner" aria-labelledby="dinner-title">
-    <div class="wrap dinner__inner">
-      <div class="dinner__text">
-        <h2 id="dinner-title">{dinner.title}</h2>
-        <p>{dinner.body}</p>
-      </div>
-      <div class="dinner__card">
-        <p class="dinner__when px"><time datetime={dinner.iso}>{dinner.when.split(', ').map((part, i, all) => i < all.length - 1 ? <><span>{part},</span> </> : <span>{part}</span>)}</time></p>
-        <p class="dinner__occasion">{dinner.eyebrow}</p>
-        <p class="dinner__where">{dinner.where}</p>
-        <div class="dinner__cta">
-          <span class="btn" aria-disabled="true">{dinner.pending}</span>
-          <p class="dinner__access">{dinner.access}</p>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -178,25 +160,6 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
   .report__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; margin-top: 18px; grid-column: 2; }
   .report__actions .rlink { font-size: 15px; }
 
-  /* Dinner band */
-  .dinner { padding-block: clamp(56px, 8vw, 112px); }
-  .dinner__inner {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: start;
-  }
-  .dinner__text { padding-right: clamp(24px, 4vw, 56px); }
-  .dinner__card { margin-left: var(--hair-pad); }
-  .dinner__text { display: grid; gap: 18px; }
-  .dinner__text p:last-child { max-width: 52ch; }
-  .dinner__card { display: grid; gap: 12px; padding: clamp(20px, 3vw, 32px); background: var(--panel); }
-  .dinner__when { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.15; }
-  .dinner__when span { white-space: nowrap; } /* break after the weekday, never inside the date */
-  .dinner__occasion { font-size: 18px; }
-  .dinner__where { color: var(--ink-2); }
-  .dinner__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 10px; }
-  .dinner__access { font-size: 15px; color: var(--ink-2); }
-
   /* Updates */
   .updates { display: grid; gap: 40px; max-width: 960px; }
   .updates__item {
@@ -215,11 +178,8 @@ const { whyIndia, ethereum, expect, briefing, dinner, updates } = home;
 
   @media (max-width: 860px) {
     .points { grid-template-columns: 1fr; }
-    .point, .split, .dinner__inner { grid-template-columns: 1fr; row-gap: 14px; }
+    .point, .split { grid-template-columns: 1fr; row-gap: 14px; }
     .point p, .split > :last-child { padding-left: 0; margin-left: 0; }
-    .dinner__inner { row-gap: 32px; }
-    .dinner__card { margin-left: 0; }
-    .dinner__text { padding-right: 0; }
     .cols { grid-template-columns: 1fr; }
     .report { grid-template-columns: 1fr; }
     .report > * { grid-column: auto; grid-row: auto; }

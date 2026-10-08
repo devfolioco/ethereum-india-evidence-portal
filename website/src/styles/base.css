@@ -190,7 +190,7 @@ p { max-width: var(--measure); text-wrap: pretty; }
 
 .section__head { display: grid; gap: 16px; margin-bottom: clamp(32px, 4vw, 56px); }
 
-/* Form fields (newsletter, dinner invite) */
+/* Form fields */
 .field { display: grid; gap: 8px; }
 .field label { font-size: 15px; font-weight: 500; }
 .field input,
@@ -231,17 +231,6 @@ p { max-width: var(--measure); text-wrap: pretty; }
     opacity 700ms var(--ease-out) var(--delay),
     transform 950ms var(--ease-out) var(--delay),
     filter 700ms var(--ease-out) var(--delay);
-}
-
-/* Zone change into the dinner band: the navy field opens from the content edge to full bleed as it scrolls in. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .band { animation: band-open linear both; animation-timeline: view(); animation-range: entry 0% entry 80%; }
-  }
-}
-@keyframes band-open {
-  from { clip-path: inset(0 var(--gutter)); }
-  to { clip-path: inset(0 0); }
 }
 
 @media print {

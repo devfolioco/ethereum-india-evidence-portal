@@ -20,7 +20,7 @@ A **reskin of the old portal at https://institutions.ethindia.co**. The client w
 - **Data is the portal's, verbatim:** copy, nav, sections, page structure, titles, meta descriptions, module headings and questions, ledger, reconciliation, the copy-for-an-LLM texts. Never reword, add claims, or add sections the portal doesn't have. Last two-way text diff of every portal page against `dist` (8 Oct): nothing missing; the only additions are UI controls.
 - **Styling is ours:** navy + stone palette, column hairlines, dotted-India hero map, fonts, motion, buttons.
 - Allowed re-presentation of portal text (user-approved): small uppercase kickers became running heads or plain facts (see "Labels" below); the hero eyebrow is visually hidden.
-- `ETHINDIA_INSTITUTIONAL_BUILD.md` is the original build brief. It is **superseded** wherever it adds things the portal lacks (ticker, FAQ, team, supporters, newsletter, `/dinner`, `/privacy`, palettes); all of those were removed. Still useful for accessibility rules and tone.
+- `ETHINDIA_INSTITUTIONAL_BUILD.md` is the original build brief. It is **superseded** wherever it adds things the portal lacks (ticker, FAQ, team, supporters, newsletter, `/privacy`, palettes); all of those were removed. Still useful for accessibility rules and tone.
 - `PRODUCT.md` (audience, personality, anti-references) still holds. Its `## Register` section is obsolete for the current `/impeccable` skill.
 
 ## Stack, commands, deploy
@@ -49,11 +49,11 @@ npx vercel deploy --prod --yes  # manual deploy; look for the "Aliased" line
 | `narrative` | `/briefing` | No nav; hero with "← ETHIndia Institutions". Footer "The full briefing" |
 | `portal` | `/briefing/a`–`g`, `/briefing/ledger`, `/briefing/reconciliation` | `PortalShell.astro`: header "Ethereum/India Institutional Briefing / <tab>" + sidebar (overview, modules A–G, reference). Checkbox-driven menu at ≤960px |
 
-URLs: `/briefing/<letter>` (not the portal slugs; those redirect). `/dinner` and `/privacy` no longer exist (404).
+URLs: `/briefing/<letter>` (not the portal slugs; those redirect). `/privacy` no longer exists (404).
 
 ## Where the content lives
 
-- `src/content/home.json`: every home string, **generated verbatim from the portal's HTML** (hero, the four Why India points with their figure-chip HTML, Where Ethereum fits, On this site, Briefing, dinner, updates, footer).
+- `src/content/home.json`: every home string, **generated verbatim from the portal's HTML** (hero, the four Why India points with their figure-chip HTML, Where Ethereum fits, On this site, Briefing, updates, footer).
 - `src/content/site.json`: name ("ETHIndia Institutions"), domain, default title and description.
 - `src/content/briefing/`:
   - `<letter>.md`: title, heading (portal H1, e.g. "Module A — What Actually Shipped"), question, description (portal meta), legacy slug, summary bullets.
@@ -73,19 +73,17 @@ URLs: `/briefing/<letter>` (not the portal slugs; those redirect). `/dinner` and
 
 ## Visual system
 
-- **Palette:** navy + stone only. Zones: page (stone), `.deep` (nav, heroes, footer, portal header), `.band` (dinner). Components use only `--paper --panel --surface --ink --ink-2 --border --rule --accent --hairline`. All pairs pass AA.
+- **Palette:** navy + stone only. Zones: page (stone), `.deep` (nav, heroes, footer, portal header). Components use only `--paper --panel --surface --ink --ink-2 --border --rule --accent --hairline`. All pairs pass AA.
 - **Background:** column hairlines (`body::before`): 4 columns, 2 at ≤1080px, edges only at ≤560px. The layer sits `--hair-pad` outside the content edge so text never touches a line; two-column rows split on the 50% line. `body` has no background on purpose; `html` carries the colour.
-- **Fonts:** Hanken Grotesk (variable) stands in for Neue Montreal, and Pixelify Sans for Matrix Sans. Both are self-hosted in `public/fonts` (OFL) and declared in `tokens.css`. The licensed faces stay first in the stacks: drop their files in and uncomment the block in `tokens.css`. The pixel face is only for the hero's glyph-swapped letters, module letters A–G, chapter numerals and the dinner date. Data (tier chips, flags, ledger IDs) uses the sans.
+- **Fonts:** Hanken Grotesk (variable) stands in for Neue Montreal, and Pixelify Sans for Matrix Sans. Both are self-hosted in `public/fonts` (OFL) and declared in `tokens.css`. The licensed faces stay first in the stacks: drop their files in and uncomment the block in `tokens.css`. The pixel face is only for the hero's glyph-swapped letters, module letters A–G and chapter numerals. Data (tier chips, flags, ledger IDs) uses the sans.
 - **Logo:** `public/logo/ethindia-institutional.svg` (the kit's wordmark, no mark), drawn as a CSS mask (`.logo`, `--logo-h`) so it takes the zone's ink. Nav only. `favicon.svg` is the logomark. OG image `public/og/default.png` was rendered once from a throwaway HTML page (navy, bone logo, hairlines).
 - **Labels:** no uppercase tracked pixel kickers anywhere (user found them generic).
   - Home section names sit as running heads (`.runhead`) at each section's top-right edge.
   - Overview chapter markers (`.scene-eyebrow`) get the same treatment.
-  - "During Devcon 8, Mumbai" and "By invitation" are facts in the dinner card.
   - Update types (Event, Report) sit under the date.
   - "What this could not establish" is a plain bold heading.
 - **Buttons:** square-cornered (2px), 48px tall. Hover lightens the fill and draws a brass rule along the bottom.
   - `.btn--secondary` is a rule-coloured outline.
-  - The disabled state is a dashed outline ("Invite requests open soon").
   - Arrows are drawn: any `aria-hidden` span inside `.btn`, `.rlink`, `.deeper a` or `.scene-deeper a` is replaced by the `--arrow` mask and nudges on hover.
   - Ruled links (`.rlink`, `.deeper a`, `.scene-deeper a`, `.ref-list a`) sit on a grey rule that redraws in ink on hover, with a 44px hit area.
 - **Hero map:** canvas, dotted India (official boundary incl. all of J&K, DataMeet CC BY 2.5 IN), 3D ETH mark, Mumbai ripple. Pauses offscreen; static under reduced motion. Regenerate dots with `node scripts/india-dots.mjs india.geojson src/components/hero/india-dots.json 0.36` after downloading `india-composite.geojson` from datameet/maps (10 MB, not in repo). Don't swap in Natural Earth (different boundary).
@@ -102,7 +100,6 @@ One grammar, "the ledger being ruled". CSS lives in `base.css` and `Hero.astro`;
   3. The h2 rises word by word (`.w`, `--wi`).
   4. Content settles in reading order with a slight blur (`data-step`, `--step`).
   5. The rule under each row draws (`data-row` on `.points .updates .cols .findings` items).
-- **Dinner band:** opens from the content edge to full bleed on a `view()` timeline.
 - Sections already on screen at load never animate. Everything is visible without JS, static under reduced motion, and visible in print.
 
 ## Verifying visually

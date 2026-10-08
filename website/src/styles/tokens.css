@@ -3,7 +3,6 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 10' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 5h13.5M10.5 1l4 4-4 4'/%3E%3C/svg%3E");
   --gutter: clamp(20px, 5vw, 64px);
-  --hair-pad: min(16px, calc(var(--gutter) - 4px));
   --nav-h: clamp(56px, 5vw, 80px);
   --ticker-h: 32px;
   --measure: 64ch;
@@ -16,10 +15,9 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Colour. Three zones, each with the same semantic tokens:
+   Colour. Two zones, each with the same semantic tokens:
      page  (L-) — the default reading surface
      deep  (D-) — nav, hero, footer           → class="deep"
-     band  (B-) — dinner band                 → class="band"
    Components only ever use the semantic names (--paper, --ink, …); a zone
    class re-points them. One palette: navy + stone.
    --------------------------------------------------------------------------- */
@@ -47,17 +45,6 @@
   --D-rule: #5a6a80;
   --D-accent: #c9a866;
   --D-hairline: rgb(237 232 221 / 0.06);
-
-  --B-scheme: dark;
-  --B-paper: #0e1a2b;
-  --B-panel: #14233a;
-  --B-surface: #1a2c45;
-  --B-ink: #ede8dd;
-  --B-ink-2: #a9b2bf;
-  --B-border: #2c3f58;
-  --B-rule: #5a6a80;
-  --B-accent: #c9a866;
-  --B-hairline: rgb(237 232 221 / 0.06);
 }
 
 :root {
@@ -86,21 +73,8 @@
   --hairline: var(--D-hairline);
 }
 
-.band {
-  --scheme: var(--B-scheme);
-  --paper: var(--B-paper);
-  --panel: var(--B-panel);
-  --surface: var(--B-surface);
-  --ink: var(--B-ink);
-  --ink-2: var(--B-ink-2);
-  --border: var(--B-border);
-  --rule: var(--B-rule);
-  --accent: var(--B-accent);
-  --hairline: var(--B-hairline);
-}
-
-:root, .deep, .band { color-scheme: var(--scheme); }
-.deep, .band { background-color: var(--paper); color: var(--ink); }
+:root, .deep { color-scheme: var(--scheme); }
+.deep { background-color: var(--paper); color: var(--ink); }
 
 /* Interim faces, self-hosted (SIL OFL): Hanken Grotesk stands in for Neue Montreal and
    Pixelify Sans for Matrix Sans until the licensed files arrive (see the block below). */

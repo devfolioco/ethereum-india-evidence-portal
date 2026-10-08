@@ -4,11 +4,10 @@
 
 A site for ETHIndia Institutional, a new think tank under ETHIndia that works out how Ethereum fits Indian institutional finance. Domain: `institutions.ethindia.co`.
 
-Three jobs, in priority order:
+Two jobs, in priority order:
 
 1. Make the ETHIndia Institutional Report / briefing easy to find and read.
-2. Drive invite requests for the Institutional Dinner (4 Nov 2026, Mumbai, 7 PM onwards, near the Devcon venue, invite-only).
-3. Position ETHIndia Institutional as the neutral, credible front door to Ethereum for Indian banks, asset managers, market infrastructure and regulators.
+2. Position ETHIndia Institutional as the neutral, credible front door to Ethereum for Indian banks, asset managers, market infrastructure and regulators.
 
 Audience: senior people at Indian banks, AMCs, exchanges/depositories/clearing corps, NBFCs, fintechs, regulators, plus researchers and builders. They are not crypto-native. Every design choice should read as calm, factual and trustworthy.
 
@@ -16,7 +15,7 @@ Audience: senior people at Indian banks, AMCs, exchanges/depositories/clearing c
 
 - Structure / flow: https://www.ethereuminstitutional.org — follow its section order (Section 4 below), but avoid its mistakes (Section 8).
 - Visual language: https://ethindia.co — light, white graph paper, black ink, pixel-font accents, ticker bar. Open it before building.
-- Existing content: https://institutions.ethindia.co — the current portal (briefing, stats, dinner, updates). Reuse its content. Check its current URLs (briefing modules, anchors) and keep them working or 301-redirect them.
+- Existing content: https://institutions.ethindia.co — the current portal (briefing, stats, updates). Reuse its content. Check its current URLs (briefing modules, anchors) and keep them working or 301-redirect them.
 
 ## 2. Tech stack
 
@@ -46,7 +45,6 @@ src/
     index.astro
     briefing/index.astro
     briefing/[module].astro
-    dinner.astro
     privacy.astro
   styles/tokens.css, base.css
 public/
@@ -118,7 +116,7 @@ Long-form reading areas (briefing modules, FAQ answers) sit on solid `--paper` p
 ### Components
 
 - Ticker bar (top, below nav, like ethindia.co): black bar, white Matrix Sans uppercase, slow marquee, ◆ separators. Pauses on hover/focus, static under reduced motion. Items in `site.json`.
-- Nav: ETHIndia Institutional logo left, links centre, black pill CTA right ("Request an invite"). Sticky, white background with hairline bottom border. Total sticky chrome (nav + ticker) ≤ 96px desktop; ticker hides on scroll-down, returns on scroll-up.
+- Nav: ETHIndia Institutional logo left, links centre, black pill CTA right ("Read the briefing"). Sticky, white background with hairline bottom border. Total sticky chrome (nav + ticker) ≤ 96px desktop; ticker hides on scroll-down, returns on scroll-up.
 - Buttons: primary = black pill, white text, weight 600, 15px, min 44px height. Secondary = transparent pill with 1px ink border. Hover: invert. Visible 2px focus ring offset 3px.
 - Cards: white fill, 1px `--grid` darkened border (`#d6d6d6`), 4px radius, no shadow. Hover on linked cards: border goes `--ink`.
 - Stat block: big Matrix Sans number, Neue Montreal label below, source + date in 14px `--ink-2`. Every stat must have a source.
@@ -135,11 +133,11 @@ Follows ethereuminstitutional.org's flow, adapted for India. Copy below is draft
 
 ### 0. Ticker
 
-`INSTITUTIONAL DINNER ◆ 4 NOV ◆ MUMBAI ◆ BY INVITATION ↗` · `BRIEFING OUT: TOKENISED SETTLEMENT IN INDIA ↗` · `FOLLOW @ETHINDIACO ON X ↗`
+`BRIEFING OUT: TOKENISED SETTLEMENT IN INDIA ↗` · `FOLLOW @ETHINDIACO ON X ↗`
 
 ### 1. Nav
 
-Logo · Why India · Focus · Briefing · Dinner · Team · FAQ · [Request an invite]
+Logo · Why India · Focus · Briefing · Team · FAQ · [Read the briefing]
 
 - Logo: `/public/logo/ethindia-institutional.svg` `[TODO: Arko supplies final mark]`. Placeholder: ETHIndia logo + "Institutional" set in Neue Montreal 500.
 - Active-section highlighting via IntersectionObserver, threshold tuned so the highlighted item matches what's on screen.
@@ -149,7 +147,7 @@ Logo · Why India · Focus · Briefing · Dinner · Team · FAQ · [Request an i
 - Eyebrow (pixel): `AN ETHINDIA INITIATIVE`
 - H1 (with glyph swap): Ethereum for institutional finance in India.
 - Sub (max 2 lines): Where banks, market infrastructure, regulators and builders work out what role Ethereum should play in India's tokenised finance.
-- CTAs: [Read the briefing] primary · [Institutional dinner, 4 Nov →] secondary
+- CTA: [Read the briefing] primary
 - Below, a 4-up stat strip (from `stats.json`):
   - ₹53.6 lakh cr — corporate bonds outstanding (FY25)
   - ₹7,645 cr — daily secondary corporate bond trading
@@ -195,31 +193,19 @@ Full-width panel on solid `--paper`, black border.
 - Right: module index as a list, each row = pixel letter + title + arrow, linking to `/briefing/a` … `/briefing/g`: A What shipped · B What's legal in India · C Where the value is · D Ethereum vs alternatives · E The privacy question · F The objections · G How adoption happens
 - If the full "ETHIndia Institutional Report" is a separate, later publication, show it as a second card with "Coming soon" and a notify-me link. `[TODO: confirm whether the report = this briefing or a new piece]`
 
-### 7. Institutional dinner
-
-Black band (inverted: `--ink` background, white text) to break the page rhythm, like ethindia.co's ticker.
-
-- Pixel label: `BY INVITATION`
-- H2: ETHIndia Institutional Dinner
-- Detail rows in Matrix Sans: `WED 04 NOV 2026` · `7 PM ONWARDS` · `MUMBAI, NEAR THE DEVCON VENUE`
-- Copy: A closed-door dinner for senior people at Indian banks, asset managers, market infrastructure institutions and regulators, with researchers and builders. Seats are limited and each invitation is confirmed individually. The venue is shared with confirmed guests.
-- CTA: [Request an invite] → `/dinner`
-- Build a state switch in `site.json`: `dinnerStatus: "soon" | "open" | "closed"`. "soon" shows a disabled-looking pill reading "Invite requests open soon" plus a notify link.
-
-### 8. Who we work with (mirrors "Across the institutional stack")
+### 7. Who we work with (mirrors "Across the institutional stack")
 
 H2: Across Indian finance. Simple 4×2 grid of text tiles, no diagram: Commercial banks · Asset managers · Market infrastructure (exchanges, depositories, clearing) · Regulators and public sector · NBFCs and fintechs · Insurers · Corporates and treasuries · GIFT City / IFSC entities
 
 Each tile: name + one line on what they're exploring `[TODO: lines, or ship names only]`.
 
-### 9. Updates
+### 8. Updates
 
 H2: Updates. Dated list from `src/content/updates/`, newest first, date in pixel font. Show latest 3 + "All updates". Seed:
 
-- 30 Sep 2026 — Institutional dinner announced
 - 25 Sep 2026 — Briefing published
 
-### 10. Team (mirrors "Founded by…")
+### 9. Team (mirrors "Founded by…")
 
 H2: People. `[TODO: names, roles, one-line bios, photos]`
 
@@ -227,13 +213,13 @@ H2: People. `[TODO: names, roles, one-line bios, photos]`
 - Line under the grid: An ETHIndia initiative. + careers/contact email `[TODO]`.
 - Hide the section entirely if `team.json` is empty.
 
-### 11. Supporters (mirrors "Supported by…") — optional for v1
+### 10. Supporters (mirrors "Supported by…") — optional for v1
 
 - Anchors first and largest: logos at real size in a single row with one line each.
 - Ecosystem below: compact monochrome logo grid, max 3 rows visible, rest behind "Show all". Normalise logos by optical size, not width.
 - Hide the section if `supporters.json` is empty.
 
-### 12. FAQ
+### 11. FAQ
 
 Native `<details>/<summary>` accordion, left-aligned, max-width `--measure`. Draft questions `[TODO: answers from client]`:
 
@@ -241,11 +227,10 @@ Native `<details>/<summary>` accordion, left-aligned, max-width `--measure`. Dra
 - How is it related to ETHIndia and Devfolio?
 - Is ETHIndia Institutional selling anything or charging fees?
 - Who is the briefing for?
-- How do I get invited to the dinner?
 - Can my institution contribute research or data?
 - How do I get in touch?
 
-### 13. Stay informed + footer
+### 12. Stay informed + footer
 
 - H2: Research and updates, in your inbox. Email input with a visible label (not placeholder-only) + [Subscribe] pill + consent checkbox at 14px. `[TODO: provider — Buttondown/Substack/Beehiiv embed URL]`. Do not build a custom backend.
 - Footer: logo, An ETHIndia initiative, link to ethindia.co, X @ethindiaco, contact email `[TODO]`, Privacy, and Prose and data CC BY 4.0. Code MIT. (carried over from the current portal).
@@ -254,7 +239,6 @@ Native `<details>/<summary>` accordion, left-aligned, max-width `--measure`. Dra
 
 - `/briefing` — report landing: title, date, summary, module index, PDF link, how to cite.
 - `/briefing/[module]` — long-form reading layout: solid paper panel, 64ch measure, sticky module nav on desktop (A–G with progress), prev/next at the bottom, tables and figures full-width within the panel. Port content from the existing portal's briefing.
-- `/dinner` — dinner details + request form. Fields: name, title, institution, work email, LinkedIn, short note. Submit to a form service (Tally/Formspree) `[TODO: endpoint]`. Show the "soon/open/closed" state from `site.json`.
 - `/privacy` — `[TODO: copy]`.
 - 404 in the same style.
 
@@ -297,9 +281,9 @@ Lessons from reviewing ethereuminstitutional.org:
 Stop after each phase, run the dev server, and report what to review.
 
 - **Phase 1 — Foundation.** Astro scaffold, tokens.css, base.css (reset with `font: inherit`), graph-paper background, font loading with fallbacks, Base layout, nav, ticker, footer. Content collections and JSON files seeded with the copy above. Check: nav + ticker + footer render on desktop and 375px mobile; no horizontal scroll; Lighthouse a11y 100.
-- **Phase 2 — Home page.** Sections 2–13 in order, reading from content files. Glyph-swap H1. Dinner state switch. Check: every `[TODO]` renders as a visible placeholder (dashed outline + label) so gaps are obvious; sections with empty data are hidden.
+- **Phase 2 — Home page.** Sections 2–12 in order, reading from content files. Glyph-swap H1. Check: every `[TODO]` renders as a visible placeholder (dashed outline + label) so gaps are obvious; sections with empty data are hidden.
 - **Phase 3 — Briefing.** `/briefing` and `/briefing/[module]` with content ported from the existing portal; preserve or redirect old URLs. Check: all seven modules render; old portal URLs resolve.
-- **Phase 4 — Dinner page + forms.** `/dinner`, newsletter and invite form wired to the chosen services (or stubbed with a clear TODO).
+- **Phase 4 — Forms.** Newsletter form wired to the chosen service (or stubbed with a clear TODO).
 - **Phase 5 — Polish.** Section-entry motion, motifs, OG images, sitemap, 404, reduced-motion pass, contrast pass, Lighthouse on mobile and desktop. Check: list every remaining `[TODO]` in a final report.
 
 ## 10. Assets needed from Arko / ETHIndia
