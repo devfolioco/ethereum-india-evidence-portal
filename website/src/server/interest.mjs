@@ -57,7 +57,11 @@ function validEmail(email) {
 }
 
 // Dependency injection keeps tests offline and prevents writes to the live signup list.
-export async function handleInterest(request, env, fetcher = fetch) {
+export async function handleInterest(request, env, fetcher = fetch, logError = (details) => console.error('[interest]', JSON.stringify(details))) {
+  const unavailable = (details) => {
+    logError(details);
+    return reply(request, 503, UNAVAILABLE);
+  };
   if (request.method !== 'POST') {
     return reply(request, 405, 'Use the Show interest form to submit your email.', { Allow: 'POST' });
   }
@@ -88,8 +92,11 @@ export async function handleInterest(request, env, fetcher = fetch) {
   const email = typeof data.email === 'string' ? data.email.trim().toLowerCase() : '';
   if (!validEmail(email)) return reply(request, 400, 'Please enter a valid email address.');
 
-  const { CLOUDFLARE_ACCOUNT_ID: account, CLOUDFLARE_D1_DATABASE_ID: database, CLOUDFLARE_API_TOKEN: token } = env;
-  if (!account || !database || !token) return reply(request, 503, UNAVAILABLE);
+  const keys = ['CLOUDFLARE_ACCOUNT_ID', 'CLOUDFLARE_D1_DATABASE_ID', 'CLOUDFLARE_API_TOKEN'];
+  const values = keys.map((key) => env[key]?.trim());
+  const [account, database, token] = values;
+  const missing = keys.filter((_, index) => !values[index]);
+  if (missing.length) return unavailable({ reason: 'missing_configuration', missing });
 
   try {
     const result = await fetcher(`https://api.cloudflare.com/client/v4/accounts/${encodeURIComponent(account)}/d1/database/${encodeURIComponent(database)}/query`, {
@@ -101,15 +108,27 @@ export async function handleInterest(request, env, fetcher = fetch) {
       }),
       signal: AbortSignal.timeout(10_000),
     });
-    if (!result.ok) return reply(request, 503, UNAVAILABLE);
-    const payload = await result.json();
-    if (payload.success !== true || !Array.isArray(payload.result) ||
+    const payload = await result.json().catch(() => null);
+    if (!result.ok || payload?.success !== true || !Array.isArray(payload?.result) ||
         payload.result.length !== 1 || payload.result[0]?.success !== true) {
-      return reply(request, 503, UNAVAILABLE);
+      const errors = [
+        ...(Array.isArray(payload?.errors) ? payload.errors : []),
+        ...(Array.isArray(payload?.result?.[0]?.errors) ? payload.result[0].errors : []),
+      ];
+      // Cloudflare messages may echo SQL or submitted values. Log only numeric
+      // codes and known categories, never the response body or error message.
+      const codes = errors.map((error) => error?.code).filter(Number.isInteger);
+      const missingTable = errors.some((error) => typeof error?.message === 'string' && /no such table/i.test(error.message));
+      return unavailable({
+        reason: missingTable ? 'missing_table' : !payload ? 'invalid_cloudflare_response' : 'cloudflare_error',
+        status: result.status,
+        codes,
+      });
     }
     // Duplicates are successful too, without revealing whether an email was already saved.
     return reply(request, 200, SUCCESS);
-  } catch {
-    return reply(request, 503, UNAVAILABLE);
+  } catch (error) {
+    const timeout = error instanceof Error && ['TimeoutError', 'AbortError'].includes(error.name);
+    return unavailable({ reason: timeout ? 'cloudflare_timeout' : 'cloudflare_request_failed' });
   }
 }

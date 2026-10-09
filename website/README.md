@@ -88,5 +88,11 @@ the endpoint returns a retryable error and the form keeps the entered email.
   Firewall rate-limit rule on `POST /api/interest` or add a server-verified challenge.
 - Emails and tokens are not logged or exposed by a public read endpoint.
 
+For a 503, inspect the Vercel function log entry prefixed `[interest]`. It reports
+missing variable names, Cloudflare HTTP status and numeric error codes, a missing
+table, or a request timeout/failure. It never logs submitted emails, credentials,
+SQL, or raw upstream error messages. Check Preview-scoped variables and redeploy
+after changes when testing a preview URL.
+
 References: [Astro Vercel adapter](https://docs.astro.build/en/guides/integrations-guide/vercel/),
 [Cloudflare D1 query API](https://developers.cloudflare.com/api/resources/d1/subresources/database/methods/query/).

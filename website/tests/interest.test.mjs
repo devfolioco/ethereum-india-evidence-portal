@@ -91,3 +91,35 @@ test('native HTML form submissions work without JavaScript', async () => {
   assert.match(response.headers.get('content-type'), /text\/html/);
   assert.match(await response.text(), /Thank you for your interest/);
 });
+
+test('diagnostics identify configuration and Cloudflare failures without logging sensitive data', async () => {
+  const entries = [];
+  const log = (details) => entries.push(details);
+  await handleInterest(request(), { ...env, CLOUDFLARE_API_TOKEN: '  ' }, noFetch, log);
+  assert.deepEqual(entries.pop(), { reason: 'missing_configuration', missing: ['CLOUDFLARE_API_TOKEN'] });
+
+  await handleInterest(request(), env, async () => Response.json({
+    success: false, errors: [{ code: 10000, message: 'secret: test-secret person@example.com' }],
+  }, { status: 403 }), log);
+  assert.deepEqual(entries.pop(), { reason: 'cloudflare_error', status: 403, codes: [10000] });
+
+  await handleInterest(request(), env, async () => Response.json({
+    success: false, errors: [{ code: 7500, message: 'no such table: interest_signups; person@example.com' }],
+  }, { status: 400 }), log);
+  assert.deepEqual(entries.pop(), { reason: 'missing_table', status: 400, codes: [7500] });
+
+  await handleInterest(request(), env, async () => { throw new DOMException('test-secret', 'TimeoutError'); }, log);
+  assert.deepEqual(entries.pop(), { reason: 'cloudflare_timeout' });
+  await handleInterest(request(), env, async () => { throw new Error('person@example.com test-secret'); }, log);
+  assert.deepEqual(entries.pop(), { reason: 'cloudflare_request_failed' });
+});
+
+test('trims whitespace from configured credentials before calling Cloudflare', async () => {
+  const spaced = Object.fromEntries(Object.entries(env).map(([key, value]) => [key, ` ${value}\n`]));
+  const response = await handleInterest(request(), spaced, async (url, options) => {
+    assert.equal(url, 'https://api.cloudflare.com/client/v4/accounts/test-account/d1/database/test-db/query');
+    assert.equal(options.headers.Authorization, 'Bearer test-secret');
+    return success();
+  });
+  assert.equal(response.status, 200);
+});
