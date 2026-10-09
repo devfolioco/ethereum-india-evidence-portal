@@ -4,6 +4,16 @@ Run `npm ci`, then `npm run dev`. `npm run build` produces the static pages and
 the Vercel backend function. `npm test` checks the signup endpoint without
 contacting Cloudflare or writing to a live database.
 
+Run `npm run test:deployment` to build and test the packaged Vercel function in
+an isolated temporary directory. This checks startup and endpoint responses
+without relying on dependencies installed in the build workspace. D1 writes
+are mocked in this check.
+
+The Astro config contains a narrow workaround for `@astrojs/vercel` 11.0.13:
+its server entry imports constants through the adapter's build entry, retaining
+an unused Rolldown import. Tree-shaking that import prevents native build bindings
+from being required at function startup. Other module side effects are preserved.
+
 ## Show interest
 
 The homepage form posts to `/api/interest`. The Astro endpoint runs as a Vercel
