@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/hero/Hero.astro';
+import InterestForm from '../components/InterestForm.astro';
 import home from '../content/home.json';
 import '../styles/prose.css';
 
@@ -102,6 +103,7 @@ const { whyIndia, ethereum, expect, briefing, updates } = home;
       </ol>
     </div>
   </section>
+  <InterestForm />
 </Base>
 
 <style>

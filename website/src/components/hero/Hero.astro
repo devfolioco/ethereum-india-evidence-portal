@@ -23,6 +23,7 @@ const parts = marked.split(/\[(.)\]/);
         </span>
       </h1>
       <p class="hero__sub">{hero.sub}</p>
+      <a class="btn hero__interest" href="#interest">Sign up<span aria-hidden="true"> →</span></a>
     </div>
 
     <div class="hero__art">
@@ -54,6 +55,7 @@ const parts = marked.split(/\[(.)\]/);
   }
 
   .hero__art { max-width: 560px; justify-self: end; width: 100%; }
+  .hero__interest { margin-top: 28px; }
 
   @media (max-width: 960px) {
     .hero__grid { grid-template-columns: 1fr; }

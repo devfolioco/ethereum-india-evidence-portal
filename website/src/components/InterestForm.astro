@@ -1,0 +1,87 @@
+<section class="section interest" id="interest" aria-labelledby="interest-title">
+  <div class="wrap">
+    <div class="interest__panel">
+      <div class="interest__copy">
+        <h2 id="interest-title">Hear from ETHIndia Institutional</h2>
+        <p>New briefings, invitations to convenings and pilot announcements, sent only when there is something new. For people at Indian banks, market infrastructure, regulators and the teams building with them.</p>
+      </div>
+      <form action="/api/interest" method="post" class="interest__form" data-interest-form>
+        <label for="interest-email">Email address</label>
+        <div class="interest__fields">
+          <input id="interest-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@organisation.com" required aria-describedby="interest-note interest-status" />
+          <button class="btn" type="submit">Sign up</button>
+        </div>
+        <div class="interest__trap" aria-hidden="true" inert>
+          <label for="interest-website">Leave this field empty</label>
+          <input id="interest-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+        <p class="meta" id="interest-note">ETHIndia will use this address only to contact you about ETHIndia Institutional. Every email has an unsubscribe link.</p>
+        <p class="interest__status" id="interest-status" role="status" aria-live="polite" aria-atomic="true"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .interest__panel { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 64px); padding: clamp(24px, 4vw, 48px); background: var(--panel); border-radius: var(--radius-card); }
+  .interest__copy { display: grid; align-content: start; gap: 20px; }
+  .interest__copy p { max-width: 44ch; color: var(--ink-2); }
+  .interest__form { min-width: 0; align-self: center; }
+  .interest__form label { display: block; margin-bottom: 8px; font-size: 15px; font-weight: 500; }
+  .interest__fields { display: flex; gap: 10px; }
+  .interest__fields input { min-width: 0; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid var(--rule); border-radius: 2px; background: var(--paper); font-size: 16px; }
+  .interest__fields input::placeholder { color: var(--ink-2); }
+  .interest__fields .btn { flex-shrink: 0; }
+  .interest__form .meta { margin-top: 12px; line-height: 1.5; }
+  .interest__status { margin-top: 12px; font-size: 16px; line-height: 1.5; }
+  .interest__status:empty { display: none; }
+  .interest__status[data-error="true"] { color: #9b2c24; }
+  .interest__trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  @media (max-width: 860px) { .interest__panel { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .interest__fields { flex-direction: column; } }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-interest-form]');
+  if (form) {
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const email = form.querySelector<HTMLInputElement>('[name="email"]')!;
+    const status = form.querySelector<HTMLElement>('[role="status"]')!;
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (button.disabled) return;
+      button.disabled = true;
+      button.textContent = 'Saving…';
+      form.setAttribute('aria-busy', 'true');
+      email.removeAttribute('aria-invalid');
+      status.textContent = '';
+      status.dataset.error = 'false';
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json', 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            email: email.value,
+            website: form.querySelector<HTMLInputElement>('[name="website"]')!.value,
+          }),
+          signal: AbortSignal.timeout(15_000),
+        });
+        const result = await response.json();
+        if (!response.ok || result.ok !== true) {
+          if (response.status === 400) email.setAttribute('aria-invalid', 'true');
+          throw new Error(typeof result.message === 'string' ? result.message : 'We couldn’t save your email. Please try again.');
+        }
+        form.reset();
+        status.textContent = result.message;
+      } catch (error) {
+        status.dataset.error = 'true';
+        status.textContent = error instanceof Error && error.name === 'Error'
+          ? error.message : 'We couldn’t save your email. Please check your connection and try again.';
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Sign up';
+        form.removeAttribute('aria-busy');
+      }
+    });
+  }
+</script>

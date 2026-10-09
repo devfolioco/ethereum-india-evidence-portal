@@ -1,0 +1,12 @@
+// Used only to administer D1. The website and backend deploy to Vercel.
+{
+  "name": "ethindia-institutional",
+  "account_id": "57d45ef71c5fa2dafd245cd551b60ded",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ethindia-institutional-interest",
+      "database_id": "5e9240ce-e404-4273-835c-80411da76739"
+    }
+  ]
+}

@@ -5,9 +5,17 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs",
+    "test:deployment": "npm run build && node --test tests/deployment/*.test.mjs"
   },
   "dependencies": {
+    "@astrojs/vercel": "11.0.13",
     "astro": "^7.3.5"
+  },
+  "overrides": {
+    "@vercel/routing-utils": {
+      "path-to-regexp": "6.3.0"
+    }
   }
 }
