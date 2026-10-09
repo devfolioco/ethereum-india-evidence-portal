@@ -2,20 +2,20 @@
   <div class="wrap">
     <div class="interest__panel">
       <div class="interest__copy">
-        <h2 id="interest-title">Show interest</h2>
-        <p>Exploring Ethereum for institutional finance in India? Leave your email to hear about new briefings and upcoming convenings.</p>
+        <h2 id="interest-title">Hear from ETHIndia Institutional</h2>
+        <p>New briefings, invitations to convenings and pilot announcements, sent only when there is something new. For people at Indian banks, market infrastructure, regulators and the teams building with them.</p>
       </div>
       <form action="/api/interest" method="post" class="interest__form" data-interest-form>
         <label for="interest-email">Email address</label>
         <div class="interest__fields">
           <input id="interest-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@organisation.com" required aria-describedby="interest-note interest-status" />
-          <button class="btn" type="submit">Show interest</button>
+          <button class="btn" type="submit">Sign up</button>
         </div>
         <div class="interest__trap" aria-hidden="true" inert>
           <label for="interest-website">Leave this field empty</label>
           <input id="interest-website" name="website" type="text" tabindex="-1" autocomplete="off" />
         </div>
-        <p class="meta" id="interest-note">By submitting, you agree to be contacted by ETHIndia about this initiative.</p>
+        <p class="meta" id="interest-note">ETHIndia will use this address only to contact you about ETHIndia Institutional. Every email has an unsubscribe link.</p>
         <p class="interest__status" id="interest-status" role="status" aria-live="polite" aria-atomic="true"></p>
       </form>
     </div>
@@ -79,7 +79,7 @@
           ? error.message : 'We couldn’t save your email. Please check your connection and try again.';
       } finally {
         button.disabled = false;
-        button.textContent = 'Show interest';
+        button.textContent = 'Sign up';
         form.removeAttribute('aria-busy');
       }
     });
