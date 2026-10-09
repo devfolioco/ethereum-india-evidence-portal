@@ -59,6 +59,9 @@ confirms the tree is in sync.
 The public site is the redesigned build in `website/`, deployed to Vercel by
 `.github/workflows/deploy-vercel.yml` on pushes to `main`.
 
+The homepage's Show interest form uses a Vercel backend function and Cloudflare
+D1. Database and environment setup are documented in [website/README.md](website/README.md).
+
 ## The content model and the build step
 
 Every page's prose still lives in `content/*.md`, hand-edited exactly as
