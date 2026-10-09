@@ -13,5 +13,9 @@ Research Prompts/_to_delete/
 # Machine-local Claude Code permissions (launch.json is shared, this is not)
 .claude/settings.local.json
 
-# Not used — the project has zero dependencies
+# Local dependencies and deployment credentials
 node_modules/
+.env*
+!.env.example
+.vercel/
+.wrangler/

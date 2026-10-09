@@ -14,6 +14,11 @@ its server entry imports constants through the adapter's build entry, retaining
 an unused Rolldown import. Tree-shaking that import prevents native build bindings
 from being required at function startup. Other module side effects are preserved.
 
+The `@vercel/routing-utils` dependency pins a vulnerable `path-to-regexp` release,
+so `package.json` overrides it with the compatible patched 6.3.0 version.
+The lockfile also updates `http-cache-semantics` to 4.3.0. CI runs
+`npm audit --audit-level=high` to flag newly reported high/critical advisories.
+
 ## Show interest
 
 The homepage form posts to `/api/interest`. The Astro endpoint runs as a Vercel
@@ -84,8 +89,9 @@ the endpoint returns a retryable error and the form keeps the entered email.
 - The endpoint validates email, limits request size, rejects cross-origin browser
   posts, uses bound SQL parameters, and times out failed D1 requests.
 - A hidden honeypot catches basic form bots. It is not a rate limiter or email
-  verification. For a public launch with abuse concerns, configure a Vercel
-  Firewall rate-limit rule on `POST /api/interest` or add a server-verified challenge.
+  verification. Rate limiting is intentionally not enabled. Automated clients
+  can bypass the honeypot and origin checks, so repeated submissions can consume
+  Vercel requests and D1 writes. The endpoint does not verify email ownership.
 - Emails and tokens are not logged or exposed by a public read endpoint.
 
 For a 503, inspect the Vercel function log entry prefixed `[interest]`. It reports
