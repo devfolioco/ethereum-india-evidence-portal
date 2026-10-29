@@ -246,7 +246,7 @@ p { max-width: var(--measure); text-wrap: pretty; }
   }
 }
 
-/* Logo lockup, drawn as a mask so it takes the zone's ink (bone on navy, navy on stone).
+/* Logo lockup, drawn as a mask so it takes the zone's ink (bone on green, green on stone).
    Aspect ratio from /logo/ethindia-institutional.svg (3634 × 298). */
 .logo {
   display: block;
