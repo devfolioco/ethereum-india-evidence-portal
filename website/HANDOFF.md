@@ -37,7 +37,7 @@ npx vercel deploy --prod --yes  # manual deploy; look for the "Aliased" line
 - Git: `main`, remote `origin` = https://github.com/superark21/ethindia-institutional (private).
 - Now lives in `website/` of [devfolioco/ethereum-india-evidence-portal](https://github.com/devfolioco/ethereum-india-evidence-portal). Pushes to `main` that touch `website/**` deploy to the Devfolio Vercel project through `.github/workflows/deploy-vercel.yml`. The old `superark21s-projects/ethindia-institutional` project is no longer the deploy target.
 - Live: **https://ethindia-institutional.vercel.app**. Last deploy 8 Oct 2026 (commit `db1522c`).
-- **`institutions.ethindia.co` still serves the old portal.** `vercel.json` 301s every old `.html` URL (including `ledger.html#fig-N`) to the new paths, so the domain can be attached to the Vercel project whenever the user says so (needs a DNS change on ethindia.co).
+- **Domain: https://institutional.ethindia.co** serves this site; the old `institutions.ethindia.co` redirects to it. `vercel.json` 301s every old portal `.html` URL (including `ledger.html#fig-N`) to the new paths.
 
 ## Page structure (mirrors the portal's three page families)
 
@@ -76,7 +76,7 @@ URLs: `/briefing/<letter>` (not the portal slugs; those redirect). `/privacy` no
 - **Palette:** navy + stone only. Zones: page (stone), `.deep` (nav, heroes, footer, portal header). Components use only `--paper --panel --surface --ink --ink-2 --border --rule --accent --hairline`. All pairs pass AA.
 - **Background:** column hairlines (`body::before`): 4 columns, 2 at ≤1080px, edges only at ≤560px. The layer sits `--hair-pad` outside the content edge so text never touches a line; two-column rows split on the 50% line. `body` has no background on purpose; `html` carries the colour.
 - **Fonts:** Hanken Grotesk (variable) stands in for Neue Montreal, and Pixelify Sans for Matrix Sans. Both are self-hosted in `public/fonts` (OFL) and declared in `tokens.css`. The licensed faces stay first in the stacks: drop their files in and uncomment the block in `tokens.css`. The pixel face is only for the hero's glyph-swapped letters, module letters A–G and chapter numerals. Data (tier chips, flags, ledger IDs) uses the sans.
-- **Logo:** `public/logo/ethindia-institutional.svg` (the kit's wordmark, no mark), drawn as a CSS mask (`.logo`, `--logo-h`) so it takes the zone's ink. Nav only. `favicon.svg` is the logomark. OG image `public/og/default.png` was rendered once from a throwaway HTML page (navy, bone logo, hairlines).
+- **Logo:** `public/logo/ethindia-institutional.svg` (the kit's wordmark, no mark), drawn as a CSS mask (`.logo`, `--logo-h`) so it takes the zone's ink. Nav only. `favicon.svg` is the logomark. OG image `public/og/default.png` is rendered from `scripts/og-card.html` (navy, wordmark only, headline in the site's sans, the hero's dotted India with Mumbai in brass); the render command is in that file.
 - **Labels:** no uppercase tracked pixel kickers anywhere (user found them generic).
   - Home section names sit as running heads (`.runhead`) at each section's top-right edge.
   - Overview chapter markers (`.scene-eyebrow`) get the same treatment.
@@ -113,7 +113,6 @@ One grammar, "the ledger being ruled". CSS lives in `base.css` and `Hero.astro`;
 
 ## Open decisions for the user
 
-- Attach `institutions.ethindia.co` to the Vercel project.
 - Connect Vercel to the GitHub repo so pushes to `main` deploy.
 - The ledger toggles (A–G, T1–T5) and module reading-depth tabs are still rounded pills, which no longer match the square buttons. User was offered the change; no answer yet.
 - The hero's pixel-letter swap reads crowded in Pixelify Sans; could go plain sans until Matrix Sans arrives.

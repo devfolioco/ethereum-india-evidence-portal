@@ -1,6 +1,6 @@
 # Ethereum/India Institutional Briefing
 
-**Live: https://institutions.ethindia.co/**
+**Live: https://institutional.ethindia.co/**
 
 The pages are generated from Markdown by a build script; nothing here is
 hand-authored HTML. Edit `content/*.md`, not the `.html` files.

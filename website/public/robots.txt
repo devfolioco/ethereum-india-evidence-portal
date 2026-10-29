@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://institutions.ethindia.co/sitemap.xml
+Sitemap: https://institutional.ethindia.co/sitemap.xml
