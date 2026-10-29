@@ -22,28 +22,30 @@
    class re-points them. One palette: green + stone.
    --------------------------------------------------------------------------- */
 
-/* Green + stone: deep green chrome, stone reading surfaces, brass accent. */
+/* Green + stone: deep green chrome, stone reading surfaces, green accent. */
 :root {
   --L-scheme: light;
   --L-paper: #f1eee6;
   --L-panel: #f9f7f2;
   --L-surface: #e8e3d7;
   --L-ink: #10241c;
+  --L-heading: #12372a;
   --L-ink-2: #4a5a52;
   --L-border: #d5cebf;
   --L-rule: #8d8574;
-  --L-accent: #7a5a22;
+  --L-accent: #057333;
   --L-hairline: rgb(16 36 28 / 0.075);
 
   --D-scheme: dark;
-  --D-paper: #12362a;
+  --D-paper: #12372a;
   --D-panel: #174133;
   --D-surface: #1d4c3c;
   --D-ink: #ede8dd;
+  --D-heading: #ede8dd;
   --D-ink-2: #b4c4ba;
   --D-border: #2b5c4a;
   --D-rule: #7a9a8c;
-  --D-accent: #c9a866;
+  --D-accent: #5cc285;
   --D-hairline: rgb(237 232 221 / 0.06);
 }
 
@@ -53,6 +55,7 @@
   --panel: var(--L-panel);
   --surface: var(--L-surface);
   --ink: var(--L-ink);
+  --heading: var(--L-heading);
   --ink-2: var(--L-ink-2);
   --border: var(--L-border);
   --rule: var(--L-rule);
@@ -66,6 +69,7 @@
   --panel: var(--D-panel);
   --surface: var(--D-surface);
   --ink: var(--D-ink);
+  --heading: var(--D-heading);
   --ink-2: var(--D-ink-2);
   --border: var(--D-border);
   --rule: var(--D-rule);
