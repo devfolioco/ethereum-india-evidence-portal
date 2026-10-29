@@ -10,6 +10,7 @@ export const GET: APIRoute = async ({ site }) => {
     ...modules.map((m) => `/briefing/${m.data.letter}`).sort(),
     '/briefing/ledger',
     '/briefing/reconciliation',
+    '/contributors',
   ];
   const urls = paths.map((p) => `  <url><loc>${new URL(p, site)}</loc></url>`).join('\n');
   return new Response(

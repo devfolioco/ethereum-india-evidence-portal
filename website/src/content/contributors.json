@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Denver Dsouza",
+    "title": "CEO, Devfolio",
+    "relevance": "Runs Devfolio, which has organised ETHIndia and related builder programmes in India since 2018. Handles the operating side of the institutional effort: who is in the room, and how briefings and convenings are put together.",
+    "photo": "/contributors/denver-dsouza.webp",
+    "linkedin": "https://www.linkedin.com/in/denverjude/",
+    "x": "https://x.com/denverjude"
+  },
+  {
+    "name": "Satyaki",
+    "title": "Ecosystem, Devcon; co-founder, SE7EN & Co",
+    "relevance": "Works on the Devcon India programme and has spent several years on Ethereum-aligned infrastructure projects, including liquid staking, rollups and restaking. Brings the local community and event side into the institutional conversations.",
+    "photo": "/contributors/satyaki.webp",
+    "linkedin": "https://www.linkedin.com/in/satyakikc/",
+    "x": "https://x.com/satyaki44"
+  },
+  {
+    "name": "Rashmi Abbigeri",
+    "title": "Programming lead, ETHIndia; research engineer, Metagov",
+    "relevance": "Leads programming for ETHIndia and builds grants and governance tooling at Metagov, including work on ENS DAO. Responsible for session design and for keeping the research and the convenings tied to what is actually being built.",
+    "photo": "/contributors/rashmi-abbigeri.webp",
+    "linkedin": "https://www.linkedin.com/in/rashmi-v-abbigeri/",
+    "x": "https://x.com/rashmivabbigeri"
+  },
+  {
+    "name": "Rohit Malekar",
+    "title": "Researcher; The Monsoon Ledger",
+    "relevance": "Writes on tokenisation, settlement and regulation in Asian institutional finance. Produced the evidence base behind the briefing: what is live in India, what RBI, SEBI and IFSCA permit, and where Ethereum fits against permissioned ledgers.",
+    "photo": "/contributors/rohit-malekar.webp",
+    "linkedin": "https://www.linkedin.com/in/rohitmalekar/",
+    "x": "https://x.com/rohitmalekar"
+  }
+]
