@@ -2,7 +2,7 @@
 
 ## 1. What we're building
 
-A site for ETHIndia Institutional, a new think tank under ETHIndia that works out how Ethereum fits Indian institutional finance. Domain: `institutions.ethindia.co`.
+A site for ETHIndia Institutional, a new think tank under ETHIndia that works out how Ethereum fits Indian institutional finance. Domain: `institutional.ethindia.co`.
 
 Two jobs, in priority order:
 
@@ -15,7 +15,7 @@ Audience: senior people at Indian banks, AMCs, exchanges/depositories/clearing c
 
 - Structure / flow: https://www.ethereuminstitutional.org — follow its section order (Section 4 below), but avoid its mistakes (Section 8).
 - Visual language: https://ethindia.co — light, white graph paper, black ink, pixel-font accents, ticker bar. Open it before building.
-- Existing content: https://institutions.ethindia.co — the current portal (briefing, stats, updates). Reuse its content. Check its current URLs (briefing modules, anchors) and keep them working or 301-redirect them.
+- Existing content: https://institutional.ethindia.co — the current portal (briefing, stats, updates). Reuse its content. Check its current URLs (briefing modules, anchors) and keep them working or 301-redirect them.
 
 ## 2. Tech stack
 
@@ -248,7 +248,7 @@ Native `<details>/<summary>` accordion, left-aligned, max-width `--measure`. Dra
 - Meta description: the hero sub line.
 - OG image 1200×630: white graph paper, H1 with glyph swap, logo `[generate as a static PNG in /public/og/]`.
 - Per-module OG titles for briefing pages.
-- `sitemap.xml`, `robots.txt`, canonical URLs on `institutions.ethindia.co`.
+- `sitemap.xml`, `robots.txt`, canonical URLs on `institutional.ethindia.co`.
 - Analytics: Plausible or Cloudflare Web Analytics `[TODO: confirm]`.
 
 ## 7. Accessibility checklist

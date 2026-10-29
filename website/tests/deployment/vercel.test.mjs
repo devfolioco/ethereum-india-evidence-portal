@@ -20,14 +20,14 @@ test('packaged Vercel function starts and handles signups without the build work
       import assert from 'node:assert/strict';
       import { pathToFileURL } from 'node:url';
       const { default: app } = await import(pathToFileURL(process.argv[1]).href);
-      const request = (email) => new Request('https://institutions.ethindia.co/api/interest', {
+      const request = (email) => new Request('https://institutional.ethindia.co/api/interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify({ email }),
       });
       assert.equal((await app.fetch(request('invalid'))).status, 400);
       assert.equal((await app.fetch(request('test@example.com'))).status, 503);
-      assert.equal((await app.fetch(new Request('https://institutions.ethindia.co/api/interest'))).status, 405);
+      assert.equal((await app.fetch(new Request('https://institutional.ethindia.co/api/interest'))).status, 405);
       process.env.CLOUDFLARE_ACCOUNT_ID = 'test-account';
       process.env.CLOUDFLARE_D1_DATABASE_ID = 'test-database';
       process.env.CLOUDFLARE_API_TOKEN = 'test-token';
