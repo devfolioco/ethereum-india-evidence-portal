@@ -5,8 +5,8 @@ import { handleInterest } from '../src/server/interest.mjs';
 const env = { CLOUDFLARE_ACCOUNT_ID: 'test-account', CLOUDFLARE_D1_DATABASE_ID: 'test-db', CLOUDFLARE_API_TOKEN: 'test-secret' };
 const success = () => Response.json({ success: true, result: [{ success: true, meta: { changes: 1 } }] });
 function request(data = { email: 'person@example.com' }, headers = {}) {
-  return new Request('https://institutions.ethindia.co/api/interest', {
-    method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json', Origin: 'https://institutions.ethindia.co', ...headers },
+  return new Request('https://institutional.ethindia.co/api/interest', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json', Origin: 'https://institutional.ethindia.co', ...headers },
     body: JSON.stringify(data),
   });
 }
@@ -43,13 +43,13 @@ test('rejects cross-origin submissions and unsupported methods or formats', asyn
   assert.equal((await handleInterest(request(undefined, { Origin: 'https://other.example' }), env, noFetch)).status, 403);
   assert.equal((await handleInterest(request(undefined, { 'Sec-Fetch-Site': 'cross-site' }), env, noFetch)).status, 403);
   assert.equal((await handleInterest(request(undefined, { 'Content-Type': 'text/plain' }), env, noFetch)).status, 415);
-  const get = await handleInterest(new Request('https://institutions.ethindia.co/api/interest'), env, noFetch);
+  const get = await handleInterest(new Request('https://institutional.ethindia.co/api/interest'), env, noFetch);
   assert.equal(get.status, 405);
   assert.equal(get.headers.get('allow'), 'POST');
 });
 
 test('rejects malformed and oversized bodies even without content-length', async () => {
-  const make = (body) => new Request('https://institutions.ethindia.co/api/interest', {
+  const make = (body) => new Request('https://institutional.ethindia.co/api/interest', {
     method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body,
   });
   assert.equal((await handleInterest(make('{'), env, noFetch)).status, 400);
@@ -83,7 +83,7 @@ test('missing credentials, D1 failures and timeouts never report success or leak
 });
 
 test('native HTML form submissions work without JavaScript', async () => {
-  const req = new Request('https://institutions.ethindia.co/api/interest', {
+  const req = new Request('https://institutional.ethindia.co/api/interest', {
     method: 'POST', body: new URLSearchParams({ email: 'reader@example.com', website: '' }),
   });
   const response = await handleInterest(req, env, async () => success());
