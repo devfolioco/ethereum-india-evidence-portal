@@ -9,7 +9,7 @@
       "date": "4 November 2026",
       "city": "Mumbai",
       "title": "ETHIndia Institutional Dinner & Open Doors Mixer",
-      "host": { "label": "Hosted with", "name": "Fluid", "logo": "" },
+      "host": { "label": "Hosted with", "name": "Fluid", "logo": "/logo/fluid.png" },
       "invite": { "label": "Request invite", "href": "https://luma.com/lfug35cw" },
       "recap": { "label": "Read the recap", "href": "" }
     }
