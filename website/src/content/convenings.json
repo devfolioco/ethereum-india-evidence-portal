@@ -25,7 +25,7 @@
       "city": "Mumbai",
       "title": "Institutional Open Doors Mixer",
       "summary": "After the dinner, the doors open to banks and financial institutions, advisory firms and policy groups, Ethereum researchers and builders, and Devcon guests.",
-      "host": null,
+      "host": { "label": "Hosted with", "name": "Fluid", "logo": "/logo/fluid.png" },
       "invite": { "label": "Request to join", "href": "https://luma.com/un1ip2l2" },
       "recap": { "label": "Read the recap", "href": "" }
     }
