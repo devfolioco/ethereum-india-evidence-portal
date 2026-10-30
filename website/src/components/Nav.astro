@@ -1,10 +1,13 @@
 ---
-// Same four anchors as the old portal's top bar.
+// The old portal's four home-page anchors, plus the Convenings page.
+interface Props { current?: string }
+const { current = '' } = Astro.props;
 const links = [
-  ['Why India', '#why-india'],
-  ['Ethereum', '#ethereum'],
-  ['Briefing', '#briefing'],
-  ['Updates', '#updates'],
+  ['Why India', '/#why-india'],
+  ['Ethereum', '/#ethereum'],
+  ['Briefing', '/#briefing'],
+  ['Updates', '/#updates'],
+  ['Convenings', '/convenings'],
 ];
 ---
 
@@ -15,7 +18,9 @@ const links = [
       <span class="visually-hidden">ETHIndia Institutional, home</span>
     </a>
     <nav class="nav__links" aria-label="Sections">
-      {links.map(([label, href]) => <a href={href} data-nav-link>{label}</a>)}
+      {links.map(([label, href]) => (
+        <a href={href} data-nav-link aria-current={href === `/${current}` ? 'page' : undefined}>{label}</a>
+      ))}
     </nav>
   </div>
 </div>
@@ -43,6 +48,7 @@ const links = [
     align-items: center;
     min-height: 44px;
     font-size: 15px;
+    white-space: nowrap;
     text-decoration: none;
     color: var(--ink-2);
   }
@@ -50,14 +56,15 @@ const links = [
   .nav__links a[aria-current] { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 8px; }
 
   @media (max-width: 640px) {
-    .nav__links { width: 100%; margin-left: 0; justify-content: space-between; }
+    .nav__links { width: 100%; margin-left: 0; justify-content: space-between; flex-wrap: wrap; column-gap: 8px; }
+    .nav__links a { font-size: 14px; }
   }
 </style>
 
 <script>
-  // Highlight the link for the section currently on screen.
-  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
-  const byId = new Map(links.map((a) => [a.getAttribute('href')!.slice(1), a] as const));
+  // Highlight the link for the section currently on screen (home-page anchors only).
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link][href^="/#"]')];
+  const byId = new Map(links.map((a) => [a.getAttribute('href')!.slice(2), a] as const));
   const sections = [...byId.keys()].map((id) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
 
   if (sections.length) {
