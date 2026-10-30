@@ -11,47 +11,48 @@ const cta = c.recap.href ? c.recap : c.invite;
 const external = /^https?:/.test(cta.href);
 ---
 
-<article class="convening deep" aria-labelledby={`convening-${c.iso}`}>
-  <div class="convening__top">
-    <p class="convening__label">{c.label} · <span class="nowrap"><time datetime={c.iso}>{c.date}</time> · {c.city}</span></p>
-    <h2 id={`convening-${c.iso}`}>{c.title}</h2>
-  </div>
+<article class="convening deep" aria-labelledby={`convening-${c.id}`}>
+  <p class="convening__label">
+    {c.label} · <span class="nowrap"><time datetime={c.iso}>{c.date}</time></span> · <span class="nowrap">{c.time} · {c.city}</span>
+  </p>
+  <h2 id={`convening-${c.id}`}>{c.title}</h2>
+  <p class="convening__summary">{c.summary}</p>
   <a class="btn convening__cta" href={cta.href} {...external && { target: '_blank', rel: 'noopener' }}>
     {cta.label}<span aria-hidden="true"> →</span>
   </a>
-  <p class="convening__host">
-    <span class="convening__label">{c.host.label}</span>
-    {c.host.logo ? <img src={c.host.logo} alt={c.host.name} height="24" /> : <span class="convening__host-name">{c.host.name}</span>}
-  </p>
+  {c.host && (
+    <p class="convening__host">
+      <span class="convening__label">{c.host.label}</span>
+      {c.host.logo ? <img src={c.host.logo} alt={c.host.name} height="24" /> : <span class="convening__host-name">{c.host.name}</span>}
+    </p>
+  )}
 </article>
 
 <style>
   .convening {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 20px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
     padding: clamp(24px, 3.5vw, 40px);
     border-radius: var(--radius-card);
   }
-  .convening__top { display: grid; gap: 12px; }
-  .convening h2 { font-size: clamp(26px, 3vw, 38px); line-height: 1.12; letter-spacing: -0.015em; }
+  .convening h2 { font-size: clamp(24px, 2.4vw, 32px); line-height: 1.15; letter-spacing: -0.015em; }
   .convening__label { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
   .convening__label .nowrap { white-space: nowrap; }
-  .convening__cta { align-self: start; }
+  .convening__summary { color: var(--ink-2); font-size: 16px; line-height: 1.5; }
+  .convening__cta { margin-top: 6px; }
+  /* The host row sits at the foot of the card, below any spare height from a taller neighbour. */
   .convening__host {
-    grid-column: 1 / -1;
+    align-self: stretch;
     display: flex;
     align-items: center;
     gap: 14px;
     max-width: none;
-    padding-top: 20px;
+    margin-top: auto;
+    padding-top: 18px;
     border-top: 1px solid var(--border);
   }
   .convening__host img { display: block; height: 24px; width: auto; }
   .convening__host-name { font-size: 20px; font-weight: 600; }
-
-  @media (max-width: 640px) {
-    .convening { grid-template-columns: 1fr; }
-    .convening__cta { justify-self: start; }
-  }
 </style>

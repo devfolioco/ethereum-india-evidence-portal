@@ -4,13 +4,29 @@
   "empty": "Further convenings are listed here once they are confirmed.",
   "items": [
     {
-      "label": "Convening",
-      "iso": "2026-11-04",
+      "id": "dinner-2026-11",
+      "label": "Private dinner",
+      "iso": "2026-11-04T19:00+05:30",
       "date": "4 November 2026",
+      "time": "7–9 pm",
       "city": "Mumbai",
-      "title": "ETHIndia Institutional Dinner & Open Doors Mixer",
+      "title": "ETHIndia Institutional Dinner",
+      "summary": "A closed-door dinner on how public ledgers can meet the requirements of Indian regulators and financial institutions, and extend access to global markets.",
       "host": { "label": "Hosted with", "name": "Fluid", "logo": "/logo/fluid.png" },
       "invite": { "label": "Request invite", "href": "https://luma.com/lfug35cw" },
+      "recap": { "label": "Read the recap", "href": "" }
+    },
+    {
+      "id": "mixer-2026-11",
+      "label": "Open mixer",
+      "iso": "2026-11-04T21:00+05:30",
+      "date": "4 November 2026",
+      "time": "9–11 pm",
+      "city": "Mumbai",
+      "title": "Institutional Open Doors Mixer",
+      "summary": "After the dinner, the doors open to banks and financial institutions, advisory firms and policy groups, Ethereum researchers and builders, and Devcon guests.",
+      "host": null,
+      "invite": { "label": "Request to join", "href": "https://luma.com/un1ip2l2" },
       "recap": { "label": "Read the recap", "href": "" }
     }
   ]

@@ -74,6 +74,10 @@ p { max-width: var(--measure); text-wrap: pretty; }
 }
 .section + .section { padding-top: clamp(24px, 4vw, 56px); }
 
+/* Convening cards, two across on wide screens (home page and /convenings). */
+.convening-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .convening-grid { grid-template-columns: 1fr; } }
+
 .panel {
   background: var(--panel);
   border-radius: var(--radius-card);

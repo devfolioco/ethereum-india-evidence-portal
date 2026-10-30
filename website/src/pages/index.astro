@@ -16,7 +16,9 @@ const { whyIndia, ethereum, expect, briefing, updates } = home;
 
   <section class="section next" aria-label="Convenings and reading">
     <div class="wrap next__inner">
-      <ConveningCard convening={convenings.items[0]} />
+      <div class="convening-grid">
+        {convenings.items.map((c) => <ConveningCard convening={c} />)}
+      </div>
       <HomeCards />
     </div>
   </section>
