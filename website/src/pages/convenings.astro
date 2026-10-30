@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import ConveningCard from '../components/ConveningCard.astro';
+import HomeCards from '../components/HomeCards.astro';
+import convenings from '../content/convenings.json';
+import site from '../content/site.json';
+---
+
+<Base title={`${convenings.title}: ${site.name}`} description={convenings.intro} current="convenings">
+  <section class="section">
+    <div class="wrap convenings">
+      <div class="convenings__head">
+        <h1>{convenings.title}</h1>
+        <p>{convenings.intro}</p>
+      </div>
+      <div class="convenings__list">
+        <div class="convening-grid">
+          {convenings.items.map((c) => <ConveningCard convening={c} />)}
+        </div>
+        <HomeCards />
+      </div>
+      <p class="meta">{convenings.empty}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .convenings { display: grid; gap: clamp(28px, 4vw, 48px); }
+  .convenings__head { display: grid; gap: 18px; }
+  .convenings__list { display: grid; gap: 16px; }
+  .convenings__head p { font-size: clamp(18px, 1.5vw, 20px); line-height: 1.55; }
+</style>

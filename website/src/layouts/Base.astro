@@ -71,7 +71,7 @@ const ogImage = new URL('/og/default.png', site.domain).href;
     ) : (
       <>
         {chrome === 'landing' && (
-          <header class="chrome"><Nav /></header>
+          <header class="chrome"><Nav current={current} /></header>
         )}
         <main id="main"><slot /></main>
         <Footer variant={chrome} />

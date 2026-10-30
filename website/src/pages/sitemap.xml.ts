@@ -6,6 +6,7 @@ export const GET: APIRoute = async ({ site }) => {
   const modules = await getCollection('briefing');
   const paths = [
     '/',
+    '/convenings',
     '/briefing',
     ...modules.map((m) => `/briefing/${m.data.letter}`).sort(),
     '/briefing/ledger',

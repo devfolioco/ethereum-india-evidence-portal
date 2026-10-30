@@ -11,7 +11,7 @@ function reply(request, status, message, headers = {}) {
   return new Response(`<!doctype html><html lang="en"><meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex"><title>Show interest | ETHIndia Institutional</title>
-    <body style="margin:0;background:#f1eee6;color:#13202f;font:18px/1.6 system-ui">
+    <body style="margin:0;background:#f1eee6;color:#10241c;font:18px/1.6 system-ui">
     <main style="max-width:36rem;margin:12vh auto;padding:24px">
     <h1>${status === 200 ? 'Thank you for your interest' : 'Please try again'}</h1>
     <p>${message}</p><a href="/#interest">Back to ETHIndia Institutional</a></main></body></html>`, {

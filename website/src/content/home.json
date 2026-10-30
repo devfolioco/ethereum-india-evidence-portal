@@ -4,6 +4,11 @@
     "title": "Ethereum for Institutional Finance in India",
     "sub": "Indian finance has started putting assets on distributed ledgers. ETHIndia Institutional is where banks, market infrastructure, regulators and builders work out what role Ethereum and its ecosystem should play in that."
   },
+  "cards": [
+    { "label": "Report · Q2 2027", "title": "The State of Tokenisation Report" },
+    { "label": "Briefing", "title": "Tokenised settlement in India", "href": "/briefing" },
+    { "label": "Updates", "title": "Events, announcements and reports", "href": "/#updates" }
+  ],
   "whyIndia": {
     "eyebrow": "Why India",
     "title": "India is already tokenising.",
@@ -77,6 +82,14 @@
     "eyebrow": "Updates",
     "title": "Events, announcements and reports.",
     "items": [
+      {
+        "type": "Event",
+        "iso": "2026-10-30",
+        "date": "30 October 2026",
+        "title": "ETHIndia Institutional Dinner and Open Doors Mixer",
+        "href": "/convenings",
+        "summary": "4 November 2026 in Mumbai, both hosted with Fluid: a closed-door dinner, then an open mixer. Both take registration requests on Luma."
+      },
       {
         "type": "Report",
         "iso": "2026-09-25",
