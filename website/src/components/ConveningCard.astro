@@ -1,14 +1,17 @@
 ---
 import type convenings from '../content/convenings.json';
 
+type Link = { label: string; href: string };
+
 interface Props {
-  convening: (typeof convenings)['items'][number];
+  // Invite-only convenings carry `access` text instead of an `invite` link.
+  convening: (typeof convenings)['items'][number] & { invite?: Link; access?: string };
 }
 
 const { convening: c } = Astro.props;
 // Before the event the card asks for an invite; once a recap URL is set it points there instead.
 const cta = c.recap.href ? c.recap : c.invite;
-const external = /^https?:/.test(cta.href);
+const external = cta ? /^https?:/.test(cta.href) : false;
 ---
 
 <article class="convening deep" aria-labelledby={`convening-${c.id}`}>
@@ -17,9 +20,11 @@ const external = /^https?:/.test(cta.href);
   </p>
   <h2 id={`convening-${c.id}`}>{c.title}</h2>
   <p class="convening__summary">{c.summary}</p>
-  <a class="btn convening__cta" href={cta.href} {...external && { target: '_blank', rel: 'noopener' }}>
-    {cta.label}<span aria-hidden="true"> →</span>
-  </a>
+  {cta ? (
+    <a class="btn convening__cta" href={cta.href} {...external && { target: '_blank', rel: 'noopener' }}>
+      {cta.label}<span aria-hidden="true"> →</span>
+    </a>
+  ) : c.access && <p class="convening__label convening__cta">{c.access}</p>}
   {c.host && (
     <p class="convening__host">
       <span class="convening__label">{c.host.label}</span>
