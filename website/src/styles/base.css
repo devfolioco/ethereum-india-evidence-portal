@@ -29,7 +29,7 @@ a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; 
   border-radius: 2px;
 }
 
-h1, h2, h3, h4 { font-weight: 500; text-wrap: balance; }
+h1, h2, h3, h4 { font-weight: 500; text-wrap: balance; color: var(--heading); }
 
 h1, .h1 {
   font-size: clamp(44px, 7vw, 96px);
@@ -73,6 +73,10 @@ p { max-width: var(--measure); text-wrap: pretty; }
   color: var(--ink-2);
 }
 .section + .section { padding-top: clamp(24px, 4vw, 56px); }
+
+/* Convening cards, two across on wide screens (home page and /convenings). */
+.convening-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 860px) { .convening-grid { grid-template-columns: 1fr; } }
 
 .panel {
   background: var(--panel);
@@ -246,7 +250,7 @@ p { max-width: var(--measure); text-wrap: pretty; }
   }
 }
 
-/* Logo lockup, drawn as a mask so it takes the zone's ink (bone on navy, navy on stone).
+/* Logo lockup, drawn as a mask so it takes the zone's ink (bone on green, green on stone).
    Aspect ratio from /logo/ethindia-institutional.svg (3634 × 298). */
 .logo {
   display: block;

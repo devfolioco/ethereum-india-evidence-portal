@@ -1,0 +1,44 @@
+---
+import home from '../content/home.json';
+---
+
+<ul class="cards">
+  {home.cards.map((card) => (
+    <li>
+      {'href' in card && card.href ? (
+        <a class="card" href={card.href}>
+          <span class="card__label">{card.label}</span>
+          <span class="card__title">{card.title}</span>
+        </a>
+      ) : (
+        <div class="card">
+          <span class="card__label">{card.label}</span>
+          <span class="card__title">{card.title}</span>
+        </div>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .card {
+    display: grid;
+    gap: 6px;
+    height: 100%;
+    padding: 16px 18px;
+    text-decoration: none;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+  a.card { transition: border-color 200ms var(--ease-out); }
+  a.card:hover { border-color: var(--ink-2); }
+  a.card:hover .card__title { text-decoration: underline; text-decoration-thickness: 1px; }
+  .card__label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+  .card__title { font-size: 16px; font-weight: 600; color: var(--heading); }
+
+  @media (max-width: 860px) {
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
